@@ -147,21 +147,11 @@ export default {
 		socialLinks: [
 			{
 				icon: 'github',
-				link: 'https://github.com/kalimah-apps/taqwim',
+				link: 'https://github.com/kalimahapps/taqwim',
 			},
 			{
 				icon: 'twitter',
 				link: 'https://twitter.com/KalimahApps',
-			},
-		],
-		nav: [
-			{
-				text: 'Changelog',
-				link: '/changelog',
-			},
-			{
-				text: 'Links',
-				link: '/links',
 			},
 		],
 		sidebar: getSidebarData(),
