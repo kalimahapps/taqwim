@@ -11,7 +11,13 @@ hero:
       link: /introduction
     - theme: alt
       text: View on GitHub
-      link: https://github.com/kalimah-apps/taqwim
+      link: https://github.com/kalimahapps/taqwim
+    - theme: alt
+      text: NPM
+      link: https://www.npmjs.com/package/@kalimahapps/taqwim
+    - theme: alt
+      text: VSCode
+      link: https://marketplace.visualstudio.com/items?itemName=kalimahapps.taqwim
 features:
   - icon: ⚒️
     title: Linter and formatter
