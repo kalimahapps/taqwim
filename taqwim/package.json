@@ -1,0 +1,65 @@
+{
+  "name": "@kalimahapps/taqwim",
+  "description": "PHP linter and formatter",
+  "author": "khr2003",
+  "version": "0.0.0",
+  "homepage": "https://taqwim.kalimah-apps.com/docs/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kalimahapps/taqwim.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kalimahapps/taqwim/issues"
+  },
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc && vite build",
+    "build-parser": "vite-node ./scripts/build-phpparser.ts",
+    "build:watch": "tsc && vite build --watch",
+    "coverage": "vitest run --coverage",
+    "coverage-ui": "npx vite preview --outDir coverage/",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest",
+    "update-rules": "vite-node ./scripts/update-rules.ts",
+    "watch": "tsc -w -p ./"
+  },
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "change-case": "^4.1.2",
+    "figlet": "^1.6.0",
+    "glob": "^10.3.0",
+    "levn": "^0.4.1",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/cli-progress": "^3.11.0",
+    "@types/figlet": "^1.5.6",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^20.3.1",
+    "@types/yargs": "^17.0.24",
+    "@vitest/coverage-v8": "^0.32.2",
+    "cli-progress": "^3.12.0",
+    "fs-extra": "^11.1.1",
+    "globby": "^13.2.0",
+    "php-parser": "^3.1.5",
+    "typescript": "^5.1.3",
+    "vite": "^4.3.9",
+    "vitest": "^0.32.2"
+  },
+  "keywords": [
+    "php",
+    "linter",
+    "foramtter"
+  ],
+  "bin": {
+    "taqwim": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=17.0.0"
+  }
+}

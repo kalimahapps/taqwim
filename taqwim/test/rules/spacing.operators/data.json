@@ -1,0 +1,44 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Comparisons and logical operators with correct spacing",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Ternary, instanceof operators with correct spacing",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Arithmetic, bitwise, null coalescing operators with correct spacing",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Incrementing/Decrementing, string and unary operators with correct spacing",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "Reference (&), variadic (...), type (:), arrow function (=>) operators with correct spacing",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Comparisons and logical operators with incorrect spacing",
+			"expected": 48
+		},
+		"incorrect-2": {
+			"description": "Ternary, instanceof operators with incorrect spacing",
+			"expected": 67
+		},
+		"incorrect-3": {
+			"description": "Arithmetic, bitwise, null coalescing operators with incorrect spacing",
+			"expected": 63
+		},
+		"incorrect-4": {
+			"description": "Incrementing/Decrementing, string and unary operators with incorrect spacing",
+			"expected": 20
+		},
+		"incorrect-5": {
+			"description": "Reference (&), variadic (...), type (:), arrow function (=>) operators with incorrect spacing",
+			"expected": 21
+		}
+	}
+}

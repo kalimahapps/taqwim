@@ -1,0 +1,18 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Arrays are using long syntax",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Arrays are using short syntax",
+			"expected": 6
+		}
+	},
+	"type": {
+		"short-correct-1": {
+			"description": "Arrays are using short syntax",
+			"expected": 0
+		}
+	}
+}

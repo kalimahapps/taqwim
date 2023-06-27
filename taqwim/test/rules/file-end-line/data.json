@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "PHP Code without empty lines at the end",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "PHP Code with empty lines at the end",
+			"expected": 1
+		}
+	}
+}

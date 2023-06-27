@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Class instantiation with no arguments",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Class instantiation with no arguments and no parentheses",
+			"expected": 3
+		}
+	}
+}

@@ -1,0 +1,99 @@
+:root {
+	// --vp-home-hero-name-color: #787CB5 !important;
+	--vp-c-brand: #787CB5 !important;
+	--vp-button-brand-border: #5f64a5 !important;
+	--vp-button-brand-hover-border: #5f64a5 !important;
+	--vp-button-brand-hover-bg: #4f5494 !important;
+	--vp-button-brand-active-border: #4f5494 !important;
+	--vp-button-brand-active-bg: #3f4484 !important;
+}
+
+// .VPSidebarItem.is-active>.item .link>.text {
+// 	color: #52b9e2 !important;
+// }
+
+.custom-block {
+	&.correct {
+		border: 0px solid transparent;
+		border-left: 2px solid green;
+		border-radius: 0;
+		padding: 0 16px;
+		margin-bottom: 60px !important;
+
+		.custom-block-title {
+			color: green;
+			font-weight: 500;
+		}
+	}
+
+	&.incorrect {
+		border: 0px solid transparent;
+		border-left: 2px solid darkred;
+		border-radius: 0;
+		padding: 0 16px;
+		margin-bottom: 60px !important;
+
+		.custom-block-title {
+			color: darkred;
+			font-weight: 500;
+		}
+	}
+
+	&.rule-container {
+		border: 1px solid gray;
+	}
+}
+
+/*
+Preset rules in preset page
+*/
+.preset-rules~p {
+	margin: 0 0 2em 0 !important;
+}
+
+.option-title {
+	~.option-title {
+		margin-top: 2em;
+	}
+
+	~.option-type,
+	~.option-default,
+	~.option-possible-values {
+		--vp-code-font-size: 1em;
+		font-size: 13px;
+		margin: 0.5em 0;
+	}
+
+	~.option-description {
+		margin: 6px 0;
+	}
+
+	~.option-possible-values {
+		[data-desc] {
+			position: relative;
+			cursor: help;
+
+			&::after {
+				content: attr(data-desc);
+				font-size: 13px;
+				background-color: #e7e7e7;
+				border-radius: 4px;
+				padding: 0.1em 0.6em;
+				margin-left: 0.5em;
+				position: absolute;
+				transition: all 0.3s;
+				left: 50%;
+				bottom: 100%;
+				transform: translate(-50%, 0);
+				opacity: 0;
+				pointer-events: none;
+				white-space: nowrap;
+			}
+
+			&:hover::after {
+				opacity: 1;
+				transform: translate(-50%, -20%);
+			}
+		}
+	}
+}

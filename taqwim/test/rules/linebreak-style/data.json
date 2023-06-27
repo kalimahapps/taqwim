@@ -1,0 +1,18 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Code with Unix (LF) line breaks",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Code with Windows (CRLF) line breaks",
+			"expected": 26
+		}
+	},
+	"style": {
+		"style-correct-1": {
+			"description": "Code with Unix (CRLF) line breaks",
+			"expected": 0
+		}
+	}
+}

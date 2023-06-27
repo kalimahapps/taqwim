@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Correct syntax of inline config",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Code with trailing whitespace",
+			"expected": 2
+		}
+	}
+}

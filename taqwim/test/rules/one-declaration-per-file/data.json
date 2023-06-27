@@ -1,0 +1,40 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "One class per file",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "One interface per file",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "One trait per file",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "One enum per file",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "One namespace per file",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Multiple object structures per file",
+			"expected": 2
+		},
+		"incorrect-2": {
+			"description": "Multiple unbracketed namespaces per file",
+			"expected": 1
+		},
+		"incorrect-3": {
+			"description": "Multiple bracketed namespaces per file",
+			"expected": 1
+		},
+		"incorrect-4": {
+			"description": "Multiple enums per file",
+			"expected": 2
+		}
+	}
+}

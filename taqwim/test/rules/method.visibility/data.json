@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Class methods with visibility modifiers",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Class methods without visibility modifiers",
+			"expected": 4
+		}
+	}
+}

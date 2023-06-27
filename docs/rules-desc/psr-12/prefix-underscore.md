@@ -1,0 +1,1 @@
+[Magic methods](https://www.php.net/manual/en/language.oop5.magic.php) and [super global varaibles](https://www.php.net/manual/en/language.variables.superglobals.php) are excluded from this rule.

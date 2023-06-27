@@ -1,0 +1,46 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Classes, methods, switch, if, arrays and comments ",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Functions, binary expressions, inline comment, multi-line strings, heredoc",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Switch statements",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Function call argument, properties access",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "Try/catch statements",
+			"expected": 0
+		},
+		"correct-6": {
+			"description": "Match expression",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Class, methods, switch and if statements",
+			"expected": 28
+		},
+		"incorrect-2": {
+			"description": "Control structures, functions, binary expressions, inline comment, multi-line strings, heredoc",
+			"expected": 13
+		},
+		"incorrect-3": {
+			"description": "Match and enum expressions",
+			"expected": 17
+		}
+	},
+	"type": {
+		"type-correct-1": {
+			"description": "A PHP file indented with tabs",
+			"expected": 0
+		}
+	}
+}

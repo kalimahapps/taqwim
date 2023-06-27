@@ -1,0 +1,8 @@
+# Ignore everything
+*
+*/**
+
+# Whitelist
+!dist/**/!(test)/**/*.js
+!LICENSE
+!assets/logo.png

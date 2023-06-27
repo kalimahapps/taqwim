@@ -1,0 +1,44 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Class, interface, trait and enum declarations",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Function declarations",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Method declarations",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Constant declarations",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "Variable declarations",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Class, interface, trait and enum declarations",
+			"expected": 9
+		},
+		"incorrect-2": {
+			"description": "function, constants and variables",
+			"expected": 8
+		}
+	},
+	"class": {
+		"class-correct-1": {
+			"description": "Class, interface, and trait declarations in `snake_case`",
+			"expected": 0
+		}
+	},
+	"variable": {
+		"variables-correct-1": {
+			"description": "Variable declarations in `camelCase`",
+			"expected": 0
+		}
+	}
+}

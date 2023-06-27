@@ -1,0 +1,42 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "PHPTaqwim",
+	"description": "A PHP linter, fixer and formatter",
+	"type": "object",
+	"additionalProperties": false,
+	"definitions": {
+		"severity": {
+			"type": "string",
+			"additionalProperties": false,
+			"oneOf": [
+				{
+					"const": "off",
+					"description": "Disable the rule completely"
+				},
+				{
+					"const": "warning",
+					"description": "Enable the rule and report it as a warning"
+				},
+				{
+					"const": "error",
+					"description": "Enable the rule and report it as an error"
+				}
+			]
+		}
+	},
+	"properties": {
+		"rules": {},
+		"presets": {
+			"type": "array",
+			"description": "A list of presets to be applied"
+		},
+		"debug": {
+			"type": "boolean",
+			"description": "Enable debug mode"
+		},
+		"runs": {
+			"type": "number",
+			"description": "The number of times to run PHPTaqwim"
+		}
+	}
+}

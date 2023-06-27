@@ -1,0 +1,64 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Classes, interfaces, traits, enum, methods and variables ids within the limit",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Functions, constants and loop variables ids within the limit",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Classes, interfaces, traits, methods and variables ids outside the limit",
+			"expected": 9
+		},
+		"incorrect-2": {
+			"description": "Functions, constants and loop variables ids outside the limit",
+			"expected": 11
+		}
+	},
+	"min": {
+		"min-correct-1": {
+			"description": "Nested for loop variables ids within the limit",
+			"expected": 0
+		}
+	},
+	"max": {
+		"max-incorrect-1": {
+			"description": "Functions, constants and loop variables ids outside the limit",
+			"expected": 8
+		}
+	},
+	"exceptions": {
+		"exceptions-correct-1": {
+			"description": "Certain ids are ignored",
+			"expected": 0
+		}
+	},
+	"extra-tests": {
+		"throw-error-1": {
+			"description": "Throw error if min option is not a number",
+			"throwError": true
+		},
+		"throw-error-2": {
+			"description": "Throw error if max option is not a number",
+			"throwError": true
+		},
+		"throw-error-3": {
+			"description": "Throw error if exception option is not an array",
+			"throwError": true
+		},
+		"throw-error-4": {
+			"description": "Throw error if min option is less than 1",
+			"throwError": true
+		},
+		"throw-error-5": {
+			"description": "Throw error if max option is less than 1",
+			"throwError": true
+		},
+		"throw-error-6": {
+			"description": "Throw error if min option is greater than max option",
+			"throwError": true
+		}
+	}
+}

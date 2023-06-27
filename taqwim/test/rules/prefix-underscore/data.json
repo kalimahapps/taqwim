@@ -1,0 +1,34 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Class and properties with no prefixed underscore",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Trait, interface and enum with no prefixed underscore",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Constants and variables with no prefixed underscore",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "functions and parameters with no prefixed underscore",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Identifiers with prefixed underscore",
+			"expected": 10
+		},
+		"incorrect-2": {
+			"description": "Trait, interface and enum with prefixed underscore",
+			"expected": 7
+		}
+	},
+	"exclude": {
+		"exclude-correct-1": {
+			"description": "Properties and methods with prefixed underscore",
+			"expected": 0
+		}
+	}
+}

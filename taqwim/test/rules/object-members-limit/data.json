@@ -1,0 +1,42 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Class members within the limit",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Interface members within the limit",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Trait members within the limit",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Enum members within the limit",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Class members over the limit",
+			"expected": 1
+		},
+		"incorrect-2": {
+			"description": "Interface members over the limit",
+			"expected": 1
+		},
+		"incorrect-3": {
+			"description": "Trait members over the limit",
+			"expected": 1
+		},
+		"incorrect-4": {
+			"description": "Enum members over the limit",
+			"expected": 1
+		}
+	},
+	"extra-tests": {
+		"anonymous-class": {
+			"description": "Check anonymous class",
+			"expected": 1
+		}
+	}
+}

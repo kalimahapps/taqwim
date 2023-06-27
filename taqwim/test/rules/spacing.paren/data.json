@@ -1,0 +1,44 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "If and switch statements with correct parentheses spacing",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Loop statements with correct parentheses spacing",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Try/catch statements with correct parentheses spacing",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Classes, methods, functions and function calls with correct parentheses spacing",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "Multidimensional array with correct parentheses spacing",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "If and switch statements with incorrect parentheses spacing",
+			"expected": 8
+		},
+		"incorrect-2": {
+			"description": "Loop statements with incorrect parentheses spacing",
+			"expected": 12
+		},
+		"incorrect-3": {
+			"description": "Try/catch statements with incorrect parentheses spacing",
+			"expected": 12
+		},
+		"incorrect-4": {
+			"description": "Classes, methods, functions and function calls with incorrect parentheses spacing",
+			"expected": 28
+		},
+		"incorrect-5": {
+			"description": "Multidimensional array with incorrect parentheses spacing",
+			"expected": 10
+		}
+	}
+}

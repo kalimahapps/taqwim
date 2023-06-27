@@ -1,0 +1,36 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Objects with correct brace style",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "If statements with correct brace style",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Loop statements with correct brace style",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Try catch statements with correct brace style",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "Function declarations with correct brace style",
+			"expected": 0
+		},
+		"correct-6": {
+			"description": "Switch statement and match expressions with correct brace style",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Control structure with incorrect brace style",
+			"expected": 9
+		},
+		"incorrect-2": {
+			"description": "Switch statement and match expressions with incorrect brace style",
+			"expected": 11
+		}
+	}
+}

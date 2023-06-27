@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Binary expressions are using strict equality",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Binary expressions are not using strict equality",
+			"expected": 4
+		}
+	}
+}

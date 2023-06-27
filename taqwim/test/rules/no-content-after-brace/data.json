@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Closing braces are not followed by a comment or a statement",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Closing braces are followed by content",
+			"expected": 3
+		}
+	}
+}

@@ -1,0 +1,47 @@
+{
+    "root": true,
+    "extends": [
+        "@kalimahapps"
+    ],
+    "ignorePatterns": [
+        "dist",
+        "**/phpparser/**"
+    ],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".d.ts",
+                    ".ts",
+                    ".tsx"
+                ],
+                "moduleDirectory": [
+                    "node_modules",
+                    "src"
+                ]
+            }
+        }
+    },
+    "rules": {
+        "@typescript-eslint/semi": "warn",
+        "@typescript-eslint/ban-ts-comment": [
+            "warn",
+            {
+                "ts-ignore": "allow-with-description"
+            }
+        ],
+        "n/shebang": "off",
+        "curly": "warn",
+        "eqeqeq": "warn",
+        "no-throw-literal": "warn",
+        "semi": "off",
+        "unicorn/prevent-abbreviations": [
+            "warn",
+            {
+                "checkFilenames": false
+            }
+        ]
+    }
+}

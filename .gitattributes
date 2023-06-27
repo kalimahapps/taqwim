@@ -1,0 +1,9 @@
+*.php eol=lf
+*.ts eol=lf
+*.js eol=lf
+*.json eol=lf
+
+taqwim/test/rules/linebreak-style/incorrect-1.php eol=crlf
+taqwim/test/rules/linebreak-style/style-correct-1.php eol=crlf
+taqwim/test/rules/linebreak-style/fixer/1-from.php eol=crlf
+taqwim/test/rules/linebreak-style/fixer/2-to.php eol=crlf

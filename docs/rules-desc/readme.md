@@ -1,0 +1,1 @@
+This folder contains a description for each of the rules. The automatic update script will take this and update the relevant rule in the rules folder. Rules are organized into folders. Each folder represent the preset that the rule belongs to.

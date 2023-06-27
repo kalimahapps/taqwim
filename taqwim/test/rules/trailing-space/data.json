@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "No trainling whitespace on each line",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Some lines have trailing whitespace",
+			"expected": 5
+		}
+	}
+}

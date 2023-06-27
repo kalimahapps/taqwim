@@ -1,0 +1,1184 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "PHPTaqwim",
+	"description": "A PHP linter, fixer and formatter",
+	"type": "object",
+	"additionalProperties": false,
+	"definitions": {
+		"severity": {
+			"type": "string",
+			"additionalProperties": false,
+			"oneOf": [
+				{
+					"const": "off",
+					"description": "Disable the rule completely"
+				},
+				{
+					"const": "warning",
+					"description": "Enable the rule and report it as a warning"
+				},
+				{
+					"const": "error",
+					"description": "Enable the rule and report it as an error"
+				}
+			]
+		}
+	},
+	"properties": {
+		"rules": {
+			"properties": {
+				"psr/brace-style": {
+					"description": "Ensure that opening and closing braces have consistent style",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"style": {
+									"type": "string",
+									"description": "The brace style to enforce",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "1tbs",
+											"description": "One true brace style. The opening brace of a block is placed on the same line as its corresponding statement or declaration."
+										},
+										{
+											"type": "string",
+											"const": "psr",
+											"description": "psr style. See https://www.php-fig.org/psr/psr-12/ for more information"
+										}
+									],
+									"default": "psr"
+								}
+							}
+						}
+					]
+				},
+				"psr/file-closing-tag": {
+					"description": "Ensure that PHP files do not end with a closing tag",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/file-end-line": {
+					"description": "Check that a PHP file does not end with a blank line",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/indent": {
+					"description": "Ensure that the indentation is consistent",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"type": {
+									"type": "string",
+									"description": "The type of whitespace to use",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "tab",
+											"description": "Use tabs for indentation"
+										},
+										{
+											"type": "string",
+											"const": "space",
+											"description": "Use spaces for indentation"
+										}
+									],
+									"default": "space"
+								},
+								"length": {
+									"description": "The length of the indent",
+									"type": "integer",
+									"minimum": 1,
+									"default": 4
+								}
+							}
+						}
+					]
+				},
+				"psr/keywords-lowercase": {
+					"description": "Ensure that PHP keywords are lowercase",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/line-limit": {
+					"description": "Ensure that lines do not exceed a given limit",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"code": {
+									"type": "number",
+									"default": 80,
+									"description": "Maximum length of a code line"
+								},
+								"comment": {
+									"type": "number",
+									"description": "Maximum length of a comment line. Defaults to the value of code"
+								}
+							}
+						}
+					]
+				},
+				"psr/linebreak-style": {
+					"description": "Enforce consistent linebreak style",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"style": {
+									"type": "string",
+									"default": "unix",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "unix",
+											"description": "Enforce Unix linebreaks (LF)"
+										},
+										{
+											"type": "string",
+											"const": "windows",
+											"description": "Enforce Windows linebreaks (CRLF)"
+										}
+									],
+									"description": "The linebreak style to enforce"
+								}
+							}
+						}
+					]
+				},
+				"psr/method.default-last": {
+					"description": "Ensure that default paramters are sorted last in the paramters list",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/method.visibility": {
+					"description": "Ensure that methods visibility is set",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/name-case": {
+					"description": "Ensure that the name case is correct",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"class": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"default": "pascal",
+									"description": "Class name case. Default is 'pascal'"
+								},
+								"interface": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"description": "Interface name case. If not set, class name case will be used"
+								},
+								"trait": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"description": "Trait name case. If not set, class name case will be used"
+								},
+								"enum": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"description": "Enum name case. If not set, class name case will be used"
+								},
+								"function": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"default": "snake",
+									"description": "Function name case. Default is snake"
+								},
+								"method": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"default": "camel",
+									"description": "Method name case. Default is camel"
+								},
+								"constant": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"default": "upper",
+									"description": "Constant name case. Default is upper"
+								},
+								"property": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"default": "snake",
+									"description": "Property name case. Default is snake"
+								},
+								"variable": {
+									"type": "string",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "camel",
+											"description": "Use camelCase convention"
+										},
+										{
+											"type": "string",
+											"const": "pascal",
+											"description": "Use PascalCase convention"
+										},
+										{
+											"type": "string",
+											"const": "snake",
+											"description": "Use snake_case convention"
+										},
+										{
+											"type": "string",
+											"const": "upper",
+											"description": "Use UPPER_CASE convention"
+										}
+									],
+									"default": "snake",
+									"description": "Variable name case. Default is snake"
+								}
+							}
+						}
+					]
+				},
+				"psr/new-class-parentheses": {
+					"description": "Ensure that class instantiations are followed by parentheses",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/no-content-after-brace": {
+					"description": "Ensure there is no comment or a statement after a brace on the same line",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/one-declaration-per-file": {
+					"description": "Discurage including more than one declaration per file",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/prefix-underscore": {
+					"description": "Ensure that identifiers are not prefixed with an underscore",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"exclude": {
+									"description": "Exclude certain kinds of identifiers from being checked",
+									"type": "array",
+									"items": {
+										"uniqueItems": true,
+										"type": "string",
+										"oneOf": [
+											{
+												"type": "string",
+												"const": "class",
+												"description": "Exclude class names"
+											},
+											{
+												"type": "string",
+												"const": "interface",
+												"description": "Exclude interface names"
+											},
+											{
+												"type": "string",
+												"const": "trait",
+												"description": "Exclude trait names"
+											},
+											{
+												"type": "string",
+												"const": "enum",
+												"description": "Exclude enum names"
+											},
+											{
+												"type": "string",
+												"const": "enumcase",
+												"description": "Exclude enum case names"
+											},
+											{
+												"type": "string",
+												"const": "property",
+												"description": "Exclude property names"
+											},
+											{
+												"type": "string",
+												"const": "method",
+												"description": "Exclude method names"
+											},
+											{
+												"type": "string",
+												"const": "variable",
+												"description": "Exclude variable names"
+											},
+											{
+												"type": "string",
+												"const": "parameter",
+												"description": "Exclude parameter names"
+											},
+											{
+												"type": "string",
+												"const": "function",
+												"description": "Exclude function names"
+											},
+											{
+												"type": "string",
+												"const": "constant",
+												"description": "Exclude constant names"
+											}
+										]
+									},
+									"default": [
+										""
+									]
+								}
+							}
+						}
+					]
+				},
+				"psr/property-limit": {
+					"description": "Ensure that only one property declared per statement",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/property-no-var": {
+					"description": "Ensure that property is not declared with var",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/spacing.assignment": {
+					"description": "Ensure that assignment operator has consistent spacing",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"align": {
+									"type": "boolean",
+									"description": "Align assignment with adjacent statements",
+									"default": false
+								}
+							}
+						}
+					]
+				},
+				"psr/spacing.brace": {
+					"description": "Ensure consistent brace spacing",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/spacing.operators": {
+					"description": "Ensure consistent operators spacing",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/spacing.pair": {
+					"description": "Ensure that pair operator `=>` have consistent spacing",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"align": {
+									"type": "boolean",
+									"description": "Align siblings items",
+									"default": false
+								}
+							}
+						}
+					]
+				},
+				"psr/spacing.paren": {
+					"description": "Ensure consistent structure spacing",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/spacing.separation": {
+					"description": "Ensure consistent instruction spacing (comma, semicolon, etc.)",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/spacing.types": {
+					"description": "Ensure consistent types spacing.",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"psr/trailing-space": {
+					"description": "Ensure that there is no trailing whitespace at the end of each line",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/array.comma-dangle": {
+					"description": "Ensure that trailing commas are consistent in arrays",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"singleLine": {
+									"type": "string",
+									"default": "never",
+									"description": "Set the type of comma dangle in single-line arrays",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "always",
+											"description": "Ensure that comma dangle are present"
+										},
+										{
+											"type": "string",
+											"const": "never",
+											"description": "Ensure that comma dangle are not present"
+										}
+									]
+								},
+								"multiLine": {
+									"type": "string",
+									"default": "always",
+									"description": "Set the type of comma dangle in multi-line arrays",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "always",
+											"description": "Ensure that comma dangle are present"
+										},
+										{
+											"type": "string",
+											"const": "never",
+											"description": "Ensure that comma dangle are not present"
+										}
+									]
+								}
+							}
+						}
+					]
+				},
+				"taqwim/array.syntax": {
+					"description": "Ensure that array syntax is consistent",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"type": {
+									"type": "string",
+									"default": "long",
+									"description": "Set the type of array syntax to be used. Defaults to \"long\".",
+									"oneOf": [
+										{
+											"type": "string",
+											"const": "long",
+											"description": "Use long syntax for arrays"
+										},
+										{
+											"type": "string",
+											"const": "short",
+											"description": "Use short syntax for arrays"
+										}
+									]
+								}
+							}
+						}
+					]
+				},
+				"taqwim/id-length": {
+					"description": "Ensure that identifiers are at within the length limit.",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"min": {
+									"type": "number",
+									"default": 3,
+									"description": "Minimum length of identifiers."
+								},
+								"max": {
+									"type": "number",
+									"default": 30,
+									"description": "Maximum length of identifiers."
+								},
+								"exceptions": {
+									"type": "array",
+									"default": [
+										""
+									],
+									"description": "List of identifiers to ignore."
+								}
+							}
+						}
+					]
+				},
+				"taqwim/inline-config": {
+					"description": "Check that inline config is only used in block comments. Also check that the inline config is valid JSON.",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/max-lines": {
+					"description": "Ensure that certain structure have line limit",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"file": {
+									"type": "number",
+									"minimum": 1,
+									"default": 400,
+									"description": "File max lines. Default is `400`"
+								},
+								"class": {
+									"type": "number",
+									"minimum": 1,
+									"default": 300,
+									"description": "Class max lines. Default is `300`"
+								},
+								"interface": {
+									"type": "number",
+									"minimum": 1,
+									"description": "Interface max lines. If not set, class max lines will be used"
+								},
+								"trait": {
+									"type": "number",
+									"minimum": 1,
+									"description": "Trait max lines. If not set, class max lines will be used"
+								},
+								"enum": {
+									"type": "number",
+									"minimum": 1,
+									"description": "Enum max lines. If not set, class max lines will be used"
+								},
+								"function": {
+									"type": "number",
+									"minimum": 1,
+									"default": 50,
+									"description": "Function max lines. Default is `100`"
+								},
+								"method": {
+									"type": "number",
+									"minimum": 1,
+									"description": "Method max lines. If not set, function max lines will be used"
+								},
+								"ignoreComments": {
+									"type": "boolean",
+									"default": true,
+									"description": "Ignore comments. Default is `true`"
+								},
+								"ignoreEmptyLines": {
+									"type": "boolean",
+									"default": true,
+									"description": "Ignore empty lines. Default is `true`"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/method.break-parameters": {
+					"description": "Break parameters into multiple lines if the line exceeds the maximum length",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"max": {
+									"type": "number",
+									"default": 5,
+									"description": "The maximum number of parameter before breaking them into multiple lines"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/method.complexity": {
+					"description": "Ensures that the cyclomatic complexity of functions/methods is withing limit.",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"max": {
+									"type": "number",
+									"default": 6,
+									"minimum": 2,
+									"description": "Maximum allowed cyclomatic complexity."
+								}
+							}
+						}
+					]
+				},
+				"taqwim/method.max-depth": {
+					"description": "Ensure that nesting level of a method or function does not exceed a specified limit",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"max": {
+									"type": "number",
+									"description": "The maximum nesting level allowed",
+									"default": 3
+								}
+							}
+						}
+					]
+				},
+				"taqwim/method.max-parameters": {
+					"description": "Ensure that a method or function does not have too many parameters",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"max": {
+									"description": "The maximum number of parameters a method or function can have",
+									"type": "number",
+									"default": 5
+								}
+							}
+						}
+					]
+				},
+				"taqwim/no-mixed-spaces-and-tabs": {
+					"description": "Disallow mixing spaces and tabs for indentation",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/object-members-limit": {
+					"description": "Ensure that objects in PHP have a maximum number of members",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"max": {
+									"type": "number",
+									"minimum": 1,
+									"default": 50,
+									"description": "Maximum number of members. Default is `50`"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/type-check": {
+					"description": "Check that type checks use three equal signs",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		"presets": {
+			"type": "array",
+			"description": "A list of presets to be applied"
+		},
+		"debug": {
+			"type": "boolean",
+			"description": "Enable debug mode"
+		},
+		"runs": {
+			"type": "number",
+			"description": "The number of times to run PHPTaqwim"
+		}
+	}
+}

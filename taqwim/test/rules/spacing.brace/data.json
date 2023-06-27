@@ -1,0 +1,44 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Classes, interfaces, traits and enums",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Loop and if statements",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Try/catch statements",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Functions and methods",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "Switch and match statements",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Classes, interfaces, traits and enums",
+			"expected": 11
+		},
+		"incorrect-2": {
+			"description": "Loop and if statements",
+			"expected": 16
+		},
+		"incorrect-3": {
+			"description": "Try/catch statements",
+			"expected": 18
+		},
+		"incorrect-4": {
+			"description": "Functions and methods",
+			"expected": 7
+		},
+		"incorrect-5": {
+			"description": "Switch and match statements",
+			"expected": 12
+		}
+	}
+}

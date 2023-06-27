@@ -1,0 +1,86 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "A function with one level of complexity",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "A function with five levels of complexity",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "A function with 6 levels of complexity with null safe operator",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "A function with 10 levels of complexity",
+			"expected": 1
+		},
+		"incorrect-2": {
+			"description": "A function with 11 levels of complexity",
+			"expected": 1
+		},
+		"incorrect-3": {
+			"description": "A function with 20 levels of complexity",
+			"expected": 1
+		},
+		"incorrect-4": {
+			"description": "A function with 21 levels of complexity",
+			"expected": 1
+		},
+		"incorrect-5": {
+			"description": "A function with 10 levels of complexity with ternaries",
+			"expected": 1
+		},
+		"incorrect-6": {
+			"description": "A function with 11 levels of complexity with ternaries",
+			"expected": 1
+		},
+		"incorrect-7": {
+			"description": "A function with 10 levels of complexity with nestedternaries",
+			"expected": 1
+		},
+		"incorrect-8": {
+			"description": "A function with 11 levels of complexity with nested ternaries",
+			"expected": 1
+		},
+		"incorrect-9": {
+			"description": "A function with 10 levels of complexity with null coalescence",
+			"expected": 1
+		},
+		"incorrect-10": {
+			"description": "A function with 11 levels of complexity with null coalescence",
+			"expected": 1
+		},
+		"incorrect-11": {
+			"description": "A function with 10 levels of complexity with nested null coalescence",
+			"expected": 1
+		},
+		"incorrect-12": {
+			"description": "A function with 11 levels of complexity with nested null coalescence",
+			"expected": 1
+		},
+		"incorrect-13": {
+			"description": "A function with 10 levels of complexity with null coalescence assignment",
+			"expected": 1
+		},
+		"incorrect-14": {
+			"description": "A function with 11 levels of complexity with null coalescence assignment",
+			"expected": 1
+		},
+		"incorrect-15": {
+			"description": "A function with 15 levels of complexity with match",
+			"expected": 1
+		},
+		"incorrect-16": {
+			"description": "A function with 10 levels of complexity with null safe operator",
+			"expected": 1
+		}
+	},
+	"max": {
+		"max-correct-1": {
+			"description": "A function with 20 levels of complexity",
+			"expected": 0
+		}
+	}
+}

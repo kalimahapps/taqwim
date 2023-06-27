@@ -1,0 +1,22 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Assignment statements",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Assignment statements",
+			"expected": 33
+		}
+	},
+	"align": {
+		"align-correct-1": {
+			"description": "Aligned assignment statements",
+			"expected": 0
+		},
+		"align-incorrect-1": {
+			"description": "Aligned assignment statements",
+			"expected": 108
+		}
+	}
+}

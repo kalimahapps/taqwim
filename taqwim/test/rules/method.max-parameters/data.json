@@ -1,0 +1,16 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Functions parameters are within the limit",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Function parameters are more than the limit",
+			"expected": 1
+		},
+		"incorrect-2": {
+			"description": "Provided configuration is not valid",
+			"throwError": true
+		}
+	}
+}

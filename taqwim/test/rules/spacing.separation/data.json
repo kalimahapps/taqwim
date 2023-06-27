@@ -1,0 +1,60 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Arrays ans lists with correct separation spacing",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Functions and methods with correct separation spacing",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "goto, label, continue, case, break and for statements with correct separation spacing",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "declare, namespace, yield, globals, traits, properties, exit and unset statements with correct separation spacing",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "include and assign statements with correct separation spacing",
+			"expected": 0
+		},
+		"correct-6": {
+			"description": "Match arms with correct separation spacing",
+			"expected": 0
+		},
+		"correct-7": {
+			"description": "Enum cases with correct separation spacing",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Arrays ans lists with incorrect separation spacing",
+			"expected": 15
+		},
+		"incorrect-2": {
+			"description": "Functions and methods with incorrect separation spacing",
+			"expected": 74
+		},
+		"incorrect-3": {
+			"description": "goto, label, continue, case, break and for statements with incorrect separation spacing",
+			"expected": 31
+		},
+		"incorrect-4": {
+			"description": "declare, namespace, globals, traits, properties, yield, exit and unset statements with incorrect separation spacing",
+			"expected": 31
+		},
+		"incorrect-5": {
+			"description": "include and assign statements with incorrect separation spacing",
+			"expected": 10
+		},
+		"incorrect-6": {
+			"description": "Match arms with incorrect separation spacing",
+			"expected": 25
+		},
+		"incorrect-7": {
+			"description": "Enum cases with incorrect separation spacing",
+			"expected": 20
+		}
+	}
+}

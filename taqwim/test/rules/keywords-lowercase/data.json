@@ -1,0 +1,52 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Control structure with lowercase keywords",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Class and file require",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "function, global and return keywords",
+			"expected": 0
+		},
+		"correct-4": {
+			"description": "Switch control structure",
+			"expected": 0
+		},
+		"correct-5": {
+			"description": "While, do while loops",
+			"expected": 0
+		},
+		"correct-6": {
+			"description": "Try catch",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Control structure",
+			"expected": 9
+		},
+		"incorrect-2": {
+			"description": "Class and file require",
+			"expected": 10
+		},
+		"incorrect-3": {
+			"description": "function, global and return keywords",
+			"expected": 3
+		},
+		"incorrect-4": {
+			"description": "Switch control structure",
+			"expected": 8
+		},
+		"incorrect-5": {
+			"description": "While, do while loops",
+			"expected": 3
+		},
+		"incorrect-6": {
+			"description": "Try catch",
+			"expected": 5
+		}
+	}
+}

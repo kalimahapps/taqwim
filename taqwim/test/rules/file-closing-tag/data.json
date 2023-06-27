@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "File is not ending with a closing tag",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "File is ending with a closing tag",
+			"expected": 1
+		}
+	}
+}

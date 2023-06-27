@@ -1,0 +1,26 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Parameters are within the limit",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Parameters exceed the limit",
+			"expected": 2
+		},
+		"incorrect-2": {
+			"description": "Providing wrong option (less than 2) will throw an error",
+			"throwError": true
+		}
+	},
+	"max": {
+		"max-correct-1": {
+			"description": "Parameters are within the limit",
+			"expected": 0
+		},
+		"max-incorrect-1": {
+			"description": "Parameters exceed the limit",
+			"expected": 2
+		}
+	}
+}

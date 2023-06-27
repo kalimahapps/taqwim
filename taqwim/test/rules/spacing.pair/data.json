@@ -1,0 +1,54 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Arrays with correct pair operator spacing",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Lists with correct pair operator spacing",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Match with correct pair operator spacing",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Arrays with incorrect pair operator spacing",
+			"expected": 60
+		},
+		"incorrect-2": {
+			"description": "Lists with incorrect pair operator spacing",
+			"expected": 14
+		},
+		"incorrect-3": {
+			"description": "Match statements with incorrect pair operator spacing",
+			"expected": 42
+		}
+	},
+	"align": {
+		"align-correct-1": {
+			"description": "Arrays with correct pair operator spacing",
+			"expected": 0
+		},
+		"align-correct-2": {
+			"description": "Lists with correct pair operator spacing",
+			"expected": 0
+		},
+		"align-correct-3": {
+			"description": "Match with correct pair operator spacing",
+			"expected": 0
+		},
+		"align-incorrect-1": {
+			"description": "Arrays with incorrect pair operator spacing",
+			"expected": 26
+		},
+		"align-incorrect-2": {
+			"description": "Lists with incorrect pair operator spacing",
+			"expected": 3
+		},
+		"align-incorrect-3": {
+			"description": "Match statements with incorrect pair operator spacing",
+			"expected": 21
+		}
+	}
+}

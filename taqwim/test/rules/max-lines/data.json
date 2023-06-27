@@ -1,0 +1,34 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "File, class and methods are within the limit",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Trait, interface and enum are within the limit",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "File, class and method exceed the limit",
+			"expected": 2
+		},
+		"incorrect-2": {
+			"description": "Trait, interface and enum exceed the limit",
+			"expected": 3
+		},
+		"incorrect-3": {
+			"description": "File, class and method exceed the limit that includes comments and blank lines",
+			"expected": 4
+		}
+	},
+	"extra-tests": {
+		"file-incorrect": {
+			"description": "File exceeds the limit",
+			"expected": 1
+		},
+		"config-incorrect": {
+			"description": "Supplied config is incorrect (not a number)",
+			"throwError": "true"
+		}
+	}
+}

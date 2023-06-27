@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "One class property per statement",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Multiple class properties per statement",
+			"expected": 2
+		}
+	}
+}

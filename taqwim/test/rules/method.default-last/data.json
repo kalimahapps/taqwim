@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Default parameter is added last",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Default parameter is not added last",
+			"expected": 3
+		}
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"desc": "Method and functions with correct type spacing",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"desc": "Method and functions with incorrect type spacing",
+			"expected": 39
+		}
+	}
+}

@@ -1,0 +1,40 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Code under the line limit",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Comment the line limit",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Code exceeds the line limit",
+			"expected": 1
+		},
+		"incorrect-2": {
+			"description": "Comment exceeds the line limit",
+			"expected": 1
+		}
+	},
+	"code": {
+		"code-correct-1": {
+			"description": "Code under the set line limit ",
+			"expected": 0
+		},
+		"code-correct-2": {
+			"description": "Comment will follow the code line limit if not specified",
+			"expected": 0
+		}
+	},
+	"comment": {
+		"comment-correct-1": {
+			"description": "Comment can be set to a different line limit than code",
+			"expected": 0
+		},
+		"comment-incorrect-1": {
+			"description": "Comment will produce a warning because it exceeds the line limit",
+			"expected": 1
+		}
+	}
+}

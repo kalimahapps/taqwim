@@ -1,0 +1,24 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Arrays with incorrect comma dangling",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Arrays with incorrect comma dangling",
+			"expected": 16
+		}
+	},
+	"singleLine": {
+		"single-line-correct-1": {
+			"description": "Single line arrays with dangling comma",
+			"expected": 0
+		}
+	},
+	"multiLine": {
+		"multi-line-correct-1": {
+			"description": "Multi lines arrays with no dangling comma",
+			"expected": 0
+		}
+	}
+}

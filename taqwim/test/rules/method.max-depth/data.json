@@ -1,0 +1,24 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "A function with one nested level",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "A function with 5 nested levels",
+			"expected": 1
+		},
+		"incorrect-2": {
+			"description": "A function with 6 nested levels",
+			"expected": 1
+		},
+		"incorrect-3": {
+			"description": "A function with 10 nested levels",
+			"expected": 1
+		},
+		"incorrect-4": {
+			"description": "A function with 11 nested levels",
+			"expected": 1
+		}
+	}
+}

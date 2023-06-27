@@ -1,0 +1,20 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Code with tabs indentation only",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Code with spaces indentation only",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "Docblocks are not handled by this rule",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Code with mixed indentation",
+			"expected": 3
+		}
+	}
+}
