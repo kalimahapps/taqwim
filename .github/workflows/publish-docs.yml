@@ -19,7 +19,7 @@ jobs:
       - run: npm ci
 
       - name: Building the project
-        run: npm update-rules && npm run docs:build
+        run: npm run update-rules && npm run docs:build
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
