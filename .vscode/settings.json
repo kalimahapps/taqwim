@@ -48,7 +48,6 @@
         "jsonc",
         "json5"
     ],
-    "eslint.packageManager": "npm",
     "editor.defaultFormatter": null,
     "prettier.enable": false,
     "cSpell.allowCompoundWords": true,
