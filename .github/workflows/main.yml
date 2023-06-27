@@ -1,8 +1,8 @@
 on:
   push:
-    branches: ["master"]
-    
-name: Deploy Extension
+    branches: ["main"]
+
+name: Deploy Extension and Package
 jobs:
   deploy:
     runs-on: ubuntu-latest
