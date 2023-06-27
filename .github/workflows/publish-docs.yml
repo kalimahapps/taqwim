@@ -18,8 +18,11 @@ jobs:
           node-version: 18
       - run: npm ci
 
-      - name: Building the project
-        run: npm run update-rules && npm run docs:build
+      - name: Update rules
+        run: cd taqwim && npm run update-rules
+
+      - name: Build docs
+        run: npm run docs:build
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3

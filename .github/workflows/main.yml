@@ -12,7 +12,6 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: cd taqwim && npm ci
       - run: npm run build && cd taqwim && npm run build
       - run: xvfb-run -a npm test
       - run: cd taqwim && npm run test
