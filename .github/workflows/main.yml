@@ -15,3 +15,14 @@ jobs:
       - run: npm run build && cd taqwim && npm run build
       - run: xvfb-run -a npm test
       - run: cd taqwim && npm run test
+
+      - name: Publish to VSCode marketplace
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
