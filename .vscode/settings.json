@@ -108,5 +108,8 @@
     },
     "[scss]": {
         "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "[php]": {
+        "editor.defaultFormatter": "KalimahApps.taqwim"
     }
 }
