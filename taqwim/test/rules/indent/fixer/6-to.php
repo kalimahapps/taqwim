@@ -27,7 +27,7 @@ class ClassName extends Directory implements \Countable
     }
 
     public function count(): int
-        { return 0;
+    { return 0;
     }
 }
 
