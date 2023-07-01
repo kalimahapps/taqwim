@@ -3,7 +3,7 @@
   "name": "taqwim",
   "displayName": "PHPTaqwim",
   "description": "PHP linter and formatter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://taqwim.kalimah-apps.com/",
   "repository": {
     "type": "git",
