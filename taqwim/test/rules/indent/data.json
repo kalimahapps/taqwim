@@ -26,7 +26,7 @@
 		},
 		"incorrect-1": {
 			"description": "Class, methods, switch and if statements",
-			"expected": 28
+			"expected": 30
 		},
 		"incorrect-2": {
 			"description": "Control structures, functions, binary expressions, inline comment, multi-line strings, heredoc",

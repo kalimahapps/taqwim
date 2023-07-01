@@ -1,6 +1,7 @@
 /**
  * Ensure that the indentation is consistent
  */
+/* eslint complexity: ["warn", 11] */
 import { getOffsetFromLineAndColumn, getOptions } from '@taqwim/utils/index';
 import type Fixer from '@taqwim/fixer';
 import type {
@@ -163,8 +164,6 @@ class Indent {
 		childEndLine: number,
 		parent?: AstNodeBase
 	): BlockLines => {
-		const { sourceLines } = this.context;
-
 		if (!parent) {
 			return {
 				startLine: childStartLine,
@@ -176,12 +175,10 @@ class Indent {
 		let newStartLine = childStartLine;
 		let newEndLine = childEndLine;
 
-		const hasOpeningBrace = sourceLines[newStartLine].trim().endsWith('{');
 		if (start.line === childStartLine) {
 			newStartLine = newStartLine + 1;
 		}
 
-		const hasClosingBrace = sourceLines[newEndLine].trim().startsWith('}');
 		if (end.line === childEndLine) {
 			newEndLine = newEndLine - 1;
 		}
@@ -200,10 +197,33 @@ class Indent {
 	 * @return {BlockLines}         Object containing the start line and end line
 	 */
 	getBlockLines(list: AstNodeBase[], parent?: AstNodeBase): BlockLines {
+		const { sourceLines } = this.context;
 		if (list.length === 0) {
+			const { line: startLine } = this.node.loc.start;
+			const { line: endLine } = this.node.loc.end;
+
+			if (startLine === endLine) {
+				return {
+					startLine,
+					endLine: startLine,
+				};
+			}
+
+			// Since list is empty check for braces
+			const startBrace = sourceLines[startLine].trim() === '{';
+			const endBrace = sourceLines[endLine].trim() === '}';
+
+			if (startBrace || endBrace) {
+				return {
+					startLine: startBrace ? startLine : -1,
+					endLine: endBrace ? endLine : -1,
+				};
+			}
+
+			// No child nodes and no braces, return node lines
 			return {
-				startLine: this.node.loc.start.line,
-				endLine: this.node.loc.end.line,
+				startLine,
+				endLine,
 			};
 		}
 
@@ -244,7 +264,12 @@ class Indent {
 	 */
 	addLineIndent(startLine: number, endLine: number, extra = '') {
 		// If lines are not defined, don't proceed
-		if (startLine === undefined || endLine === undefined) {
+		if (
+			startLine === undefined ||
+			endLine === undefined ||
+			startLine === -1 ||
+			endLine === -1
+		) {
 			return;
 		}
 
@@ -489,13 +514,6 @@ class Indent {
 	 */
 	bodyChildrenCallback() {
 		const { body, kind } = this.node as AstTry & AstCatch & AstFor & AstForeach;
-
-		const { start, end } = body.loc;
-
-		// let {
-		// 	startLine,
-		// 	endLine,
-		// } = this.checkAgainstParentLines(start.line, end.line, this.node);
 
 		let { startLine, endLine } = this.getBlockLines(body.children, this.node);
 
@@ -765,7 +783,6 @@ class Indent {
 		}
 		const sourceLines = source.split(/\r?\n/u);
 
-		/* eslint complexity: ["warn", 9] */
 		sourceLines.forEach((line, index) => {
 			const options = getOptions(context, index);
 			const { type: indentType } = options;
