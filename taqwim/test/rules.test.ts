@@ -159,7 +159,13 @@ foreachRule('Testing $name rule', ({ name, tests }) => {
 
 		const { reports } = topLintResult;
 
-		return expect(reports).toHaveLength(data.expected);
+		const message = [
+			`\n\n\nExpected ${data.expected} reports, got ${reports.length} for ${data.description}`,
+			`File: ${fullFilePath}`,
+			'\n\n\n',
+		].join('\n');
+
+		return expect(reports, message).toHaveLength(data.expected);
 	});
 });
 
