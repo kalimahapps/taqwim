@@ -272,3 +272,9 @@ test("Cli version should be the same as the extension's version", () => {
 	// Compare versions
 	expect(version, 'Version mismatch between cli and extension').toBe(cliVersion);
 });
+
+test('getBaseDirectory to throw an error if package.json is not found', () => {
+	expect(() => {
+		getBaseDirectory(path.join(testDirectory, '..', '..', '..'));
+	}).toThrow('Unable to find package.json.');
+});

@@ -42,20 +42,21 @@ const getLastLine = (lines: string[]) => {
 /**
  * Process the rule
  *
- * @param {RuleContext} context Rule context.
+ * @param  {RuleContext} context Rule context.
+ * @return {boolean}             Whether the rule has been processed.
  */
-const process = (context: RuleContext) => {
+const process = (context: RuleContext): boolean => {
 	const { node, report, sourceLines } = context;
 
 	const { source } = node.loc;
 	if (!source) {
-		return;
+		return false;
 	}
 
 	// Trim and check for ?> at the end of the file
 	const trimmedSource = source.trim();
 	if (trimmedSource.endsWith('?>') !== true) {
-		return;
+		return false;
 	}
 
 	const { line, lineIndex } = getLastLine(sourceLines);
@@ -84,6 +85,8 @@ const process = (context: RuleContext) => {
 			return fixer.replaceRange(range, '');
 		},
 	});
+
+	return true;
 };
 
 export default (): RuleDataOptional => {
