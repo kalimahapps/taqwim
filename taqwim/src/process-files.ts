@@ -306,6 +306,10 @@ class ProcessFiles {
 			const { start: aStart } = a.position;
 			const { start: bStart } = b.position;
 
+			// Sort by column number if on the same line
+			if (aStart.line === bStart.line) {
+				return aStart.column - bStart.column;
+			}
 			return aStart.line - bStart.line;
 		});
 
