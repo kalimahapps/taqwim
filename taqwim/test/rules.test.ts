@@ -165,7 +165,7 @@ foreachRule('Testing $name rule', ({ name, tests }) => {
 			'\n\n\n',
 		].join('\n');
 
-		return expect(reports, message).toHaveLength(data.expected);
+		return expect(data.expected, message).toBe(reports.length);
 	});
 });
 

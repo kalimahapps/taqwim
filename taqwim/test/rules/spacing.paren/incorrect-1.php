@@ -27,3 +27,16 @@ switch (    $expr  ) {
         echo 'Default case';
         break;
 }
+
+if ( ! defined(  'ABSPATH' )  ){
+	exit;
+}
+
+if ((   1 + 2 ) *   3 ) {
+    echo 'The result is 9';
+}
+
+if (  isset(  $var  )  ){
+    echo 'The result is 1';
+}
+

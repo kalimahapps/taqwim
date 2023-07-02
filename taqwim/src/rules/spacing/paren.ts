@@ -28,13 +28,22 @@ class ParenSpacing {
 	 * These characters should not have spaces before them
 	 * when they are preceded by a closing parenthesis
 	 */
-	noSpaceChars = [';', ',', ':'];
+	noSpaceChars = [';', ',', ':', ')'];
 
 	/**
 	 * Keywords that should not have spaces after them
 	 * when they are followed by an opening parenthesis
 	 */
-	noSpaceKeywords = ['function', 'method', 'closure', 'call', 'array'];
+	noSpaceKeywords = ['function', 'method', 'closure', 'call', 'array', 'isset'];
+
+	/**
+	 * Keywords that can be nested
+	 *
+	 * @example
+	 * if ( isset (condition) ) {
+	 * $this->callMethod( $param, array ("this", "methid") );
+	 */
+	canBeNested = ['if', 'call'];
 
 	/**
 	 * Helper method to report and fix paren spacing
@@ -80,17 +89,30 @@ class ParenSpacing {
 	 * @param {Loc} [nodeLoc] The location of the node to process.
 	 *                        If not provided, the location of the current node will be used
 	 */
-	/* eslint complexity: ["warn", 9] */
+	/* eslint complexity: ["warn", 10] */
 	processClosingParen(nodeLoc?: Loc) {
 		const { node, sourceLines } = this.context;
-
+		const { kind } = node;
 		const loc = nodeLoc ?? node.loc;
+
+		const regex = [
+			'(?<stringBefore>\\S{0,1})',
+			'(?<spaceBefore>\\s*)',
+			'(?<paren>\\))',
+			'(?<spaceAfter>\\s*)',
+			'(?<stringAfter>\\S{0,1})',
+		];
+
+		// For if statements, match the end of the line
+		// to avoid matching the nested parenthesis
+		if (this.canBeNested.includes(kind)) {
+			regex.push('$');
+		}
 
 		const closingparenthesis = findAheadRegex(
 			sourceLines,
 			loc,
-			// eslint-disable-next-line max-len, vue/max-len
-			/(?<stringBefore>\S{0,1})(?<spaceBefore>\s*)(?<paren>\))(?<spaceAfter>\s*)(?<stringAfter>\S{0,1})/u
+			new RegExp(regex.join(''), 'u')
 		);
 
 		if (closingparenthesis === false || closingparenthesis.groups === undefined) {
@@ -107,7 +129,7 @@ class ParenSpacing {
 
 		this.reportfixParen({
 			condition: [spaceBefore, stringBefore, spaceBefore && spaceBefore.value.length > 0],
-			message: `Spaces found. There must be no space before the closing parenthesis. Found ${spaceBefore?.value.length} spaces`,
+			message: `There must be no space before the closing parenthesis. Found ${spaceBefore?.value.length} spaces`,
 			fix: 'removeRange',
 		});
 
@@ -291,11 +313,12 @@ class ParenSpacing {
 			return;
 		}
 
-		this.processClosingParen();
+		// this.processClosingParen();
 
 		if (kind === 'closure') {
 			const { uses, loc: closureLoc } = node;
 			this.processOpenParen();
+			this.processClosingParen();
 
 			// Check if closure has a use statement
 			if (uses.length === 0) {
@@ -341,11 +364,13 @@ class ParenSpacing {
 			};
 
 			this.processOpenParen(searchRange);
+			this.processClosingParen();
 
 			return;
 		}
 
 		this.processOpenParen();
+		this.processClosingParen();
 	}
 }
 
@@ -363,6 +388,8 @@ export default (): RuleDataOptional => {
 			'function',
 			'method',
 			'if',
+			'isset',
+			'bin',
 			'for',
 			'foreach',
 			'while',

@@ -22,7 +22,7 @@
 		},
 		"incorrect-1": {
 			"description": "If and switch statements with incorrect parentheses spacing",
-			"expected": 8
+			"expected": 21
 		},
 		"incorrect-2": {
 			"description": "Loop statements with incorrect parentheses spacing",

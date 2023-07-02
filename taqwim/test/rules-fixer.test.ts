@@ -114,6 +114,7 @@ foreachRule('Testing $name rule', ({ name, tests }) => {
 
 		const toFileContent = fse.readFileSync(to, 'utf8');
 
-		return expect(sourceCode).toBe(toFileContent);
+		const message = `\n\nError in file ${from} \n\n`;
+		return expect(toFileContent, message).toBe(sourceCode);
 	});
 });

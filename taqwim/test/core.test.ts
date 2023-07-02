@@ -89,8 +89,7 @@ test('Should process plainText successfully', async () => {
 	};
 
 	const lintResult = taqwim.lint(lintOptions);
-
-	expect(lintResult[0].reports.length).toBe(6);
+	expect(lintResult[0].reports.length).toBe(5);
 });
 
 test('Should throw source not found error', async () => {
