@@ -228,21 +228,59 @@ class Traverse {
 			const parentPath = path.slice(0, -1);
 			const parent = this.getNodeFromPath(parentPath);
 
-			if (parent.body === undefined) {
+			// Get list of parent keys and extra current node name and index
+			const parentKeys = Object.keys(parent);
+			const [currentNodeName] = currentPath.split('|');
+			const currentNodeIndex = parentKeys.indexOf(currentNodeName);
+			if (currentNodeIndex === -1) {
 				return false;
 			}
 
-			const children = parent.body;
-			const index = children.indexOf(node);
-			if (index === -1) {
-				return false;
-			}
+			// Exclude custom nodes
+			const customNodes = ['traverse', 'path', 'nodeName'];
 
 			if (direction === 'previous') {
-				return children[index - 1];
+				// Find the first previous node that has loc property
+				// and is not a custom node
+				const previousNodeIndex = parentKeys.slice(0, currentNodeIndex).reverse()
+					.find((key) => {
+						if (customNodes.includes(key)) {
+							return false;
+						}
+
+						return parent[key].loc !== undefined;
+					});
+
+				if (previousNodeIndex === undefined) {
+					return false;
+				}
+
+				return parent[previousNodeIndex];
 			}
 
-			return children[index + 1];
+			// Find the first next node that has loc property
+			// and is not a custom node
+			const nextNodeIndex = parentKeys.slice(currentNodeIndex)
+				.find((key) => {
+					if (customNodes.includes(key)) {
+						return false;
+					}
+
+					return parent[key].loc !== undefined;
+				});
+
+			if (nextNodeIndex === undefined) {
+				return false;
+			}
+
+			return parent[nextNodeIndex];
+
+			// const nextNodeKey = parentKeys[currentNodeIndex + 1];
+			// if (customNodes.includes(nextNodeKey)) {
+			// 	return false;
+			// }
+
+			// return parent[nextNodeKey];
 		}
 
 		// If is a child of a children array (e.g. children-0)
