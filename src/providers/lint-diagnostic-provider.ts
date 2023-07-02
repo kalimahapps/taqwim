@@ -1,3 +1,4 @@
+/* eslint complexity: ["warn", 7] */
 import { posixPath } from '@extension/util';
 import {
 	Range,

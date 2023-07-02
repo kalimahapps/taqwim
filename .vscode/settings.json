@@ -31,7 +31,9 @@
         "**/dist": true,
         "**/build": true,
         "**/coverage": true,
-        "**/docs": true
+        "**/docs": true,
+        "**/.vscode-test": true,
+        "**/taqwim/src/phpparser": true,
     },
     "eslint.codeAction.showDocumentation": {
         "enable": true
