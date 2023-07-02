@@ -18,6 +18,7 @@ class ReturnTypeVariations
 
 function testingSpace   (   $Hello   ){
 	echo "HELLO";
+    echo '<h1>' . get_string('title') . '</h1>';
 }
 
 $closureWithArgs = function  (  $arg1, $arg2  ) {

@@ -7,9 +7,21 @@
  * - No space before the closing parenthesis
  * - A single space after the closing parenthesis (except when followed by a semicolon)
  */
+/* eslint max-lines-per-function: ["warn", 110],complexity: ["warn", 11] */
 import { findAhead, findAheadRegex } from '@taqwim/utils/index';
-import type { Loc, RuleContext, RuleDataOptional } from '@taqwim/types';
+import type {
+	AllAstTypes,
+	AstArray,
+	AstCall,
+	AstClosure,
+	AstDo,
+	AstExpression,
+	Loc,
+	RuleContext,
+	RuleDataOptional
+} from '@taqwim/types';
 import type Fixer from '@taqwim/fixer';
+import { WithCallMapping } from '@taqwim/decorators';
 
 type FixData = {
 	condition: (Loc | boolean | undefined)[];
@@ -23,6 +35,23 @@ class ParenSpacing {
 	 * The context of the rule
 	 */
 	context = {} as RuleContext;
+
+	/**
+	 * The node being processed
+	 */
+	node = {} as AllAstTypes;
+
+	/**
+	 * Callbacks for each node type
+	 */
+	callbacksMap = {
+		arrayCallback: ['array'],
+		doCallback: ['do'],
+		closureCallback: ['closure'],
+		callCallback: ['call'],
+		binCallback: ['bin'],
+		generalCallback: ['function', 'method', 'if', 'isset', 'for', 'foreach', 'while', 'do', 'switch', 'catch'],
+	};
 
 	/**
 	 * These characters should not have spaces before them
@@ -89,7 +118,6 @@ class ParenSpacing {
 	 * @param {Loc} [nodeLoc] The location of the node to process.
 	 *                        If not provided, the location of the current node will be used
 	 */
-	/* eslint complexity: ["warn", 10] */
 	processClosingParen(nodeLoc?: Loc) {
 		const { node, sourceLines } = this.context;
 		const { kind } = node;
@@ -171,11 +199,22 @@ class ParenSpacing {
 		const { kind } = node;
 		const loc = nodeLoc ?? node.loc;
 
+		const regex = [
+			'(?<stringBefore>\\S{0,1})',
+			'(?<spaceBefore>\\s*)',
+			'(?<paren>\\()',
+			'(?<spaceAfter>\\s*)',
+			'(?<stringAfter>\\S{0,1})',
+		];
+
+		if (kind === 'call') {
+			regex.push('(?!.*\\(.*$)');
+		}
+
 		const openingparenthesis = findAheadRegex(
 			sourceLines,
 			loc,
-			// eslint-disable-next-line max-len, vue/max-len
-			/(?<stringBefore>\S{0,1})(?<spaceBefore>\s*)(?<paren>\()(?<spaceAfter>\s*)(?<stringAfter>\S{0,1})/u
+			new RegExp(regex.join(''), 'u')
 		);
 
 		if (openingparenthesis === false || openingparenthesis.groups === undefined) {
@@ -241,11 +280,21 @@ class ParenSpacing {
 	 */
 	processEmptyParens(): boolean {
 		const { node, sourceLines, report } = this.context;
-		const { loc } = node;
+		const { loc, kind } = node;
+
+		let searchRange: Loc = loc;
+
+		if (['function', 'method'].includes(kind)) {
+			const { body } = node;
+			searchRange = {
+				start: loc.start,
+				end: body.loc.start,
+			};
+		}
 
 		const findParens = findAheadRegex(
 			sourceLines,
-			loc,
+			searchRange,
 			/\((?<space>\s+)\)/u
 		);
 
@@ -259,7 +308,7 @@ class ParenSpacing {
 		}
 
 		report({
-			message: 'Spaces found. There must be no space between empty parentheses',
+			message: `There must be no space between empty parentheses. Found ${space.value.length} spaces`,
 			position: space,
 			fix: (fixer: Fixer) => {
 				return fixer.removeRange(space);
@@ -270,107 +319,206 @@ class ParenSpacing {
 	}
 
 	/**
+	 * Handle array nodes
+	 */
+	arrayCallback() {
+		const { loc, shortForm } = this.node as AstArray;
+
+		// Short arrays don't have parentheses
+		if (shortForm === true) {
+			return;
+		}
+		const { end } = loc;
+		const {
+			line: endLine,
+			column: endColumn,
+			offset: endOffset,
+		} = end;
+
+		const nodeLoc = {
+			// Search only the last line of the node
+			// This is to avoid unintended results when 
+			// there is a nested node.
+			start: {
+				line: endLine,
+				column: 0,
+				offset: endOffset - endColumn,
+			},
+			end,
+		};
+		this.processOpenParen();
+		this.processClosingParen(nodeLoc);
+	}
+
+	/**
+	 * Handle closure nodes
+	 */
+	closureCallback() {
+		const { uses, loc: closureLoc } = this.node as AstClosure;
+		this.processOpenParen();
+		this.processClosingParen();
+
+		// Check if closure has a use statement
+		if (uses.length === 0) {
+			return;
+		}
+
+		const { sourceLines } = this.context;
+		const useNodeLoc = findAhead(sourceLines, closureLoc, 'use');
+		if (useNodeLoc === false) {
+			return;
+		}
+		const searchRange = {
+			start: useNodeLoc,
+			end: closureLoc.end,
+		};
+
+		this.processOpenParen(searchRange, true);
+		this.processClosingParen(searchRange);
+	}
+
+	/**
+	 * Handle do nodes
+	 */
+	doCallback() {
+		const { sourceLines } = this.context;
+		const { loc } = this.node;
+		const {
+			body: {
+				loc: bodyLoc,
+			},
+		} = this.node as AstDo;
+
+		const whileSearchRange = {
+			start: bodyLoc.end,
+			end: loc.end,
+		};
+
+		const whileNodeLoc = findAhead(sourceLines, whileSearchRange, 'while');
+		if (whileNodeLoc === false) {
+			return;
+		}
+
+		const searchRange = {
+			start: whileNodeLoc,
+			end: loc.end,
+		};
+
+		this.processOpenParen(searchRange);
+		this.processClosingParen();
+	}
+
+	/**
+	 * Handle call nodes
+	 */
+	callCallback() {
+		const { arguments: parameters, loc } = this.node as AstCall;
+
+		let openParenSearchRange: Loc = loc;
+		let closeParenSearchRange: Loc = loc;
+		if (parameters.length > 0) {
+			const { start } = parameters[0].loc;
+			openParenSearchRange = {
+				start: loc.start,
+				end: {
+					line: start.line,
+					column: start.column + 1,
+					offset: start.offset + 1,
+				},
+			};
+
+			const { end } = parameters.at(-1).loc;
+			closeParenSearchRange = {
+				start: {
+					line: end.line,
+					column: end.column - 1,
+					offset: end.offset - 1,
+				},
+				end: {
+					line: loc.end.line,
+					column: loc.end.column + 1,
+					offset: loc.end.offset + 1,
+				},
+			};
+		}
+
+		this.processOpenParen(openParenSearchRange);
+		this.processClosingParen(closeParenSearchRange);
+	}
+
+	binCallback() {
+		const { kind, parenthesizedExpression, loc, traverse } = this.node as AstExpression;
+
+		// Ignore non parenthesized bin expressions
+		// e.g. $a = $b + $c;
+		if (kind === 'bin' && parenthesizedExpression !== true) {
+			return;
+		}
+
+		// Get parent to set the search range
+		const parent = traverse.parent();
+		if (parent === false) {
+			return;
+		}
+
+		// Also get next and prev sibling, if it exists, to set the search range
+		const sibling = traverse.nextSibling();
+		const previousSibling = traverse.prevSibling();
+
+		const { loc: parentLoc } = parent;
+		const { start: parentStart, end: parentEnd } = parentLoc;
+
+		// Set the open paren search range to start from the parent start
+		const openParenSearchRange = {
+			start: previousSibling === false ? parentStart : previousSibling.loc.end,
+			end: {
+				line: loc.start.line,
+				column: loc.start.column + 1,
+				offset: loc.start.offset + 1,
+			},
+		};
+
+		// Set the close paren search range to end at the 
+		// sibling start or parent end
+		const closeParenSearchRange = {
+			start: {
+				line: loc.end.line,
+				column: loc.end.column - 1,
+				offset: loc.end.offset - 1,
+			},
+			end: sibling === false ? parentEnd : sibling.loc.start,
+		};
+
+		this.processOpenParen(openParenSearchRange);
+		this.processClosingParen(closeParenSearchRange);
+	}
+
+	/**
+	 * Handle all other nodes
+	 */
+	generalCallback() {
+		this.processOpenParen();
+		this.processClosingParen();
+	}
+
+	/**
 	 * Entry point of the rule processing
 	 *
-	 * @param {RuleContext} context The context of the rule
+	 * @param  {RuleContext} context The context of the rule
+	 * @return {boolean}             Whether the rule should be processed
 	 */
-	process(context: RuleContext) {
+	@WithCallMapping
+	process(context: RuleContext): boolean {
 		this.context = context;
-
-		const { node, sourceLines } = this.context;
-		const { kind, loc, shortForm } = node;
+		const { node } = this.context;
+		this.node = node;
 
 		const hasFoundEmptyParen = this.processEmptyParens();
 		if (hasFoundEmptyParen) {
-			return;
+			return false;
 		}
 
-		if (kind === 'array') {
-			// Short arrays don't have parentheses
-			if (shortForm === true) {
-				return;
-			}
-			const { end } = loc;
-			const {
-				line: endLine,
-				column: endColumn,
-				offset: endOffset,
-			} = end;
-
-			const nodeLoc = {
-				// Search only the last line of the node
-				// This is to avoid unintended results when 
-				// there is a nested node.
-				start: {
-					line: endLine,
-					column: 0,
-					offset: endOffset - endColumn,
-				},
-				end,
-			};
-			this.processOpenParen();
-			this.processClosingParen(nodeLoc);
-			return;
-		}
-
-		// this.processClosingParen();
-
-		if (kind === 'closure') {
-			const { uses, loc: closureLoc } = node;
-			this.processOpenParen();
-			this.processClosingParen();
-
-			// Check if closure has a use statement
-			if (uses.length === 0) {
-				return;
-			}
-
-			const { sourceLines } = this.context;
-			const useNodeLoc = findAhead(sourceLines, closureLoc, 'use');
-			if (useNodeLoc === false) {
-				return;
-			}
-			const searchRange = {
-				start: useNodeLoc,
-				end: closureLoc.end,
-			};
-
-			this.processOpenParen(searchRange, true);
-			this.processClosingParen(searchRange);
-
-			return;
-		}
-
-		if (kind === 'do') {
-			const {
-				body: {
-					loc: bodyLoc,
-				},
-			} = node;
-
-			const whileSearchRange = {
-				start: bodyLoc.end,
-				end: loc.end,
-			};
-
-			const whileNodeLoc = findAhead(sourceLines, whileSearchRange, 'while');
-			if (whileNodeLoc === false) {
-				return;
-			}
-
-			const searchRange = {
-				start: whileNodeLoc,
-				end: loc.end,
-			};
-
-			this.processOpenParen(searchRange);
-			this.processClosingParen();
-
-			return;
-		}
-
-		this.processOpenParen();
-		this.processClosingParen();
+		return true;
 	}
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 if    (     $expr1    )      {
     // if body
 }elseif     (        $expr2) {
@@ -7,7 +8,7 @@ if    (     $expr1    )      {
     // else body;
 }
 
-if (         
+if (
     $expr1
     && $expr2
        ) {
@@ -32,11 +33,19 @@ if ( ! defined(  'ABSPATH' )  ){
 	exit;
 }
 
+if (   isset( $args['name']) || isset($args['value'])   ) {
+	throw new ErrorException('Remove name or value from args keys');
+}
+
+if( (   $test > 1  ) && (  $test < 10   ) ){
+	echo 'The result is 9';
+}
+
 if ((   1 + 2 ) *   3 ) {
     echo 'The result is 9';
 }
 
+
 if (  isset(  $var  )  ){
     echo 'The result is 1';
 }
-
