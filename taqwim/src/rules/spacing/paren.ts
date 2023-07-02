@@ -427,19 +427,22 @@ class ParenSpacing {
 				},
 			};
 
-			const { end } = parameters.at(-1).loc;
-			closeParenSearchRange = {
-				start: {
-					line: end.line,
-					column: end.column - 1,
-					offset: end.offset - 1,
-				},
-				end: {
-					line: loc.end.line,
-					column: loc.end.column + 1,
-					offset: loc.end.offset + 1,
-				},
-			};
+			const lastElement = parameters.at(-1);
+			if (lastElement) {
+				const { end } = lastElement.loc;
+				closeParenSearchRange = {
+					start: {
+						line: end.line,
+						column: end.column - 1,
+						offset: end.offset - 1,
+					},
+					end: {
+						line: loc.end.line,
+						column: loc.end.column + 1,
+						offset: loc.end.offset + 1,
+					},
+				};
+			}
 		}
 
 		this.processOpenParen(openParenSearchRange);
