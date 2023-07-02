@@ -1,3 +1,5 @@
+import path from 'node:path';
+import { workspace } from 'vscode';
 import type {
 	Disposable,
 	window as vsCodeWindow,
@@ -5,10 +7,13 @@ import type {
 	TextDocument
 } from 'vscode';
 import { logger } from '@extension/services/logger';
-import { diagnosticProvider } from './providers/lint-diagnostic-provider';
+import { taqwim } from '@extension/services/taqwim';
+import { diagnosticProvider } from '@extension/providers/lint-diagnostic-provider';
+import { posixPath } from '@extension/util/';
+
 export class WorkspaceListener implements Disposable {
 	private subscriptions: Disposable[];
-	private readonly trackedDocuments: any[];
+	private trackedDocuments: TextDocument[];
 
 	constructor() {
 		this.subscriptions = [];
@@ -89,7 +94,7 @@ export class WorkspaceListener implements Disposable {
 		}
 
 		// Mark that we should be tracking the document.
-		this.trackedDocuments.push(document.uri);
+		this.trackedDocuments.push(document);
 
 		// Trigger an update so that the document will gather diagnostics.
 		this.onUpdate(document);
@@ -102,7 +107,11 @@ export class WorkspaceListener implements Disposable {
 	 */
 	private onClose(document: TextDocument): void {
 		// remove document from tracked documents
-		this.trackedDocuments.splice(this.trackedDocuments.indexOf(document.uri), 1);
+		this.trackedDocuments = this.trackedDocuments.filter((document_) => {
+			const mainDocument = posixPath(document.uri.fsPath);
+			const checkAgainst = posixPath(document_.uri.fsPath);
+			return mainDocument !== checkAgainst;
+		});
 	}
 
 	/**
@@ -110,10 +119,42 @@ export class WorkspaceListener implements Disposable {
 	 *
 	 * @param {TextDocument} document The affected document.
 	 */
-	private onUpdate(document: TextDocument): void {
-		if (!this.trackedDocuments.includes(document.uri)) {
+	private async onUpdate(document: TextDocument): Promise<void> {
+		const documentPath = posixPath(document.uri.fsPath);
+		const documentParentPath = posixPath(path.dirname(document.uri.fsPath));
+		const configPath = posixPath(workspace.workspaceFolders?.[0].uri.fsPath);
+
+		const fileName = path.basename(documentPath);
+		const configFileNames = ['.taqwim.json', 'taqwim.config.js'];
+
+		// If the document is a config file, reload the config
+		if (configFileNames.includes(fileName) && documentParentPath === configPath) {
+			await taqwim.loadConfig(configPath);
+
+			// Refresh diagnostics for all tracked documents
+			this.trackedDocuments.forEach((document_) => {
+				diagnosticProvider.update(document_);
+			});
+			return;
+		}
+
+		if (!this.isTrackedDocument(document)) {
 			return;
 		}
 		diagnosticProvider.update(document);
+	}
+
+	/**
+	 * Check if the given document is being tracked
+	 *
+	 * @param  {TextDocument} document The affected document.
+	 * @return {boolean}               True if the document is being tracked
+	 */
+	isTrackedDocument(document: TextDocument): boolean {
+		return this.trackedDocuments.some((document_) => {
+			const mainDocument = posixPath(document.uri.fsPath);
+			const checkAgainst = posixPath(document_.uri.fsPath);
+			return mainDocument === checkAgainst;
+		});
 	}
 }

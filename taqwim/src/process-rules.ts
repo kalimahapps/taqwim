@@ -82,8 +82,10 @@ class ProcessRules {
 	): Record<string, RuleOptionDefaultValue> => {
 		const customOptions = this.getCustomRuleOptions(name);
 
+		// If there are not default options (like max, type, etc),
+		// return the custom options
 		if (!defaultOptionsSchema) {
-			return {};
+			return customOptions;
 		}
 
 		// Filter default options schema to get only the default options
