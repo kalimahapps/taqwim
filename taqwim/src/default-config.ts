@@ -4,7 +4,7 @@ export default {
 	/**
 	 * Whether to run the linter in debug mode.
 	 */
-	debug: false,
+	debug: true,
 
 	/**
 	 * Number of times to run the linter

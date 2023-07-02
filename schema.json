@@ -752,7 +752,7 @@
 					]
 				},
 				"psr/spacing.paren": {
-					"description": "Ensure consistent structure spacing",
+					"description": "Ensure consistent parentheses spacing",
 					"oneOf": [
 						{
 							"$ref": "#/definitions/severity"

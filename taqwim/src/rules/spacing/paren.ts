@@ -353,7 +353,7 @@ export default (): RuleDataOptional => {
 	const parenSpacingClass = new ParenSpacing();
 	return {
 		meta: {
-			description: 'Ensure consistent structure spacing',
+			description: 'Ensure consistent parentheses spacing',
 			fixable: true,
 			preset: 'psr',
 		},
