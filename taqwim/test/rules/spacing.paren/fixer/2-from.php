@@ -1,7 +1,7 @@
 <?php
 class ReturnTypeVariations
 {
-    public function functionName   (    int $arg1, $arg2  ) : string
+    public function functionName   (    int $arg1, $arg2  ): string
     {
         return 'foo';
     }
@@ -10,11 +10,11 @@ class ReturnTypeVariations
         string $foo,
         string $bar,
         int $baz
-    ) : string {
+    ): string {
         return 'foo';
     }
-    
-    public function getFoo(#[FooClassAttrib(20  ) ] $a )  : string
+
+    public function getFoo(#[FooClassAttrib(20  ) ] $a  )  : string
     {
     }
 }
@@ -22,10 +22,13 @@ class ReturnTypeVariations
 
 function testingSpace   (   $Hello   ){
 	echo "HELLO";
-    echo '<h1>' . get_string('title') . '</h1>';
 }
 
 $closureWithArgs = function  (  $arg1, $arg2  ) {
+    // body
+};
+
+$closureWithArgsAndVars = function (   $arg1, $arg2  ) use  (  $var1, $var2  ) {
     // body
 };
 
@@ -34,12 +37,15 @@ use  (  $var1, $var2  ) {
     // body
 };
 
-$closureWithArgsVarsAndReturn = function  (   $arg1, $arg2) use ($var1, $var2   ) : bool {
+$closureWithArgsVarsAndReturn = function  (   $arg1, $arg2) use ($var1, $var2   ): bool {
+    // body
+};
+
+$closureWithArgsVarsAndReturn = function  (   $arg1, $arg2) use
+($var1, $var2   ): bool {
     // body
 };
 
 
 callFunction  ( "HI", "HELLO"  );
 $this->goAhead  ("one", "two");
-
-callFunction(  );

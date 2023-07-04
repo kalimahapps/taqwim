@@ -71,8 +71,9 @@ class ParenSpacing {
 	 * @example
 	 * if ( isset (condition) ) {
 	 * $this->callMethod( $param, array ("this", "methid") );
+	 * public function getFoo(#[FooClassAttrib(28  ) ] $a ): string
 	 */
-	canBeNested = ['if', 'call'];
+	canBeNested = ['if', 'call', 'function', 'method'];
 
 	/**
 	 * Helper method to report and fix paren spacing
@@ -128,13 +129,16 @@ class ParenSpacing {
 			'(?<spaceBefore>\\s*)',
 			'(?<paren>\\))',
 			'(?<spaceAfter>\\s*)',
-			'(?<stringAfter>\\S{0,1})',
+
+			// Match a character except for a parenthesis
+			// This will help avoid mistmatch of cases like if(isset($test))
+			'(?<stringAfter>[^\\)]{0,1})',
 		];
 
 		// For if statements, match the end of the line
 		// to avoid matching the nested parenthesis
 		if (this.canBeNested.includes(kind)) {
-			regex.push('$');
+			regex.push('(?!.*\\).*$)');
 		}
 
 		const closingparenthesis = findAheadRegex(
@@ -449,6 +453,12 @@ class ParenSpacing {
 		this.processClosingParen(closeParenSearchRange);
 	}
 
+	/**
+	 * Binary expressions
+	 *
+	 * @example
+	 * if ( $a + $b ) {}
+	 */
 	binCallback() {
 		const { kind, parenthesizedExpression, loc, traverse } = this.node as AstExpression;
 
