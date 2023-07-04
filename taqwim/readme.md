@@ -7,9 +7,9 @@
 <a target="_blank" href="https://marketplace.visualstudio.com/items?itemName=KalimahApps.taqwim">
   <img src="https://img.shields.io/visual-studio-marketplace/v/KalimahApps.taqwim?style=flat-square"></a>
   <a target="_blank" href="https://marketplace.visualstudio.com/items?itemName=KalimahApps.taqwim">
-  <img src="https://img.shields.io/visual-studio-marketplace/d/KalimahApps.taqwim?style=flat&logo=visualstudiocode&logoColor=%23fff&label=downloads&labelColor=%232588cf"></a>
+  <img src="https://img.shields.io/visual-studio-marketplace/d/KalimahApps.taqwim?style=flat-square&logo=visualstudiocode&logoColor=%23fff&label=downloads&labelColor=%232588cf"></a>
 <a target="_blank" href="https://www.npmjs.com/package/@kalimahapps/taqwim">
-  <img src="https://img.shields.io/npm/dt/%40kalimahapps/taqwim?style=flat&logo=npm&logoColor=%23ffffff&label=downloads&labelColor=%23c53635">
+  <img src="https://img.shields.io/npm/dt/%40kalimahapps/taqwim?style=flat-square&logo=npm&logoColor=%23ffffff&label=downloads&labelColor=%23c53635">
 </a>
 </p>
 <p align="center">
@@ -47,7 +47,7 @@ PHP linter and formatter for Visual Studio Code and CLI. Taqwim is arabic for co
 <br>
 
 ## VSCode Extension
-If you are looking for the VSCode extension, please check [Taqwim CLI](https://marketplace.visualstudio.com/items?itemName=KalimahApps.taqwim)
+If you are looking for the VSCode extension, please check [Taqwim](https://marketplace.visualstudio.com/items?itemName=KalimahApps.taqwim)
 
 
 <br>
