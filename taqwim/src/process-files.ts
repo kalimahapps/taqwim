@@ -138,6 +138,7 @@ class ProcessFiles {
 		this.sourceCode = this.file.content;
 		this.fixes = [];
 
+		this.traverse.setSourceCode(this.sourceCode);
 		this.traverse.setAst(this.file.ast);
 
 		const maxRuns = this.taqwimConfig.runs;
@@ -421,12 +422,15 @@ class ProcessFiles {
 		// Set current rule name
 		this.currentRuleName = ruleName;
 
+		this.sourceLines = this.sourceCode.split(/\r?\n/u);
+		this.traverse.setSourceLines(this.sourceLines);
+		this.traverse.setSourceCode(this.sourceCode);
+
 		// Update traverse class with the new AST
 		this.traverse.updateAst(this.file.ast);
 
 		// Get fresh AST and update source lines
 		const freshAst = this.traverse.getAst();
-		this.sourceLines = this.sourceCode.split(/\r?\n/u);
 
 		// Check for inline config
 		const { comments } = freshAst;

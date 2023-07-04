@@ -1,26 +1,43 @@
 /* eslint complexity: ["warn", 14] */
-import { findLastIndex } from '@taqwim/utils/index';
+import {
+	findAheadRegex,
+	findAheadRegexReverse,
+	findLastIndex,
+	skipRegex
+} from '@taqwim/utils/index';
 import { walk } from '@taqwim/walker';
-import type { AstComment, AstNode, Loc } from './types';
+import type { AstAttributeGroup, AstComment, AstNode, Loc } from '@taqwim/types';
 
 class Traverse {
+	/**
+	 * Current AST
+	 */
 	ast: AstNode = {} as AstNode;
-	nodesList: AstNode[] = [];
-	matchAgainst: string | string[] = [''];
-	matchType = 'kind';
 
 	/**
-	 * A flag to indicate if the current if statement is the root if
-	 * (i.e. not an elseif or else)
+	 * Source code of the AST
 	 */
-	rootIf = false;
+	sourceCode = '';
 
-	constructor() {
+	/**
+	 * lines of the source code
+	 */
+	sourceLines: string[] = [];
 
-		// this.ast = ast;
+	/**
+	 * List of nodes found when using traverse methods
+	 */
+	nodesList: AstNode[] = [];
 
-		// this.updateAst(ast);
-	}
+	/**
+	 * The value to match against when using traverse methods
+	 */
+	matchAgainst: string | string[] = [''];
+
+	/**
+	 * The type of match to use when using traverse methods
+	 */
+	matchType = 'kind';
 
 	/**
 	 * Change start and end line number to zero based
@@ -46,6 +63,111 @@ class Traverse {
 				line: end.line - 1,
 			},
 		};
+	}
+
+	/**
+	 * AttrGroup has few issues that his function addresses
+	 * - start is correct, but end is wrong. It points
+	 * to the end of the last token
+	 * - source is incorrect
+	 *
+	 * @param {AstNode} node The node to update
+	 */
+	updateAttrGroup(node: AstNode) {
+		const { attrs } = node as AstAttributeGroup;
+
+		// Attrs are always defined but due to 
+		// typing inaccuracy, we need to check
+		if (!attrs) {
+			return;
+		}
+
+		// Get last attribute to get the end location
+		const lastAttribute = attrs.at(-1);
+		if (lastAttribute === undefined) {
+			return;
+		}
+
+		const {
+			loc: {
+				end: attributeEnd,
+			},
+		} = lastAttribute;
+
+		// Start searching from the end of the last attribute
+		// to find the end of the file
+		const searchRange = {
+			start: {
+				// subtract 1 from the line number, because attribute loc
+				// has not been modified yet, since it is the child of the
+				// attrgroup node
+				line: attributeEnd.line - 1,
+				column: attributeEnd.column,
+				offset: attributeEnd.offset,
+			},
+			end: {
+				line: this.sourceLines.length - 1,
+				column: this.sourceLines?.at(-1)?.length ?? 0,
+				offset: this.sourceCode.length,
+			},
+		};
+
+		const groupEnd = findAheadRegex(
+			this.sourceLines,
+			searchRange,
+			/\]/u
+		);
+
+		if (groupEnd === false) {
+			return;
+		}
+
+		node.loc.end = groupEnd.end;
+		node.loc.source = this.sourceCode.slice(node.loc.start.offset, groupEnd.end.offset);
+	}
+
+	/**
+	 * Update group attribute.
+	 * - attr loc are not accurate, they both
+	 * point to the same location (end location)
+	 * - source is incorrect
+	 *
+	 * @param {AstNode} attribute The attribute to update
+	 */
+	updateAttr(attribute: AstNode) {
+		const {
+			loc: { end: attributeEnd },
+			name,
+		} = attribute;
+
+		const skippedName = skipRegex(name);
+		const regex = new RegExp(skippedName, 'u');
+
+		const namePosition = findAheadRegexReverse(
+			this.sourceLines,
+			{
+				start: {
+					line: 0,
+					column: 0,
+					offset: 0,
+				},
+				end: attributeEnd,
+			},
+			regex
+		);
+
+		if (namePosition === false) {
+			return;
+		}
+
+		const {
+			start: {
+				offset: nameOffset,
+			},
+		} = namePosition;
+
+		attribute.loc.start = namePosition.start;
+		attribute.loc.source = this.sourceCode.slice(nameOffset, attributeEnd.offset);
 	}
 
 	/**
@@ -125,6 +247,14 @@ class Traverse {
 			this.addIfStatementTypes(clone);
 		}
 
+		if (kind === 'attrgroup') {
+			this.updateAttrGroup(clone);
+		}
+
+		if (kind === 'attribute') {
+			this.updateAttr(clone);
+		}
+
 		// Noop start and end are wrong. They should be swapped
 		if (kind === 'noop') {
 			clone.loc.start = clone.loc.end;
@@ -165,6 +295,24 @@ class Traverse {
 
 			return clonedComment;
 		});
+	}
+
+	/**
+	 * Set the source code
+	 *
+	 * @param {string} sourceCode The source code
+	 */
+	setSourceCode(sourceCode: string) {
+		this.sourceCode = sourceCode;
+	}
+
+	/**
+	 * Set the source lines
+	 *
+	 * @param {string[]} sourceLines The source lines
+	 */
+	setSourceLines(sourceLines: string[]) {
+		this.sourceLines = sourceLines;
 	}
 
 	/**
@@ -274,13 +422,6 @@ class Traverse {
 			}
 
 			return parent[nextNodeIndex];
-
-			// const nextNodeKey = parentKeys[currentNodeIndex + 1];
-			// if (customNodes.includes(nextNodeKey)) {
-			// 	return false;
-			// }
-
-			// return parent[nextNodeKey];
 		}
 
 		// If is a child of a children array (e.g. children-0)

@@ -92,6 +92,8 @@ const walk = (
 		traits,
 		adaptations,
 		attrGroups,
+		attrs,
+		args,
 	} = updatedNode;
 
 	if (callback) {
@@ -197,6 +199,8 @@ const walk = (
 		traits,
 		adaptations,
 		attrGroups,
+		attrs,
+		args,
 		leadingComments: leadingComments as AstComment[],
 	};
 
