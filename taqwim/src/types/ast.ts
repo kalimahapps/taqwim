@@ -234,6 +234,16 @@ interface AstConstant extends AstNodeBase {
 }
 
 /**
+ * Defines a class/interface/trait constant
+ */
+interface AstClassConstant extends AstConstantStatement {
+
+	visibility: string;
+	final: boolean;
+	attrGroups: AstAttributeGroup[];
+}
+
+/**
  * Declares a constants into the current scope
  */
 interface AstConstantStatement extends AstStatement {
@@ -831,6 +841,7 @@ type AllAstTypes =
 	AstClass |
 	AstConstant |
 	AstConstantStatement |
+	AstClassConstant |
 	AstTrait |
 	AstEnum |
 	AstVariable |
@@ -885,6 +896,7 @@ export type {
 	AstPropertyStatement,
 	AstTraitPrecedence,
 	AstConstant,
+	AstClassConstant,
 	AstInclude,
 	AstConstantStatement,
 	AstVariable,

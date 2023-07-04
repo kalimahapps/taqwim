@@ -21,7 +21,6 @@ import type {
 	AstLookup,
 	AstEncapsed,
 	AstComment,
-	AstObject,
 	AstTry,
 	AstCatch,
 	AstFor,
@@ -35,7 +34,12 @@ import type {
 	AstMatch,
 	AstParameter,
 	CallbacksMap,
-	AstEnum
+	AstEnum,
+	AstClass,
+	AstInterface,
+	AstTrait,
+	AstPropertyStatement,
+	AstClassConstant
 } from '@taqwim/types';
 import { WithCallMapping } from '@taqwim/decorators';
 
@@ -154,10 +158,10 @@ class Indent {
 	/**
 	 * Check start and end line against parent node
 	 *
-	 * @param  {number}     childStartLine The start line
-	 * @param  {number}     childEndLine   The end line
-	 * @param  {AstNode}    parent         The parent node
-	 * @return {BlockLines}                Object containing the start and end lines
+	 * @param  {number}      childStartLine The start line
+	 * @param  {number}      childEndLine   The end line
+	 * @param  {AstNodeBase} parent         The parent node
+	 * @return {BlockLines}                 Object containing the start and end lines
 	 */
 	checkAgainstParentLines = (
 		childStartLine: number,
@@ -374,8 +378,46 @@ class Indent {
 	 * Object callback. eg. class, interface, trait
 	 */
 	objectCallback() {
-		const { body } = this.node as AstObject;
-		const { startLine, endLine } = this.getBlockLines(body, this.node);
+		const { body } = this.node as AstClass | AstInterface | AstTrait;
+
+		const [firstChild] = body;
+
+		if (firstChild === undefined) {
+			const { startLine, endLine } = this.getBlockLines(body, this.node);
+			this.addLineIndent(startLine, endLine);
+			return;
+		}
+
+		let list = body;
+
+		// If the first child is a property or a method, 
+		// Then add attrGroups to the top of list
+		const { kind } = firstChild;
+
+		// Method check
+		if (kind === 'method') {
+			const { attrGroups } = firstChild as AstMethod;
+			list = [...attrGroups, ...body];
+		}
+
+		// Property statements check
+		// e.g. public const $a = 1;
+		if (kind === 'propertystatement') {
+			const { properties } = firstChild as unknown as AstPropertyStatement;
+			const [firstProperty] = properties;
+
+			const { attrGroups } = firstProperty;
+			list = [...attrGroups, ...body];
+		}
+
+		// Class constant check
+		// e.g. public const A = 1;
+		if (kind === 'classconstant') {
+			const { attrGroups } = firstChild as unknown as AstClassConstant;
+			list = [...attrGroups, ...body];
+		}
+
+		const { startLine, endLine } = this.getBlockLines(list, this.node);
 		this.addLineIndent(startLine, endLine);
 	}
 
@@ -431,7 +473,7 @@ class Indent {
 	 * are defined and if they are, add the indent
 	 * if they are not on the same line
 	 *
-	 * @param  {AstArgument[]}    parameters The node to check
+	 * @param  {AstParameter[]}   parameters The node to check
 	 * @param  {AstIdentifier}    identifier The identifier of the node
 	 * @return {false|BlockLines}            BlockLines with start and end lines if they are not on
 	 *                                       the same line, false otherwise

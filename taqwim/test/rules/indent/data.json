@@ -24,6 +24,10 @@
 			"description": "Match expression",
 			"expected": 0
 		},
+		"correct-7": {
+			"description": "Attributes",
+			"expected": 0
+		},
 		"incorrect-1": {
 			"description": "Class, methods, switch and if statements",
 			"expected": 30
@@ -35,6 +39,10 @@
 		"incorrect-3": {
 			"description": "Match and enum expressions",
 			"expected": 17
+		},
+		"incorrect-4": {
+			"description": "Attributes",
+			"expected": 14
 		}
 	},
 	"type": {

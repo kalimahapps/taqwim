@@ -91,6 +91,7 @@ const walk = (
 		increment,
 		traits,
 		adaptations,
+		attrGroups,
 	} = updatedNode;
 
 	if (callback) {
@@ -195,6 +196,7 @@ const walk = (
 		increment,
 		traits,
 		adaptations,
+		attrGroups,
 		leadingComments: leadingComments as AstComment[],
 	};
 
