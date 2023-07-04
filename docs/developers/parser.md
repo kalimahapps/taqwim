@@ -31,6 +31,12 @@ For example:
 - `elseif` - elseif`statement
 - `else` - else statement
 
+### AttrGroup and Attribute
+AttrGroup and Attribute have few issues:
+- loc is not accurate.
+- source is not accurate or undefined.
+Using regex and string manipulation, the loc and source are fixed. Hopefully, once php-parser [fixes the issue](https://github.com/glayzzle/php-parser/issues/1125), the regex and string manipulation can be removed.
+
 ### Loc position
 - Loc position are transformed to zero-based instead of one-based
 - There is a bug with noop loc position where they are the wrong match (start loc is for the end position and vice versa). This is fixed by swapping the start and end loc positions.
