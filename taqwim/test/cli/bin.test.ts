@@ -88,24 +88,27 @@ test('Throw error if report style is set but report file is not set', async () =
 	expect(consoleSpy).toHaveBeenCalledWith(
 		expect.stringContaining('Report file is required when using json report style')
 	);
-
-	// }).rejects.toThrow('Error: Report file is required when using json report style');
-
-	//stringMatching
 });
 
-// test("Report style to 'json' is working correctly", async () => {
-// 	const consoleSpy = spyOn(console, 'log');
-// 	const path = `${testDirectory}/rules/array.comma-dangle/incorrect-1.php`;
-// 	await runCommand('-p', path, '--report-style', 'json');
+test("Report style to 'json' is working correctly", async () => {
+	// const consoleSpy = spyOn(console, 'log');
+	const path = `${testDirectory}/rules/array.comma-dangle/incorrect-1.php`;
 
-// 	console.log('>>>>>>>>>>>>>', consoleSpy.calls);
-// 	const report = JSON.parse(consoleSpy.calls[0].args[0]);
+	const reportFile = `${testDirectory}/cli/report.json`;
+	await runCommand('-p', path, '--report-style', 'json', '--report-file', reportFile);
 
-// 	expect(consoleSpy).toHaveBeenCalledWith(
-// 		expect.stringContaining('array-comma-dangle')
-// 	);
-// });
+	// Check if the report file exists
+	expect(readFileSync(reportFile, 'utf8')).toBeTruthy();
+
+	// Read the report file
+	const report = JSON.parse(readFileSync(reportFile, 'utf8'));
+
+	// Check if the report is correct
+	expect(report[0].reports.length).toBe(16);
+
+	// Remove the file
+	unlinkSync(reportFile);
+});
 
 test('Write report to file is working correctly', async () => {
 	const path = `${testDirectory}/rules/array.comma-dangle/incorrect-1.php`;

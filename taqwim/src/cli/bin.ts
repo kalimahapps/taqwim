@@ -130,6 +130,9 @@ class Main {
 		});
 	}
 
+	/**
+	 * Fix files if fix arg is enabled
+	 */
 	fixFiles() {
 		for (const report of this.fullReport) {
 			if (report.file === undefined) {

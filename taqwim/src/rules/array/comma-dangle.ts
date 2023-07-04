@@ -79,6 +79,11 @@ class CommaDangle {
 		const isSingleLine = loc.start.line === loc.end.line;
 
 		const lastItem = items.at(-1);
+
+		/* Last item can not be null since 
+		items is checked for length in the previous logic.
+		Check if added to satisfy typescript */
+		/* c8 ignore next 3 */
 		if (!lastItem) {
 			return false;
 		}
