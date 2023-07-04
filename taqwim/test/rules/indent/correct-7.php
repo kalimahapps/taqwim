@@ -10,12 +10,24 @@ class Tag implements \JsonSerializable
     #[ORM\Column(type: Types::STRING, unique: true)]
     private readonly string $name;
 
-    #[ORM\Column(type:Types::INTEGER)]
+    #[Deprecated(
+            reason: 'since Symfony 5.2, use setPublic() instead',
+            replacement: '%class%->setPublic(!%parameter0%)'
+    )]
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
+    #[
+        ORM\GeneratedValue(  
+            value: '44577',
+            outcome: 'outcome value'
+        ),
+        ORM\Column(),
+        ORM\CustomIdGenerator(class: test),
+        ORM\Id
+    ]
     public function updateToken(string $series, #[\SensitiveParameter] string $token_value, \DateTime $last_used)
     {
         echo "token UPDATE";

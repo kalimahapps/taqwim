@@ -42,7 +42,7 @@
 		},
 		"incorrect-4": {
 			"description": "Attributes",
-			"expected": 14
+			"expected": 20
 		}
 	},
 	"type": {

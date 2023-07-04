@@ -13,7 +13,8 @@ import type {
 	AstMethod,
 	AstProperty,
 	AstExpressionStatement,
-	AstInclude
+	AstInclude,
+	AstIf
 } from '@taqwim/types';
 import type Fixer from '@taqwim/fixer';
 import { getOffsetFromLineAndColumn } from '@taqwim/utils';
@@ -62,7 +63,7 @@ class Keywords {
 	 */
 	ifCallback() {
 		const { node, sourceLines } = this.context;
-		const { loc, shortForm, alternate, ifType } = node;
+		const { loc, shortForm, alternate, ifType } = node as AstIf;
 
 		const hasElse = alternate?.ifType === 'else';
 

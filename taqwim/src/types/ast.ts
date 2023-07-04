@@ -14,7 +14,7 @@ interface AstNode extends AstNodeBase {
 	what?: AstNode;
 	offset?: AstNode;
 	name: any;
-	sourceCode: string;
+	sourceCode?: string;
 	visibility?: string;
 	properties?: AstNode[];
 	constants?: AstNode[];
@@ -36,7 +36,8 @@ interface AstNode extends AstNodeBase {
 	arms?: any[];
 	conds?: any[];
 	isAnonymous?: boolean;
-	ifType: 'if' | 'elseif' | 'else' | 'onlyif',
+	attrs?: AstAttribute[];
+	ifType?: 'if' | 'elseif' | 'else' | 'onlyif',
 	shortForm?: boolean;
 	parenthesizedExpression?: boolean;
 	expression?: AstExpression;
@@ -186,7 +187,7 @@ interface AstUnary extends AstOperation {
 /**
  * Attribute Value
  */
-interface AstAttribute extends Node {
+interface AstAttribute extends AstNodeBase {
 	name: string;
 	args: AstParameter[];
 }
@@ -194,7 +195,7 @@ interface AstAttribute extends Node {
 /**
  * Attribute group
  */
-interface AstAttributeGroup extends AstNode {
+interface AstAttributeGroup extends AstNodeBase {
 	attrs: AstAttribute[];
 }
 
@@ -848,6 +849,8 @@ type AllAstTypes =
 	AstEnumCase |
 	AstInclude |
 	AstExpressionStatement |
+	AstAttribute |
+	AstAttributeGroup |
 	AstBlock;
 
 export type {
@@ -911,5 +914,7 @@ export type {
 	AstEnum,
 	AstEnumCase,
 	AstProperty,
+	AstAttribute,
+	AstAttributeGroup,
 	AllAstTypes
 };

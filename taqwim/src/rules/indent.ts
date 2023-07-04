@@ -39,10 +39,13 @@ import type {
 	AstInterface,
 	AstTrait,
 	AstPropertyStatement,
-	AstClassConstant
+	AstClassConstant,
+	AstAttribute,
+	AstAttributeGroup
 } from '@taqwim/types';
 import { WithCallMapping } from '@taqwim/decorators';
 
+type Argument = Omit<AstParameter, 'type' | 'value' | 'byref' | 'variadic' | 'readonly' | 'nullable' | 'attrGroups' | 'flags'>;
 type WhitespaceMap = {
 	[key: string]: boolean;
 };
@@ -81,6 +84,8 @@ class Indent {
 		echoCallback: ['echo'],
 		matchCallback: ['match'],
 		enumCallback: ['enum'],
+		attributeCallback: ['attribute'],
+		attrGroupCallback: ['attrgroup'],
 	};
 
 	/**
@@ -336,6 +341,70 @@ class Indent {
 	}
 
 	/**
+	 * Handle attribute group statement
+	 *
+	 * @example
+	 * #[
+	 * Route('/foo', name: 'foo'),
+	 * Route('/bar', name: 'bar'),
+	 * ]
+	 */
+	attrGroupCallback() {
+		const { sourceLines } = this.context;
+		const { attrs } = this.node as AstAttributeGroup;
+
+		const nodeLike = {
+			loc: {
+				start: this.node.loc.start,
+				end: this.node.loc.start,
+			},
+		};
+
+		const processAttributes = this.handleArguments(attrs, nodeLike as AstIdentifier, 'attrGroup');
+		if (processAttributes === false) {
+			return;
+		}
+
+		const { endLine } = processAttributes;
+		const endLineContent = sourceLines[endLine].trim();
+
+		// if endline contains )] then remove indent
+		if (/^\)\s*\]/u.test(endLineContent)) {
+			this.removeLineIndent(endLine, endLine);
+		}
+	}
+
+	/**
+	 * Handle attribute statement
+	 *
+	 * @example
+	 * #[Deprecated(
+	 * reason: 'since Symfony 5.2, use setPublic() instead',
+	 * replacement: '%class%->setPublic(!%parameter0%)'
+	 * )]
+	 * class Foo {}
+	 */
+	attributeCallback() {
+		const { args } = this.node as AstAttribute;
+
+		if (args.length === 0) {
+			return;
+		}
+
+		// Create a node like object to pass to handleArguments
+		// start and end lines are the same because the name of 
+		// the attribute is most likely does not span multiple lines
+		const nodeLike = {
+			loc: {
+				start: this.node.loc.start,
+				end: this.node.loc.start,
+			},
+		};
+
+		this.handleArguments(args, nodeLike as AstIdentifier, 'attribute');
+	}
+
+	/**
 	 * Handle match statement
 	 */
 	enumCallback() {
@@ -388,7 +457,7 @@ class Indent {
 			return;
 		}
 
-		let list = body;
+		let list = body as AstNodeBase[];
 
 		// If the first child is a property or a method, 
 		// Then add attrGroups to the top of list
@@ -473,12 +542,17 @@ class Indent {
 	 * are defined and if they are, add the indent
 	 * if they are not on the same line
 	 *
-	 * @param  {AstParameter[]}   parameters The node to check
+	 * @param  {Argument[]}       parameters The node to check
 	 * @param  {AstIdentifier}    identifier The identifier of the node
+	 * @param  {string}           extra      Extra string to add to the line
 	 * @return {false|BlockLines}            BlockLines with start and end lines if they are not on
 	 *                                       the same line, false otherwise
 	 */
-	handleArguments(parameters: AstParameter[], identifier: AstIdentifier): BlockLines | false {
+	handleArguments(
+		parameters: Argument[],
+		identifier: AstIdentifier,
+		extra?: string
+	): BlockLines | false {
 		// Get identifier lines and compare them to the parameters lines
 		const { loc } = identifier;
 		const { line: identifierStartLine } = loc.start;
@@ -498,7 +572,7 @@ class Indent {
 			parameterStartLine = parameterStartLine + 1;
 		}
 
-		this.addLineIndent(parameterStartLine, parameterEndLine, 'paramters');
+		this.addLineIndent(parameterStartLine, parameterEndLine, extra ?? 'parameters');
 		return {
 			startLine: parameterStartLine,
 			endLine: parameterEndLine,
@@ -548,7 +622,7 @@ class Indent {
 			return;
 		}
 
-		this.handleArguments(parameters, name);
+		this.handleArguments(parameters, name, 'methodParam');
 	}
 
 	/**
@@ -632,7 +706,7 @@ class Indent {
 			return;
 		}
 
-		const processArguments = this.handleArguments(parameters, what as AstIdentifier);
+		const processArguments = this.handleArguments(parameters, what as AstIdentifier, 'callChildren');
 		if (processArguments === false) {
 			return;
 		}
@@ -764,7 +838,7 @@ class Indent {
 		// unless it is a parameter or expression statement
 		// because even if they are on the same line, they
 		// might have nested nodes that need to be processed
-		const kindExceptions = ['parameter', 'expressionstatement'];
+		const kindExceptions = ['parameter', 'expressionstatement', 'attribute'];
 		if (nodeStart.line === nodeEnd.line && kindExceptions.includes(kind) === false) {
 			return false;
 		}
@@ -965,6 +1039,8 @@ export default (): RuleDataOptional => {
 			'commentblock',
 			'match',
 			'enum',
+			'attribute',
+			'attrgroup',
 		],
 		bindClass: Indent,
 	};
