@@ -7,7 +7,8 @@ import type {
 	RuleContext,
 	AstArray,
 	Loc,
-	RangeMatchType
+	RangeMatchType,
+	AstVariable
 } from '@taqwim/types';
 import { findAheadRegex } from '@taqwim/utils';
 
@@ -78,15 +79,9 @@ class CommaDangle {
 		const { singleLine, multiLine } = options;
 		const isSingleLine = loc.start.line === loc.end.line;
 
-		const lastItem = items.at(-1);
-
 		/* Last item can not be null since 
-		items is checked for length in the previous logic.
-		Check if added to satisfy typescript */
-		/* c8 ignore next 3 */
-		if (!lastItem) {
-			return false;
-		}
+		items is checked for length in the previous logic. */
+		const lastItem = items.at(-1) as AstVariable;
 
 		const commaPosition = findAheadRegex(
 			sourceLines,
