@@ -18,6 +18,7 @@ import type {
 	AstMethod,
 	AstSwitch,
 	AstTry,
+	AstVariable,
 	CallbacksMap,
 	Loc,
 	RuleContext,
@@ -53,12 +54,14 @@ class BraceSpacing {
 
 	/**
 	 * Switch and match statements
+	 *
+	 * @return {boolean} True if the node was processed
 	 */
-	switchMatchCallback() {
+	switchMatchCallback(): boolean {
 		const { sourceLines } = this.context;
 		const { loc, shortForm } = this.node as AstSwitch;
 		if (shortForm) {
-			return;
+			return false;
 		}
 
 		const parenPosition = findAhead(
@@ -67,20 +70,24 @@ class BraceSpacing {
 			')'
 		);
 		if (parenPosition === false) {
-			return;
+			return false;
 		}
 
 		this.processOpenBrace({
 			start: parenPosition,
 			end: loc.end,
 		});
+
+		return true;
 	}
 
 	/**
 	 * Handle try statements
 	 * e.g. try { ... } catch (Exception $e) { ... }
+	 *
+	 * @return {boolean} True if the node was processed
 	 */
-	tryCatchCallback() {
+	tryCatchCallback(): boolean {
 		const { sourceLines } = this.context;
 		const { body, loc, catches, always } = this.node as AstTry;
 		this.processOpenBrace({
@@ -123,7 +130,7 @@ class BraceSpacing {
 			);
 
 			if (finallyPosition === false || finallyPosition?.groups?.finally === undefined) {
-				return;
+				return false;
 			}
 
 			this.processOpenBrace({
@@ -140,13 +147,17 @@ class BraceSpacing {
 				this.processClosingBrace(currentNode.loc, nextNode.loc);
 			}
 		});
+
+		return true;
 	}
 
 	/**
 	 * Do callback
 	 * e.g. do { ... } while (true);
+	 *
+	 * @return {boolean} True if the node was fully processed
 	 */
-	doCallback() {
+	doCallback(): boolean {
 		const { sourceLines } = this.context;
 		const { loc, body } = this.node as AstDo;
 		this.processOpenBrace({
@@ -170,22 +181,26 @@ class BraceSpacing {
 		);
 
 		if (whilePosition === false) {
-			return;
+			return false;
 		}
 
 		this.processClosingBrace(loc, {
 			start: whilePosition,
 			end: loc.end,
 		});
+
+		return true;
 	}
 
 	/**
 	 * Loop callback
+	 *
+	 * @return {boolean} True if the node was fully processed
 	 */
-	loopCallback() {
+	loopCallback(): boolean {
 		const { loc, shortForm } = this.node as AstFor & AstForeach;
 		if (shortForm === true) {
-			return;
+			return false;
 		}
 
 		const parenPosition = findAhead(
@@ -195,25 +210,29 @@ class BraceSpacing {
 		);
 
 		if (parenPosition === false) {
-			return;
+			return false;
 		}
 
 		this.processOpenBrace({
 			start: parenPosition,
 			end: loc.end,
 		});
+
+		return true;
 	}
 
 	/**
 	 * Handle brace spacing for if statements
+	 *
+	 * @return {boolean} True if the node was fully processed
 	 */
-	ifCallback() {
+	ifCallback(): boolean {
 		const { sourceLines } = this.context;
 		const { loc, alternate, shortForm } = this.node as AstIf;
 
 		// Short form does not have braces
 		if (shortForm) {
-			return;
+			return false;
 		}
 
 		const parenPosition = findAhead(
@@ -222,7 +241,7 @@ class BraceSpacing {
 			')'
 		);
 		if (parenPosition === false) {
-			return;
+			return false;
 		}
 
 		this.processOpenBrace({
@@ -236,7 +255,7 @@ class BraceSpacing {
 
 		// Handle else
 		if (alternate === null || alternate.ifType !== 'else') {
-			return;
+			return false;
 		}
 
 		const elsePosition = findAheadRegexReverse(
@@ -249,44 +268,45 @@ class BraceSpacing {
 		);
 
 		if (elsePosition === false || elsePosition?.groups?.else === undefined) {
-			return;
+			return false;
 		}
 
 		this.processOpenBrace({
 			start: elsePosition.groups.else.end,
 			end: alternate.loc.end,
 		});
+
+		return true;
 	}
 
 	/**
 	 * Handle brace spacing for closures
+	 *
+	 * @return {boolean} True if the node was processed
 	 */
-	closureCallback() {
+	closureCallback(): boolean {
 		const { loc, type, uses } = this.node as AstClosure;
 
 		// Handle type if present
-		if (type !== null) {
+		if (type?.loc !== undefined) {
 			this.processOpenBrace({
 				start: type.loc.start,
 				end: loc.end,
 			});
 
-			return;
+			return false;
 		}
 
 		// Handle uses if present
 		if (uses.length > 0) {
-			const lastUse = uses.at(-1);
-			if (lastUse === undefined) {
-				return;
-			}
+			const lastUse = uses.at(-1) as AstVariable;
 
 			this.processOpenBrace({
 				start: lastUse.loc.end,
 				end: loc.end,
 			});
 
-			return;
+			return false;
 		}
 
 		// The rest of the cases
@@ -297,23 +317,27 @@ class BraceSpacing {
 		);
 
 		if (parenPosition === false) {
-			return;
+			return false;
 		}
 
 		this.processOpenBrace({
 			start: parenPosition,
 			end: loc.end,
 		});
+
+		return true;
 	}
 
 	/**
 	 * Handle spaces for methods (function, method, closure)
+	 *
+	 * @return {boolean} True if the node was processed
 	 */
-	methodCallback() {
+	methodCallback(): boolean {
 		const { name, loc, type } = this.node as AstMethod;
 
-		if (type === null && typeof name === 'string') {
-			return;
+		if (!type && typeof name === 'string') {
+			return false;
 		}
 
 		const searchRange = {
@@ -321,16 +345,20 @@ class BraceSpacing {
 			end: loc.end,
 		};
 		this.processOpenBrace(searchRange);
+
+		return true;
 	}
 
 	/**
 	 * Handle spaces for objects (class, interface, trait, enum)
+	 *
+	 * @return {boolean} True if the node was processed
 	 */
-	objectCallback() {
+	objectCallback(): boolean {
 		const { name, loc, isAnonymous } = this.node as AstClass;
 
 		if (typeof name === 'string') {
-			return;
+			return false;
 		}
 
 		if (isAnonymous) {
@@ -349,9 +377,11 @@ class BraceSpacing {
 						offset: bracePosition.offset + 1,
 					},
 				});
+
+				return true;
 			}
 
-			return;
+			return false;
 		}
 
 		const searchRange = {
@@ -359,6 +389,8 @@ class BraceSpacing {
 			end: loc.end,
 		};
 		this.processOpenBrace(searchRange);
+
+		return true;
 	}
 
 	/**
