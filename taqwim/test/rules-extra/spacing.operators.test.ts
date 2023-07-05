@@ -161,4 +161,44 @@ describe('Test edge cases and branching', () => {
 			classInit.parameterCallback()
 		).toBe(false);
 	});
+
+	test('Test arrowfuncCallback', () => {
+		classInit.context = {
+			sourceLines: [''],
+		};
+
+		classInit.node = {
+			loc: searchRange,
+			byref: false,
+			body: {
+				loc: searchRange,
+			},
+		};
+
+		expect(
+			classInit.arrowfuncCallback()
+		).toBe(false);
+	});
+
+	test('Test unaryCallback', () => {
+		classInit.node = {
+			type: 'test',
+			loc: searchRange,
+		};
+
+		expect(
+			classInit.unaryCallback()
+		).toBe(false);
+	});
+
+	test('Test postPreCallback', () => {
+		classInit.node = {
+			type: 'test',
+			loc: searchRange,
+		};
+
+		expect(
+			classInit.postPreCallback()
+		).toBe(false);
+	});
 });

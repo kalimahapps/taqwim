@@ -77,6 +77,12 @@ class OperatorSpacing {
 		}
 
 		const { operator, spaceBefore, spaceAfter } = position.groups;
+
+		/* operator can not be undefined because it is
+		* matched by the regex. However, we need to add 
+		* this check since `groups` properties can be undefined 
+		*/
+		/* c8 ignore next 3 */
 		if (!operator) {
 			return false;
 		}
@@ -135,6 +141,12 @@ class OperatorSpacing {
 		}
 
 		const { operator, spaceBefore, spaceAfter } = position.groups;
+
+		/* operator can not be undefined because it is
+		* matched by the regex. However, we need to add 
+		* this check since `groups` properties can be undefined 
+		*/
+		/* c8 ignore next 3 */
 		if (!operator) {
 			return false;
 		}
@@ -152,8 +164,10 @@ class OperatorSpacing {
 
 	/**
 	 * Handle arrow function reference operator (fn&) spacing and
+	 *
+	 * @return {boolean} false if the function was stopped
 	 */
-	arrowfuncCallback() {
+	arrowfuncCallback(): boolean {
 		const { byref, loc, body, type } = this.node as AstArrowFunction;
 		if (byref !== false) {
 			this.handleArrowFunctionRef();
@@ -177,12 +191,18 @@ class OperatorSpacing {
 		);
 
 		if (position === false || position.groups === undefined) {
-			return;
+			return false;
 		}
 
 		const { operator, spaceBefore, spaceAfter } = position.groups;
+
+		/* operator can not be undefined because it is
+		* matched by the regex. However, we need to add 
+		* this check since `groups` properties can be undefined 
+		*/
+		/* c8 ignore next 3 */
 		if (!operator) {
-			return;
+			return false;
 		}
 
 		const leftDiff = spaceBefore ? spaceBefore.value.length : 0;
@@ -190,6 +210,8 @@ class OperatorSpacing {
 
 		this.reportAndFixLeftSpace(loc, operator, '=>', leftDiff);
 		this.reportAndFixRightSpace(body.loc, operator, '=>', rightDiff);
+
+		return true;
 	}
 
 	/**
@@ -237,8 +259,10 @@ class OperatorSpacing {
 	/**
 	 * Handle post and pre operator
 	 * e.g. `$var++`, `++$var`, `$var--`,
+	 *
+	 * @return {boolean} true if the report was made
 	 */
-	postPreCallback() {
+	postPreCallback(): boolean {
 		const { sourceLines } = this.context;
 		const { type, loc, kind } = this.node as AstPost;
 
@@ -250,46 +274,52 @@ class OperatorSpacing {
 
 		const position = findAheadRegex(sourceLines, loc, regex);
 		if (position === false || position.groups === undefined) {
-			return;
+			return false;
 		}
 
 		const { operator, space } = position.groups;
 		const diff = space ? space.value.length : 0;
 
 		if (!operator || diff === 0) {
-			return;
+			return false;
 		}
 
 		if (kind === 'post') {
 			this.reportAndFixLeftSpace(loc, operator, postType, diff);
-			return;
+			return true;
 		}
 
 		this.reportAndFixRightSpace(loc, operator, postType, diff);
+
+		return true;
 	}
 
 	/**
 	 * Handle unary operator
 	 * e.g. `!$var`, `-$var`, `~$var`
+	 *
+	 * @return {boolean} true if the report was made
 	 */
-	unaryCallback() {
+	unaryCallback(): boolean {
 		const { type, loc } = this.node as AstUnary;
 
 		const regex = new RegExp(`(?<operator>${skipRegex(type)})(?<space>\\s*)`, 'u');
 		const unaryPosition = findAheadRegex(this.context.sourceLines, loc, regex);
 
 		if (unaryPosition === false || unaryPosition.groups === undefined) {
-			return;
+			return false;
 		}
 
 		const { operator, space } = unaryPosition.groups;
 		const diff = space ? space.value.length : 0;
 
 		if (!operator || diff === 0) {
-			return;
+			return false;
 		}
 
 		this.reportAndFixRightSpace(loc, operator, type, diff);
+
+		return true;
 	}
 
 	/**
@@ -478,6 +508,11 @@ class OperatorSpacing {
 		const leftDiff = spaceBefore ? spaceBefore.value.length : 0;
 		const rightDiff = spaceAfter ? spaceAfter.value.length : 0;
 
+		/* operator can not be undefined because it is
+		* matched by the regex. However, we need to add 
+		* this check since `groups` properties can be undefined 
+		*/
+		/* c8 ignore next 3 */
 		if (!operator) {
 			return false;
 		}
@@ -518,9 +553,6 @@ export default (): RuleDataOptional => {
 			'unary',
 			'post',
 			'pre',
-
-			// 'entry',
-			// 'matcharm',
 			'parameter',
 			'arrowfunc',
 			'function',
