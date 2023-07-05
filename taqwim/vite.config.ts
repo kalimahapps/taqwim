@@ -15,7 +15,7 @@ export default defineConfig({
 		include: ['**/*.test.ts'],
 		coverage: {
 			exclude: [...configDefaults.coverage.exclude ?? '', '**/src/phpparser/*'],
-			reporter: ['text'],
+			reporter: ['text', 'html'],
 		},
 	},
 	build: {

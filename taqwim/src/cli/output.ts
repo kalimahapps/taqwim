@@ -8,6 +8,7 @@ import argv from '@taqwim/cli/command.js';
 export default class {
 	fullReport: Report[] = [];
 	constructor(fullReport: Report[]) {
+		// Hide chalk colors during testing because it messes up the test output
 		chalk.level = process.env.VITEST ? 0 : 3;
 
 		this.fullReport = fullReport;
