@@ -120,9 +120,9 @@ class ParenSpacing {
 	 *                        If not provided, the location of the current node will be used
 	 */
 	processClosingParen(nodeLoc?: Loc) {
-		const { node, sourceLines } = this.context;
-		const { kind } = node;
-		const loc = nodeLoc ?? node.loc;
+		const { sourceLines } = this.context;
+		const { kind } = this.node;
+		const loc = nodeLoc ?? this.node.loc;
 
 		const regex = [
 			'(?<stringBefore>\\S{0,1})',
@@ -195,13 +195,15 @@ class ParenSpacing {
 	/**
 	 * Report and fix opening parenthesis
 	 *
-	 * @param {Loc}     nodeLoc The location of the node to process.
-	 * @param {boolean} isUse   Whether the opening parenthesis is for a use statement
+	 * @param  {Loc}     nodeLoc The location of the node to process.
+	 * @param  {boolean} isUse   Whether the opening parenthesis is for a use statement
+	 *
+	 * @return {boolean}         Whether the function has process all the checks
 	 */
-	processOpenParen(nodeLoc?: Loc, isUse = false) {
-		const { node, sourceLines } = this.context;
-		const { kind } = node;
-		const loc = nodeLoc ?? node.loc;
+	processOpenParen(nodeLoc?: Loc, isUse = false): boolean {
+		const { sourceLines } = this.context;
+		const { kind } = this.node;
+		const loc = nodeLoc ?? this.node.loc;
 
 		const regex = [
 			'(?<stringBefore>\\S{0,1})',
@@ -222,7 +224,7 @@ class ParenSpacing {
 		);
 
 		if (openingparenthesis === false || openingparenthesis.groups === undefined) {
-			return;
+			return false;
 		}
 
 		const {
@@ -245,7 +247,7 @@ class ParenSpacing {
 		// that the opening parenthesis has not been preceded by a keyword
 		// so we don't need to check for spacing
 		if (stringBefore === undefined) {
-			return;
+			return false;
 		}
 
 		// These nodes should not have a space before the opening parenthesis
@@ -259,7 +261,7 @@ class ParenSpacing {
 		});
 
 		if (shouldHaveSpace && !isUse) {
-			return;
+			return false;
 		}
 
 		this.reportfixParen({
@@ -275,6 +277,8 @@ class ParenSpacing {
 			fix: 'replaceRange',
 			payload: ' ',
 		});
+
+		return true;
 	}
 
 	/**
@@ -307,6 +311,12 @@ class ParenSpacing {
 		}
 
 		const { space } = findParens.groups;
+
+		/* space can not be undefined because it is
+		* matched by the regex. However, we need to add 
+		* this check since `groups` properties can be undefined 
+		*/
+		/* c8 ignore next 3 */
 		if (space === undefined) {
 			return true;
 		}
@@ -356,21 +366,23 @@ class ParenSpacing {
 
 	/**
 	 * Handle closure nodes
+	 *
+	 * @return {boolean} Whether the parenthesis have been processed
 	 */
-	closureCallback() {
+	closureCallback(): boolean {
 		const { uses, loc: closureLoc } = this.node as AstClosure;
 		this.processOpenParen();
 		this.processClosingParen();
 
 		// Check if closure has a use statement
 		if (uses.length === 0) {
-			return;
+			return false;
 		}
 
 		const { sourceLines } = this.context;
 		const useNodeLoc = findAhead(sourceLines, closureLoc, 'use');
 		if (useNodeLoc === false) {
-			return;
+			return false;
 		}
 		const searchRange = {
 			start: useNodeLoc,
@@ -379,12 +391,16 @@ class ParenSpacing {
 
 		this.processOpenParen(searchRange, true);
 		this.processClosingParen(searchRange);
+
+		return true;
 	}
 
 	/**
 	 * Handle do nodes
+	 *
+	 * @return {boolean} Whether the parenthesis have been processed
 	 */
-	doCallback() {
+	doCallback(): boolean {
 		const { sourceLines } = this.context;
 		const { loc } = this.node;
 		const {
@@ -400,7 +416,7 @@ class ParenSpacing {
 
 		const whileNodeLoc = findAhead(sourceLines, whileSearchRange, 'while');
 		if (whileNodeLoc === false) {
-			return;
+			return false;
 		}
 
 		const searchRange = {
@@ -410,6 +426,8 @@ class ParenSpacing {
 
 		this.processOpenParen(searchRange);
 		this.processClosingParen();
+
+		return true;
 	}
 
 	/**
@@ -458,20 +476,22 @@ class ParenSpacing {
 	 *
 	 * @example
 	 * if ( $a + $b ) {}
+	 * 
+	 * @return {boolean} Whether the parenthesis have been processed
 	 */
-	binCallback() {
+	binCallback(): boolean {
 		const { kind, parenthesizedExpression, loc, traverse } = this.node as AstExpression;
 
 		// Ignore non parenthesized bin expressions
 		// e.g. $a = $b + $c;
 		if (kind === 'bin' && parenthesizedExpression !== true) {
-			return;
+			return false;
 		}
 
 		// Get parent to set the search range
 		const parent = traverse.parent();
 		if (parent === false) {
-			return;
+			return false;
 		}
 
 		// Also get next and prev sibling, if it exists, to set the search range
@@ -504,6 +524,8 @@ class ParenSpacing {
 
 		this.processOpenParen(openParenSearchRange);
 		this.processClosingParen(closeParenSearchRange);
+
+		return true;
 	}
 
 	/**
@@ -536,7 +558,6 @@ class ParenSpacing {
 }
 
 export default (): RuleDataOptional => {
-	const parenSpacingClass = new ParenSpacing();
 	return {
 		meta: {
 			description: 'Ensure consistent parentheses spacing',
@@ -561,6 +582,6 @@ export default (): RuleDataOptional => {
 			'call',
 			'array',
 		],
-		process: parenSpacingClass.process.bind(parenSpacingClass),
+		bindClass: ParenSpacing,
 	};
 };

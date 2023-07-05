@@ -12,7 +12,8 @@ import type {
 	AstEntry,
 	Loc,
 	AstMatch,
-	AstMatchArm
+	AstMatchArm,
+	AstExpression
 } from '@taqwim/types';
 import { findAheadRegex } from '@taqwim/utils';
 
@@ -180,11 +181,9 @@ class AssignmentAlign {
 			};
 		}
 
-		const lastCond = conds.at(-1);
-
-		if (!lastCond) {
-			return false;
-		}
+		// We can safely assert that conds is an expression
+		// since we already checked conds is not null
+		const lastCond = conds.at(-1) as AstExpression;
 
 		const position = {
 			start: lastCond.loc.start,
@@ -203,7 +202,7 @@ class AssignmentAlign {
 	}
 
 	/**
-	 * Report and fix space to the left of operator for multi-line arrays and lists
+	 * Report and fix space to the left of operator for multi-line match statements
 	 *
 	 * @param {AstMatchArm} matchArm       Node to report
 	 * @param {number}      expectedLength Expected length of the left side
@@ -263,23 +262,24 @@ class AssignmentAlign {
 	/**
 	 * Report and fix space to the left of operator for multi-line arrays and lists
 	 *
-	 * @param {AstEntry} node           Node to report
-	 * @param {number}   expectedLength Expected length of the left side
+	 * @param  {AstEntry} node           Node to report
+	 * @param  {number}   expectedLength Expected length of the left side
+	 * @return {boolean}                 false if there was no report
 	 */
-	reportMultiLeadingSpace(node: AstEntry, expectedLength: number) {
+	reportMultiLeadingSpace(node: AstEntry, expectedLength: number): boolean {
 		const { report } = this.context;
 		const operatorPosition = this.getOperatorPosition(node.loc);
 
 		const { key } = node;
 		if (!key) {
-			return;
+			return false;
 		}
 
 		const { end: keyEnd, start: keyStart } = key.loc;
 		const keyLength = keyEnd.column - keyStart.column;
 
 		if (operatorPosition === false || keyLength === expectedLength) {
-			return;
+			return false;
 		}
 
 		const { start } = operatorPosition;
@@ -288,7 +288,7 @@ class AssignmentAlign {
 		const foundSpaces = start.column - keyEnd.column;
 
 		if (foundSpaces === requiredSpaces) {
-			return;
+			return false;
 		}
 
 		report({
@@ -309,6 +309,8 @@ class AssignmentAlign {
 				return fixer.replaceRange(replaceRange, name);
 			},
 		});
+
+		return true;
 	}
 
 	/**

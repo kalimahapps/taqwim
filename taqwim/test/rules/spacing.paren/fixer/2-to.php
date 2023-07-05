@@ -17,6 +17,10 @@ class ReturnTypeVariations
     public function getFoo(#[FooClassAttrib(20  ) ] $a): string
     {
     }
+    
+    public function test(){
+        echo "empty";
+    }
 }
 
 
