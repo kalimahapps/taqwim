@@ -1,7 +1,7 @@
 /**
  * Ensure consistent brace style for blocks
  */
-/* eslint complexity: ["warn", 11] */
+/* eslint complexity: ["warn", 11],max-lines-per-function: ["warn", 120] */
 import { getOffsetFromLineAndColumn, findAhead, findAheadRegexReverse } from '@taqwim/utils/index';
 import type {
 	AllAstTypes,
@@ -119,14 +119,16 @@ class BraceStyle {
 	/**
 	 * Ensure consistent brace style for classes,
 	 * interfaces, traits, functions and methods
+	 *
+	 * @return {boolean} True if a report was made, false otherwise
 	 */
-	objectMethodCallback() {
+	objectMethodCallback(): boolean {
 		const { node, braceStyle, context } = this;
 		const { sourceLines, report } = context;
 		const { loc, isAnonymous } = node as AstClass & AstInterface & AstTrait;
 
 		if (isAnonymous) {
-			return;
+			return false;
 		}
 
 		const {
@@ -142,7 +144,7 @@ class BraceStyle {
 		*/
 		const data = findAhead(sourceLines, loc, '{');
 		if (data === false) {
-			return;
+			return false;
 		}
 
 		const {
@@ -156,7 +158,7 @@ class BraceStyle {
 		const shouldPsrBrace = braceStyle === 'psr' && sameLine;
 
 		if (!shouldTrueBrace && !shouldPsrBrace) {
-			return;
+			return false;
 		}
 
 		const position = {
@@ -204,6 +206,8 @@ class BraceStyle {
 		// Check closing brace position, it should be on a separate line
 		// for both 1tbs and psr
 		this.reportAndFixClosingBrace(node, false);
+
+		return true;
 	}
 
 	/**
@@ -308,7 +312,6 @@ class BraceStyle {
 	 * @param  {Loc}     bodyLoc Optional body location
 	 * @return {boolean}         True if the brace was reported, false otherwise
 	 */
-	/* eslint max-lines-per-function: ["warn", 110] */
 	reportAndFixOpeningBrace(bodyLoc?: Loc): boolean {
 		const { sourceLines, report } = this.context;
 		const { body, loc: nodeLoc } = this.node as AstIf | AstWhile | AstSwitch | AstForeach;
@@ -421,7 +424,7 @@ class BraceStyle {
 	 * @param {AllAstTypes}         node      The node to check
 	 * @param {false | AllAstTypes} alternate The alternate node to check
 	 */
-	reportAndFixClosingBrace(node: AllAstTypes, alternate: false | AstIf | AstCatch | AstBlock) {
+	reportAndFixClosingBrace(node: AllAstTypes, alternate: false | AstIf | AstCatch | AstBlock): boolean {
 		const { sourceLines, report, sourceCode } = this.context;
 		const {
 			end: {
@@ -438,12 +441,17 @@ class BraceStyle {
 		// If not closing brace, then it is a possible
 		// a single line if, foreach, for, while ... etc
 		if (closingBracePosition === false || closingBracePosition.groups === undefined) {
-			return;
+			return false;
 		}
 
 		const { brace, semiColon } = closingBracePosition.groups;
+
+		/* brace is always defined since it is not optional in the regex
+		* but we need to check for it since the `groups` are 
+		* optional in the type definition */
+		/* c8 ignore next 3 */
 		if (brace === undefined) {
-			return;
+			return false;
 		}
 
 		// If not alternate node, check that the line only contains a }
@@ -467,11 +475,11 @@ class BraceStyle {
 				},
 			});
 
-			return;
+			return true;
 		}
 
 		if (alternate === false) {
-			return;
+			return false;
 		}
 
 		// Handle alternate node (like elseif, else)
@@ -479,7 +487,7 @@ class BraceStyle {
 
 		const alternateStartLine = location.start.line;
 		if (endLine === alternateStartLine) {
-			return;
+			return false;
 		}
 
 		const alternateBracePosition = findAhead(
@@ -489,7 +497,7 @@ class BraceStyle {
 		);
 
 		if (alternateBracePosition === false) {
-			return;
+			return false;
 		}
 
 		const position = {
@@ -524,6 +532,8 @@ class BraceStyle {
 				return fixer.replaceRange(position, text);
 			},
 		});
+
+		return true;
 	}
 
 	/**
