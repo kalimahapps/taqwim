@@ -820,6 +820,7 @@ type AllAstTypes =
 	AstUnset |
 	AstCase |
 	AstUseGroup |
+	AstUseItem |
 	AstNamespace |
 	AstProperty |
 	AstPropertyStatement |
@@ -859,6 +860,7 @@ export type {
 	AstComment,
 	AstIdentifier,
 	AstUseGroup,
+	AstUseItem,
 	AstInterface,
 	AstSwitch,
 	AstWhile,
