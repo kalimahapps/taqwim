@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { expect, describe, test } from 'vitest';
 import { spacingPair } from '@taqwim/rules';
 
@@ -113,5 +114,26 @@ describe('Test edge cases and branching', () => {
 		expect(
 			classInit.getEntries()
 		).toEqual([]);
+	});
+
+	test('Test reportMultiLeadingSpace', () => {
+		const node = {
+			loc: searchRange,
+		};
+
+		expect(
+			classInit.reportMultiLeadingSpace(node, 1)
+		).toBe(false);
+
+		const node2 = {
+			key: {
+				loc: searchRange,
+			},
+			loc: searchRange,
+		};
+
+		expect(
+			classInit.reportMultiLeadingSpace(node2, 5)
+		).toBe(false);
 	});
 });
