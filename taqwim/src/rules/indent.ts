@@ -250,15 +250,13 @@ class Indent {
 			startLine = commentStartLine;
 		}
 
-		let endLine = list.at(-1)?.loc.end.line;
+		// List is already checked for length above
+		// so we can safely use -1
+		let endLine = list.at(-1)?.loc.end.line as number;
 
 		// Apply comment end line if it exists
 		if (commentEndLine !== -1) {
 			endLine = commentEndLine;
-		}
-
-		if (endLine === undefined) {
-			endLine = startLine;
 		}
 
 		return this.checkAgainstParentLines(startLine, endLine, parent);
@@ -305,11 +303,6 @@ class Indent {
 	 * @param {boolean} ignore    Reset the indent to 0
 	 */
 	removeLineIndent(startLine: number, endLine: number, ignore = false) {
-		// If lines are not defined, don't proceed
-		// if (startLine === undefined || endLine === undefined) {
-		// 	return;
-		// }
-
 		const { options, node, payload } = this.context;
 		const { length: indentLength } = options;
 		const { kind } = node;
@@ -348,8 +341,10 @@ class Indent {
 	 * Route('/foo', name: 'foo'),
 	 * Route('/bar', name: 'bar'),
 	 * ]
+	 * 
+	 * @return {boolean} False if not processed, true otherwise
 	 */
-	attrGroupCallback() {
+	attrGroupCallback(): boolean {
 		const { sourceLines } = this.context;
 		const { attrs } = this.node as AstAttributeGroup;
 
@@ -362,7 +357,7 @@ class Indent {
 
 		const processAttributes = this.handleArguments(attrs, nodeLike as AstIdentifier, 'attrGroup');
 		if (processAttributes === false) {
-			return;
+			return false;
 		}
 
 		const { endLine } = processAttributes;
@@ -372,6 +367,8 @@ class Indent {
 		if (/^\)\s*\]/u.test(endLineContent)) {
 			this.removeLineIndent(endLine, endLine);
 		}
+
+		return true;
 	}
 
 	/**
@@ -512,13 +509,15 @@ class Indent {
 
 	/**
 	 * If callback. Alternate refers to the else statement
+	 *
+	 * @return {boolean} False of body children are not defined, true otherwise
 	 */
-	ifCallback() {
+	ifCallback(): boolean {
 		const { body, alternate } = this.node as AstIf;
 
 		// Single line if statement (without braces)
 		if (body.children === undefined) {
-			return;
+			return false;
 		}
 
 		const { startLine, endLine } = this.getBlockLines(body.children, body);
@@ -535,6 +534,8 @@ class Indent {
 
 			this.addLineIndent(alternateStartLine, alternateEndLine);
 		}
+
+		return true;
 	}
 
 	/**
@@ -581,26 +582,28 @@ class Indent {
 
 	/**
 	 * Handle binary expressions (if, else if, else)
+	 *
+	 * @return {boolean} False no indent was added, true otherwise
 	 */
-	binCallback() {
+	binCallback(): boolean {
 		const { left, right, traverse } = this.node as AstBin;
 		const parent = traverse.parent();
 
 		// .parent method returns false if there is no parent
 		// and an object if there is a parent
 		if (parent === false) {
-			return;
+			return false;
 		}
 
 		const parentsAllowed = ['if', 'elseif', 'else'];
 		if (!parentsAllowed.includes(parent.kind)) {
-			return;
+			return false;
 		}
 
 		let { startLine, endLine } = this.getBlockLines([left, right]);
 		const parentStartLine = parent.loc.start.line;
 		if (startLine === endLine) {
-			return;
+			return false;
 		}
 
 		if (startLine === parentStartLine) {
@@ -608,6 +611,8 @@ class Indent {
 		}
 
 		this.addLineIndent(startLine, endLine);
+
+		return true;
 	}
 
 	/**
@@ -665,27 +670,26 @@ class Indent {
 	/**
 	 * Handle property lookup, nullsafe property lookup, method call
 	 * e.g. $this->property, $this?->property, $this->method()
+	 *
+	 * @return {boolean} False if no indent was added, true otherwise
 	 */
-	expressionStatementCallback() {
+	expressionStatementCallback(): boolean {
 		const { traverse } = this.node;
 
 		// Look for offset nodes that are part of a nullsafe property lookup
 		// or a property lookup
 		const offsetNodes = traverse.findByNodeName(['offset']);
 		if (offsetNodes.length === 0) {
-			return;
+			return false;
 		}
 
-		const firstOffsetNode = offsetNodes.at(-1);
-		const lastOffsetNode = offsetNodes.at(0);
-
-		if (firstOffsetNode === undefined || lastOffsetNode === undefined) {
-			return;
-		}
+		// Assert at since we already checked for length above
+		const firstOffsetNode = offsetNodes.at(-1) as AstLookup;
+		const lastOffsetNode = offsetNodes.at(0) as AstLookup;
 
 		const objectReference = firstOffsetNode.traverse.siblings('what');
 		if (objectReference.length === 0) {
-			return;
+			return false;
 		}
 
 		// Check if the object reference is on the same line as the first offset node
@@ -695,20 +699,24 @@ class Indent {
 		}
 
 		this.addLineIndent(firstLine, lastOffsetNode.loc.end.line);
+
+		return true;
 	}
 
 	/**
 	 * Handle a function call e.g. callFunction($a, $b)
+	 *
+	 * @return {boolean} False if no indent was added, true otherwise
 	 */
-	callChildrenCallback() {
+	callChildrenCallback(): boolean {
 		const { arguments: parameters, traverse, what } = this.node as AstCall;
 		if (what === undefined || parameters === undefined || parameters?.length === 0) {
-			return;
+			return false;
 		}
 
 		const processArguments = this.handleArguments(parameters, what as AstIdentifier, 'callChildren');
 		if (processArguments === false) {
-			return;
+			return false;
 		}
 
 		const {
@@ -721,6 +729,8 @@ class Indent {
 		if (hasAssignParent !== false) {
 			this.removeLineIndent(parameterStartLine, parameterEndLine);
 		}
+
+		return true;
 	}
 
 	/**
@@ -888,14 +898,15 @@ class Indent {
 	/**
 	 * Post process the rule
 	 *
-	 * @param {RuleContext} context The rule context
+	 * @param  {RuleContext} context The rule context
+	 * @return {boolean}             True if post processing is complete, false otherwise
 	 */
-	post(context: RulePostContext) {
+	post(context: RulePostContext): boolean {
 		const { report, payload, ast, config } = context;
 		const { debug } = config;
 		const { source } = ast.loc;
 		if (source === undefined) {
-			return;
+			return false;
 		}
 		const sourceLines = source.split(/\r?\n/u);
 
@@ -975,6 +986,8 @@ class Indent {
 				},
 			});
 		});
+
+		return true;
 	}
 }
 
