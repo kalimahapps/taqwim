@@ -6,7 +6,13 @@ import {
 	skipRegex
 } from '@taqwim/utils/index';
 import { walk } from '@taqwim/walker';
-import type { AstAttributeGroup, AstComment, AstNode, Loc } from '@taqwim/types';
+import type {
+	AstAttribute,
+	AstAttributeGroup,
+	AstComment,
+	AstNode,
+	Loc
+} from '@taqwim/types';
 
 class Traverse {
 	/**
@@ -71,22 +77,23 @@ class Traverse {
 	 * to the end of the last token
 	 * - source is incorrect
 	 *
-	 * @param {AstNode} node The node to update
+	 * @param  {AstNode} node The node to update
+	 * @return {boolean}      True if updated, false otherwise
 	 */
-	updateAttrGroup(node: AstNode) {
+	updateAttrGroup(node: AstNode): boolean {
 		const { attrs } = node as AstAttributeGroup;
 
 		// Attrs are always defined but due to 
 		// typing inaccuracy, we need to check
-		if (!attrs) {
-			return;
+		if (!attrs || attrs.length === 0) {
+			// return false for testing purposes
+			return false;
 		}
 
 		// Get last attribute to get the end location
-		const lastAttribute = attrs.at(-1);
-		if (lastAttribute === undefined) {
-			return;
-		}
+		// Assert that it is defined, because we already
+		// checked that attrs is not empty
+		const lastAttribute = attrs.at(-1) as AstAttribute;
 
 		const {
 			loc: {
@@ -119,11 +126,14 @@ class Traverse {
 		);
 
 		if (groupEnd === false) {
-			return;
+			return false;
 		}
 
 		node.loc.end = groupEnd.end;
 		node.loc.source = this.sourceCode.slice(node.loc.start.offset, groupEnd.end.offset);
+
+		// return true for testing purposes
+		return true;
 	}
 
 	/**
@@ -132,9 +142,10 @@ class Traverse {
 	 * point to the same location (end location)
 	 * - source is incorrect
 	 *
-	 * @param {AstNode} attribute The attribute to update
+	 * @param  {AstNode} attribute The attribute to update
+	 * @return {boolean}           True if updated, false otherwise
 	 */
-	updateAttr(attribute: AstNode) {
+	updateAttr(attribute: AstNode): boolean {
 		const {
 			loc: { end: attributeEnd },
 			name,
@@ -157,7 +168,7 @@ class Traverse {
 		);
 
 		if (namePosition === false) {
-			return;
+			return false;
 		}
 
 		const {
@@ -168,6 +179,8 @@ class Traverse {
 
 		attribute.loc.start = namePosition.start;
 		attribute.loc.source = this.sourceCode.slice(nameOffset, attributeEnd.offset);
+
+		return true;
 	}
 
 	/**
@@ -269,9 +282,10 @@ class Traverse {
 	 * Provide a fresh copy of the node with
 	 * traverse methods and updated line numbers
 	 *
-	 * @param {AstNode} ast Main node to walk
+	 * @param  {AstNode} ast Main node to walk
+	 * @return {boolean}     True if completed, false otherwise. This is for testing purposes
 	 */
-	updateAst(ast: AstNode) {
+	updateAst(ast: AstNode): boolean {
 		// Clear node list found in previous find
 		this.nodesList = [];
 
@@ -281,7 +295,7 @@ class Traverse {
 		// Update comments to have zero based line numbers
 		const { comments } = ast;
 		if (!comments) {
-			return;
+			return false;
 		}
 
 		this.ast.comments = comments.map((comment: AstComment) => {
@@ -295,6 +309,8 @@ class Traverse {
 
 			return clonedComment;
 		});
+
+		return true;
 	}
 
 	/**
@@ -361,7 +377,7 @@ class Traverse {
 	 * @param  {string}          direction The direction to get the sibling from
 	 * @return {AstNode|boolean}           The sibling node or false
 	 */
-	private getSibling(
+	getSibling(
 		node: AstNode, direction: 'next' | 'previous'
 	): AstNode | false {
 		const { path } = node;
@@ -372,6 +388,7 @@ class Traverse {
 		}
 
 		const isChildrenPath = currentPath.startsWith('children');
+
 		if (isChildrenPath === false) {
 			const parentPath = path.slice(0, -1);
 			const parent = this.getNodeFromPath(parentPath);
@@ -380,6 +397,7 @@ class Traverse {
 			const parentKeys = Object.keys(parent);
 			const [currentNodeName] = currentPath.split('|');
 			const currentNodeIndex = parentKeys.indexOf(currentNodeName);
+
 			if (currentNodeIndex === -1) {
 				return false;
 			}
@@ -533,6 +551,7 @@ class Traverse {
 
 			// If key has an index (e.g. children-0), get the array and the index
 			const [keyname, index] = key.split('-');
+
 			const keyArray = currentNode[keyname as keyof AstNode] as AstNode[];
 			currentNode = keyArray[Number.parseInt(index, 10)];
 		}
