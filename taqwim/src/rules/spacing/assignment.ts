@@ -15,7 +15,7 @@ import type {
 	AstFor,
 	AllAstTypes
 } from '@taqwim/types';
-import { findAheadRegex, findAheadRegexReverse, skipRegex } from '@taqwim/utils';
+import { findAheadRegex, skipRegex } from '@taqwim/utils';
 
 class AssignmentAlign {
 	/**
@@ -176,9 +176,10 @@ class AssignmentAlign {
 	/**
 	 * Report and fix space to the left of operator
 	 *
-	 * @param {AstNode} node Node to report
+	 * @param  {AstNode} node Node to report
+	 * @return {boolean}      false if there was no report
 	 */
-	reportAndFixLeadingSpace(node: AstNode) {
+	reportAndFixLeadingSpace(node: AstNode): boolean {
 		const { report } = this.context;
 
 		const assignNode = node.expression as AstAssign ?? node;
@@ -186,13 +187,13 @@ class AssignmentAlign {
 		const operatorPosition = this.getOperatorPosition(loc, operator);
 
 		if (operatorPosition === false || left.loc.end.line !== operatorPosition.start.line) {
-			return;
+			return false;
 		}
 
 		const { start: operatorStart } = operatorPosition;
 		const foundSpaces = operatorStart.column - left.loc.end.column;
 		if (foundSpaces === 1) {
-			return;
+			return false;
 		}
 
 		// Operator length accounts for any preceding marks (e.g. +,-,., etc)
@@ -208,15 +209,18 @@ class AssignmentAlign {
 				return fixer.replaceRange(position, ' ');
 			},
 		});
+
+		return true;
 	}
 
 	/**
 	 * Report and fix space to the left of operator for multi-line statements
 	 *
-	 * @param {AstNode} node           Node to report
-	 * @param {number}  expectedLength Expected length of the left side
+	 * @param  {AstNode} node           Node to report
+	 * @param  {number}  expectedLength Expected length of the left side
+	 * @return {boolean}                True if the report was made
 	 */
-	reportAndFixMultiLeadingSpace(node: AstNode, expectedLength: number) {
+	reportAndFixMultiLeadingSpace(node: AstNode, expectedLength: number): boolean {
 		const { report, sourceLines } = this.context;
 		const { left, operator } = node.expression as AstAssign;
 		const operatorPosition = this.getOperatorPosition(node.loc, operator);
@@ -225,7 +229,7 @@ class AssignmentAlign {
 		const leftLength = leftEnd.column - leftStart.column;
 
 		if (operatorPosition === false || leftLength === expectedLength) {
-			return;
+			return false;
 		}
 
 		// Operator length accounts for any preceding marks (e.g. +,-,., etc)
@@ -239,7 +243,7 @@ class AssignmentAlign {
 		const foundSpaces = start.column - leftEnd.column;
 
 		if (foundSpaces === requiredSpaces) {
-			return;
+			return false;
 		}
 
 		report({
@@ -267,6 +271,8 @@ class AssignmentAlign {
 				return fixer.replaceRange(replaceRange, name);
 			},
 		});
+
+		return true;
 	}
 
 	/**
