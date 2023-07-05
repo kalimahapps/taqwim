@@ -50,9 +50,11 @@ describe('Extension Test Suite', function () {
 	});
 
 	it('should get diagnostics', async function () {
+		await taqwim.loadConfig();
 		const uri = vscode.Uri.file(getFileFullPath('code/file.php'));
-		const document = await vscode.workspace.openTextDocument(uri);
-		diagnosticProvider.update(document);
+		await vscode.workspace.openTextDocument(uri);
+
+		// no need to call update, openTextDocument will trigger it
 		const diagnostics = vscode.languages.getDiagnostics(uri);
 
 		// Wait for diagnostics to be ready (otherwise the test will fail)
