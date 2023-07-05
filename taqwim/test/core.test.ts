@@ -8,7 +8,14 @@ import Taqwim from '@taqwim/index';
 import { findAhead, getBaseDirectory } from '@taqwim/utils';
 import { WithCallMapping } from '@taqwim/decorators';
 import Traverse from '@taqwim/traverse';
-import type { AstNode, LintOptions, Loc } from '@taqwim/types';
+import type {
+	AstNode,
+	LintOptions,
+	Loc,
+	RuleDataOptional,
+	TaqwimConfig
+} from '@taqwim/types';
+import ProcessRules from '@taqwim/process-rules';
 
 const testDirectory = fileURLToPath(new URL('.', import.meta.url));
 
@@ -100,6 +107,15 @@ test('Should throw source not found error', async () => {
 	expect(() => {
 		taqwim.lint(lintOptions);
 	}).toThrow('No source provided');
+});
+
+test('Should throw config not loaded error', () => {
+	const taqwim = new Taqwim();
+	const lintOptions = {} as LintOptions;
+
+	expect(() => {
+		taqwim.lint(lintOptions);
+	}).toThrow('Taqwim config not loaded');
 });
 
 test('Override rule options using a config file', async () => {
@@ -277,4 +293,15 @@ test('getBaseDirectory to throw an error if package.json is not found', () => {
 	expect(() => {
 		getBaseDirectory(path.join(testDirectory, '..', '..', '..'));
 	}).toThrow('Unable to find package.json.');
+});
+
+test('Test adding a rule without sufficing data', () => {
+	const processRules = new ProcessRules({} as TaqwimConfig, {} as LintOptions);
+
+	const ruleData = {
+		meta: {},
+	};
+	expect(
+		processRules.addRule(ruleData as RuleDataOptional)
+	).toBe(false);
 });

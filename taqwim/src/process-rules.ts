@@ -135,10 +135,11 @@ class ProcessRules {
 	/**
 	 * Add a rule to the list of rules
 	 *
-	 * @param {RuleDataOptional} ruleData The rule data
+	 * @param  {RuleDataOptional} ruleData The rule data
+	 * @return {boolean}                   True if the rule was added, false otherwise
 	 */
 	/*eslint complexity: ["warn", 10]*/
-	addRule(ruleData: RuleDataOptional) {
+	addRule(ruleData: RuleDataOptional): boolean {
 		const {
 			register,
 			process,
@@ -157,7 +158,7 @@ class ProcessRules {
 			register === undefined
 			|| !this.taqwimConfig?.presets?.includes(preset.toLowerCase())
 		) {
-			return;
+			return false;
 		}
 
 		const ruleName = `${preset}/${name}`;
@@ -166,7 +167,7 @@ class ProcessRules {
 		const { severity, ...remainingOptions } = options;
 
 		if (severity === 'off') {
-			return;
+			return false;
 		}
 
 		let classInstance;
@@ -186,6 +187,8 @@ class ProcessRules {
 			post: classInstance?.post ? classInstance.post.bind(classInstance) : post,
 		};
 		this.rules.push(newRuleData);
+
+		return true;
 	}
 
 	/**
