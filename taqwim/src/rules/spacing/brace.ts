@@ -5,7 +5,7 @@
  * - open brace has a space after if on the same line
  * - closing brace has a space after if on the same line
  */
-/* eslint complexity: ["warn", 9] */
+/* eslint complexity: ["warn", 10] */
 import { findAhead, findAheadRegex, findAheadRegexReverse } from '@taqwim/utils/index';
 import type {
 	AllAstTypes,
@@ -463,8 +463,10 @@ class BraceSpacing {
 
 		const { spaceBefore, brace } = openingBrace.groups;
 
-		// If not on the same line as the start of the node, ignore
-		if (brace.start.line !== nodeLoc.start.line) {
+		// Ignore If not on the same line as the start of the node,
+		// or if there are no other characters on the line
+		const braceLine = sourceLines[brace.start.line].trim();
+		if (brace.start.line !== nodeLoc.start.line || braceLine === '{') {
 			return;
 		}
 
