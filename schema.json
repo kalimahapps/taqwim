@@ -904,6 +904,45 @@
 						}
 					]
 				},
+				"taqwim/comptability": {
+					"description": "Ensure that implemented features are compatible with the set version of PHP",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"version": {
+									"type": "string",
+									"default": "8.0",
+									"description": "The version of PHP to check for compatibility",
+									"oneOf": [
+										{
+											"const": "8.0",
+											"type": "string",
+											"description": "PHP 8.0"
+										},
+										{
+											"const": "8.1",
+											"type": "string",
+											"description": "PHP 8.1"
+										},
+										{
+											"const": "8.2",
+											"type": "string",
+											"description": "PHP 8.2"
+										}
+									]
+								}
+							}
+						}
+					]
+				},
 				"taqwim/id-length": {
 					"description": "Ensure that identifiers are at within the length limit.",
 					"oneOf": [

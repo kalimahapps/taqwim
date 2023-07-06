@@ -1,0 +1,22 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "All statements are compatible",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Incompatible statements",
+			"expected": 16
+		}
+	},
+	"version": {
+		"version-correct-1": {
+			"description": "Incompatible statements with PHP 8.1",
+			"expected": 0
+		},
+		"version-correct-2": {
+			"description": "Incompatible statements with PHP 8.2",
+			"expected": 0
+		}
+	}
+}
