@@ -1,8 +1,9 @@
 /**
  * Ensure that docblocks asterisks are aligned
  */
+/* eslint complexity: ["warn", 7] */
 import type Fixer from '@taqwim/fixer';
-import { getOffsetFromLineAndColumn } from '@taqwim/utils/index.js';
+import { getOffsetFromLineAndColumn, getWhitespaceType } from '@taqwim/utils/';
 import type { RuleContext, RuleDataOptional } from '@taqwim/types';
 
 const process = (context: RuleContext) => {
@@ -31,6 +32,11 @@ const process = (context: RuleContext) => {
 
 	// Get whitespace from first line to apply to other lines
 	const firstLineWhitespace = sourceLines[commentLoc.start.line].match(/^\s*/u);
+	if (!firstLineWhitespace) {
+		return;
+	}
+
+	const firstLineWhitespaceType = getWhitespaceType(firstLineWhitespace);
 
 	// Remove first line
 	docblockLines.shift();
@@ -38,7 +44,17 @@ const process = (context: RuleContext) => {
 	// Loop through each line and compare position to first line
 	docblockLines.forEach((line: string, index: number) => {
 		const linePosition = line.indexOf('*');
-		if (linePosition === firstLineCol + 1) {
+		const indent = line.match(/^\s*/u);
+
+		const whitespaceType = getWhitespaceType(indent ?? ['']);
+
+		const isCorrectLength = linePosition === firstLineCol + 1;
+		const isSameType = whitespaceType === firstLineWhitespaceType;
+
+		// If first line has not space indent (which is returned as  whitespace by the function)
+		// and the line is correct length and the line is spaces
+		const isCorrectFormat = firstLineWhitespaceType === 'whitespace' && isCorrectLength && whitespaceType === 'spaces';
+		if ((isCorrectLength && isSameType) || isCorrectFormat) {
 			return;
 		}
 

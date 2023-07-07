@@ -2,7 +2,7 @@
  * Ensure that the indentation is consistent
  */
 /* eslint complexity: ["warn", 12],max-lines-per-function: ["warn", 110] */
-import { getOffsetFromLineAndColumn, getOptions } from '@taqwim/utils/index';
+import { getOffsetFromLineAndColumn, getOptions, getWhitespaceType } from '@taqwim/utils';
 import type Fixer from '@taqwim/fixer';
 import type {
 	Loc,
@@ -46,9 +46,6 @@ import type {
 import { WithCallMapping } from '@taqwim/decorators';
 
 type Argument = Omit<AstParameter, 'type' | 'value' | 'byref' | 'variadic' | 'readonly' | 'nullable' | 'attrGroups' | 'flags'>;
-type WhitespaceMap = {
-	[key: string]: boolean;
-};
 
 type BlockLines = {
 	startLine: number;
@@ -870,32 +867,6 @@ class Indent {
 	}
 
 	/**
-	 * Get the type of whitespace in the current indent
-	 *
-	 * @param  {RegExpMatchArray} currentIndent The current indent
-	 * @return {string}                         The type of whitespace
-	 */
-	getFoundWhitespaceType(currentIndent: RegExpMatchArray): string {
-		const findTabs = currentIndent[0].match(/\t+/u);
-		const findSpaces = currentIndent[0].match(/ +/u);
-
-		const hasTabs = (findTabs?.length ?? -1) > 0;
-		const hasSpaces = (findSpaces?.length ?? -1) > 0;
-
-		const map: WhitespaceMap = {
-			'mixed whitespace': hasTabs && hasSpaces,
-			'tabs': hasTabs,
-			'spaces': hasSpaces,
-		};
-
-		const foundType = Object.keys(map).find((key) => {
-			return map[key] === true;
-		});
-
-		return foundType ?? 'whitespace';
-	}
-
-	/**
 	 * Post process the rule
 	 *
 	 * @param  {RuleContext} context The rule context
@@ -953,7 +924,7 @@ class Indent {
 				return;
 			}
 
-			const foundType = this.getFoundWhitespaceType(currentIndent);
+			const foundType = getWhitespaceType(currentIndent);
 
 			// Use indentTypeMessage for comparison because it is plural
 			// like the foundType message
