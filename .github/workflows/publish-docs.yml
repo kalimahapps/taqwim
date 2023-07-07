@@ -2,7 +2,7 @@ name: Publish docs
 on:
   push:
     branches: ["main"]
-    paths: ["docs/**", "/taqwim/src/rules/**", "/taqwim/src/plugins/**"]
+    paths: ["docs/**", "taqwim/src/rules/**", "taqwim/src/plugins/**"]
 
 jobs:
   web-deploy:
