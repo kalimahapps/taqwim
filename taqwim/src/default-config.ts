@@ -1,5 +1,16 @@
-export default {
-	presets: ['taqwim', 'psr'],
+import { docblock } from '@taqwim/plugins/docblock';
+import type { TaqwimConfig } from '@taqwim/types';
+
+const config: TaqwimConfig = {
+	/**
+	 * List of presets to use.
+	 */
+	presets: ['taqwim', 'psr', 'docblock'],
+
+	/**
+	 * List of plugins to use.
+	 */
+	plugins: [...docblock],
 
 	/**
 	 * Whether to run the linter in debug mode.
@@ -19,3 +30,4 @@ export default {
 		'**/vendor/**',
 	],
 };
+export default config;

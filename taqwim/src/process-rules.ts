@@ -51,6 +51,7 @@ class ProcessRules {
 			return rule.toLowerCase();
 		});
 
+		// Load default rules
 		for (const rule of Object.values(rules as Record<string, () => RuleDataOptional>)) {
 			const ruleResult = rule();
 			const { name, meta } = ruleResult;
@@ -67,6 +68,25 @@ class ProcessRules {
 				this.addRule(ruleResult);
 			}
 		}
+
+		// Load custom rules from plugins
+		const { plugins } = this.taqwimConfig;
+		plugins.forEach((plugin) => {
+			const pluginRule = plugin();
+			const { name, meta } = pluginRule;
+			const { preset } = meta;
+
+			const ruleName = `${preset.toLowerCase()}/${name.toLowerCase()}`;
+
+			if (filterBy.length === 0) {
+				this.addRule(pluginRule);
+				return;
+			}
+
+			if (filterBy.includes(ruleName)) {
+				this.addRule(pluginRule);
+			}
+		});
 	}
 
 	/**

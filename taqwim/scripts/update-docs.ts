@@ -64,9 +64,12 @@ export class UpdateRulesDocumentation {
 
 	private rulesFiles: string[];
 
+	private rulesFolder: string;
+
 	private currentRule!: RuleDataOptional;
 
-	constructor(rulesFiles: string[]) {
+	constructor(rulesFolder: string, rulesFiles: string[]) {
+		this.rulesFolder = rulesFolder;
 		this.rulesFiles = rulesFiles;
 	}
 
@@ -91,7 +94,7 @@ export class UpdateRulesDocumentation {
 	 * @return {boolean|object}          Rule object or false if file does not exist
 	 */
 	async getRuleFile(ruleFile: string) {
-		const filePath = path.posix.join('.', 'src', 'rules', ruleFile);
+		const filePath = path.posix.join('.', 'src', this.rulesFolder, ruleFile);
 
 		if (!fse.existsSync(filePath)) {
 			return false;
@@ -154,8 +157,8 @@ export class UpdateRulesDocumentation {
 	 * @return {Promise|boolean}          Test data or false if no tests found
 	 */
 	async getTestsData(ruleName: string): Promise<GlobalTestData> {
-		// Find the test cases in the taqwim/tests/rules folder
-		const ruleTestDirectory = path.posix.join('test', 'rules', ruleName);
+		// Find the test cases in the taqwim/tests/folderName folder
+		const ruleTestDirectory = path.posix.join('test', this.rulesFolder, ruleName);
 
 		if (!fse.existsSync(ruleTestDirectory)) {
 			return {
@@ -442,12 +445,13 @@ export class UpdateRulesDocumentation {
 		return fse.outputFile(cliOptionsMarkdownFile, markdownOutput.join('\n\n'));
 	}
 
-	async start() {
+	async start(cleanDestination = false) {
 		progressBar.start(this.rulesFiles.length, 0);
 
 		// Clean docs/rules folder
-		await fse.emptyDir(path.posix.join(extensionDirectory, 'docs', 'rules'));
-
+		if (cleanDestination) {
+			await fse.emptyDir(path.posix.join(extensionDirectory, 'docs', 'rules'));
+		}
 		const presets: Presets = {};
 
 		await this.rulesFiles.reduce(async (previousPromise: Promise<any>, ruleFile: string) => {

@@ -1,3 +1,5 @@
+import type { RuleDataOptional } from '@taqwim/types';
+
 type SingleRuleConfig = {
 	[key: string]: string | number | boolean | Record<string, SingleRuleConfig>;
 };
@@ -15,6 +17,11 @@ type TaqwimConfig = {
 	 * List of presets to use
 	 */
 	presets: string[];
+
+	/**
+	 * List of plugins to use
+	 */
+	plugins: (() => RuleDataOptional)[];
 
 	/**
 	 * Number of times to run the linter

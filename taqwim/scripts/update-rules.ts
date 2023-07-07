@@ -32,15 +32,15 @@ const progressBarSchema = new cliProgress.SingleBar({
 	hideCursor: true,
 });
 
-const getRulesFiles = () => {
-	return globbySync('**/*', {
+const getRulesFiles = (cwd = './src/rules') => {
+	return globbySync('**/*.ts', {
 		expandDirectories: {
 			extensions: ['ts'],
 		},
 		absolute: false,
 		gitignore: true,
 		ignore: ['**/index.ts'],
-		cwd: './src/rules',
+		cwd,
 	});
 };
 
@@ -68,7 +68,11 @@ const getRulesExports = () => {
  */
 const updateRuleSchema = async () => {
 	// import all rules
-	const rulesFiles = getRulesFiles();
+	const builtInRules = getRulesFiles();
+	const pluginRules = getRulesFiles('./src/plugins');
+	const rulesFiles = [...builtInRules, ...pluginRules];
+
+	// const rulesFiles = getRulesFiles();
 	const rulesList: Record<string, unknown> = {};
 
 	progressBarSchema.start(rulesFiles.length, 0);
@@ -147,5 +151,8 @@ fs.writeFileSync('./src/rules/index.ts', `${exports.join('\n')}`);
 progressBar.stop();
 updateRuleSchema();
 
-const updateDocs = new UpdateRulesDocumentation(getRulesFiles());
-updateDocs.start();
+const updateBuiltinRulesDocs = new UpdateRulesDocumentation('rules', getRulesFiles());
+await updateBuiltinRulesDocs.start(true);
+
+const updatePluginRulesDocs = new UpdateRulesDocumentation('plugins', getRulesFiles('./src/plugins'));
+await updatePluginRulesDocs.start();
