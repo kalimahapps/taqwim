@@ -53,8 +53,8 @@ const process = (context: RuleContext): boolean => {
 		const range = {
 			start: {
 				line: lineIndex,
-				column: lineLength - 5,
-				offset: getOffsetFromLineAndColumn(sourceLines, lineIndex, lineLength - 5),
+				column: maxLength,
+				offset: getOffsetFromLineAndColumn(sourceLines, lineIndex, maxLength),
 			},
 			end: {
 				line: lineIndex,
