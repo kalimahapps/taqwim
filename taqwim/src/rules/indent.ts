@@ -1,7 +1,7 @@
 /**
  * Ensure that the indentation is consistent
  */
-/* eslint complexity: ["warn", 11] */
+/* eslint complexity: ["warn", 12],max-lines-per-function: ["warn", 110] */
 import { getOffsetFromLineAndColumn, getOptions } from '@taqwim/utils/index';
 import type Fixer from '@taqwim/fixer';
 import type {
@@ -947,11 +947,27 @@ class Indent {
 			}
 
 			const currentIndentLength = currentIndent?.[0].length ?? 0;
-			if (currentIndentLength === newIndent) {
+
+			// First check if the indent is zero and the expected indent is zero
+			if (currentIndentLength === newIndent && newIndent === 0) {
 				return;
 			}
 
 			const foundType = this.getFoundWhitespaceType(currentIndent);
+
+			// Use indentTypeMessage for comparison because it is plural
+			// like the foundType message
+			const indentTypeMessage = indentType === 'space' ? 'spaces' : 'tabs';
+
+			/*
+			* Check for length and type. The reason being is a user might set
+			* the indent length to 1 space and the code is indented with 1 tab.
+			* In this case, the indent length is correct, but the type is not.
+			*/
+			if (currentIndentLength === newIndent && foundType === indentTypeMessage) {
+				return;
+			}
+
 			const range: Loc = {
 				start: {
 					line: index,
@@ -968,8 +984,6 @@ class Indent {
 					),
 				},
 			};
-
-			const indentTypeMessage = indentType === 'space' ? 'spaces' : 'tabs';
 
 			let message = `Expected ${newIndent} ${indentTypeMessage}. found ${currentIndentLength} ${foundType}`;
 			if (debug) {

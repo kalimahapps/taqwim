@@ -49,6 +49,10 @@
 		"type-correct-1": {
 			"description": "A PHP file indented with tabs",
 			"expected": 0
+		},
+		"type-incorrect-1": {
+			"description": "A PHP file indented with tabs",
+			"expected": 35
 		}
 	}
 }
