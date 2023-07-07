@@ -1,4 +1,5 @@
 <?php
+/* taqwim-disable docblock/required */
 /* taqwim "psr/indent" :{type: "tabs", length: 1 } */
 class Base
 {

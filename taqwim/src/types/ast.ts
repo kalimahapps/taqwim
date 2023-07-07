@@ -230,7 +230,7 @@ interface AstReturnIf extends AstExpression {
  * Defines a constant
  */
 interface AstConstant extends AstNodeBase {
-	name: string;
+	name: AstIdentifier;
 	value: Node | string | number | boolean | null;
 }
 
@@ -263,7 +263,7 @@ interface AstNamespace extends AstBlock {
  * Defines a class property
  */
 interface AstProperty extends AstStatement {
-	name: string;
+	name: AstIdentifier;
 	value: Node | null;
 	readonly: boolean;
 	nullable: boolean;

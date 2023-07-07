@@ -1,6 +1,10 @@
 import { docblock } from '@taqwim/plugins/docblock';
 import type { TaqwimConfig } from '@taqwim/types';
 
+// Some testing cases make docblock undefined
+// so we make sure the docblock is always an array
+const docblockArray = docblock ?? [];
+
 const config: TaqwimConfig = {
 	/**
 	 * List of presets to use.
@@ -10,7 +14,7 @@ const config: TaqwimConfig = {
 	/**
 	 * List of plugins to use.
 	 */
-	plugins: [...docblock],
+	plugins: [...docblockArray],
 
 	/**
 	 * Whether to run the linter in debug mode.

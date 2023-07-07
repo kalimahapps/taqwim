@@ -1,0 +1,26 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Class, interface, trait, properties and methods with docblock",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Constant variables and functions with docblock",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Control structures without docblock",
+			"expected": 6
+		}
+	},
+	"exclude": {
+		"exclude-correct-1": {
+			"description": "Exclude properties and methods from rule",
+			"expected": 0
+		},
+		"exclude-correct-2": {
+			"description": "Exclude constants and functions from rule",
+			"expected": 0
+		}
+	}
+}
