@@ -985,7 +985,7 @@ class Indent {
 				},
 			};
 
-			let message = `Expected ${newIndent} ${indentTypeMessage}. found ${currentIndentLength} ${foundType}`;
+			let message = `Expected ${newIndent} ${indentTypeMessage}. Found ${currentIndentLength} ${foundType}`;
 			if (debug) {
 				message += ` - (${kind.join(' → ')})`;
 			}
