@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Docblock with aligned indent",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Docblock with non-aligned indent",
+			"expected": 4
+		}
+	}
+}

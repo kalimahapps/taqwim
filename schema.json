@@ -904,7 +904,7 @@
 						}
 					]
 				},
-				"taqwim/comptability": {
+				"taqwim/compatibility": {
 					"description": "Ensure that implemented features are compatible with the set version of PHP",
 					"oneOf": [
 						{
