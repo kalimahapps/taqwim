@@ -56,7 +56,7 @@ export class WorkspaceListener implements Disposable {
 					return;
 				}
 
-				this.onUpdate(event.document);
+				this.onUpdateDebounce(event.document);
 			}),
 
 			workspace.onDidSaveTextDocument((event) => {
@@ -112,6 +112,25 @@ export class WorkspaceListener implements Disposable {
 			const checkAgainst = posixPath(document_.uri.fsPath);
 			return mainDocument !== checkAgainst;
 		});
+	}
+
+	/**
+	 * Call onUpdate after a delay.
+	 * if Copilot is enabled, it causes a lot of updates to
+	 * the document, so we need to debounce
+	 *
+	 * @param  {TextDocument} document The affected document.
+	 * @return {Function}              Arrow function that calls onUpdate
+	 */
+	onUpdateDebounce(document: TextDocument): () => void {
+		let debounceTimer: string | number | NodeJS.Timeout;
+		return () => {
+			clearTimeout(debounceTimer);
+			debounceTimer
+				= setTimeout(() => {
+					return this.onUpdate(document);
+				}, 3000);
+		};
 	}
 
 	/**
