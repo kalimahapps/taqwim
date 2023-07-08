@@ -1,7 +1,6 @@
 <?php
 $foo = array(
-	'apple' => array(
-		'green' => 'green apple',
+	'apple' => array('green' => 'green apple',
 		'red' => 'red apple',
 	),
 	'orange' => array(
@@ -10,11 +9,10 @@ $foo = array(
 		'outher' => array(
 			'yellow' => 'yellow orange',
 			'green' => 'green orange',
-		)  ,
+		),
 		'more' => array('test')
 	),
-	'banana' => array(
-		'yellow' => 'yellow banana',
+	'banana' => array('yellow' => 'yellow banana',
 		'green' => implode(',', $this->getData()),
 	),
 	'plum' => array(

@@ -38,7 +38,7 @@
 		},
 		"incorrect-5": {
 			"description": "Multidimensional array with incorrect parentheses spacing",
-			"expected": 10
+			"expected": 12
 		}
 	}
 }

@@ -73,7 +73,7 @@ class ParenSpacing {
 	 * $this->callMethod( $param, array ("this", "methid") );
 	 * public function getFoo(#[FooClassAttrib(28  ) ] $a ): string
 	 */
-	canBeNested = ['if', 'call', 'function', 'method'];
+	canBeNested = ['array', 'if', 'call', 'function', 'method'];
 
 	/**
 	 * Helper method to report and fix paren spacing
@@ -300,10 +300,15 @@ class ParenSpacing {
 			};
 		}
 
+		const regex = ['\\((?<space>\\s+)\\)'];
+		if (this.canBeNested.includes(kind)) {
+			regex.push('(?!.*\\).*$)');
+		}
+
 		const findParens = findAheadRegex(
 			sourceLines,
 			searchRange,
-			/\((?<space>\s+)\)/u
+			new RegExp(regex.join(''), 'um')
 		);
 
 		if (findParens === false || findParens.groups === undefined) {
