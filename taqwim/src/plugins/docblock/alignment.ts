@@ -14,80 +14,78 @@ const process = (context: RuleContext) => {
 		return;
 	}
 
-	const docblock = leadingComments?.[0];
+	leadingComments.forEach((docblock) => {
+		const { loc: commentLoc, value: docblockString } = docblock;
 
-	if (!docblock) {
-		return;
-	}
-
-	const { loc: commentLoc, value: docblockString } = docblock;
-
-	// Make sure it is a docblock
-	if (!docblockString.startsWith('/**')) {
-		return;
-	}
-
-	const docblockLines = docblockString.split(/\r?\n/u);
-	const firstLineCol = commentLoc.start.column;
-
-	// Get whitespace from first line to apply to other lines
-	const firstLineWhitespace = sourceLines[commentLoc.start.line].match(/^\s*/u);
-	if (!firstLineWhitespace) {
-		return;
-	}
-
-	const firstLineWhitespaceType = getWhitespaceType(firstLineWhitespace);
-
-	// Remove first line
-	docblockLines.shift();
-
-	// Loop through each line and compare position to first line
-	docblockLines.forEach((line: string, index: number) => {
-		const linePosition = line.indexOf('*');
-		const indent = line.match(/^\s*/u);
-
-		const whitespaceType = getWhitespaceType(indent ?? ['']);
-
-		const isCorrectLength = linePosition === firstLineCol + 1;
-		const isSameType = whitespaceType === firstLineWhitespaceType;
-
-		// If first line has not space indent (which is returned as  whitespace by the function)
-		// and the line is correct length and the line is spaces
-		const isCorrectFormat = firstLineWhitespaceType === 'whitespace' && isCorrectLength && whitespaceType === 'spaces';
-		if ((isCorrectLength && isSameType) || isCorrectFormat) {
+		// Make sure it is a docblock
+		if (!docblockString.startsWith('/**')) {
 			return;
 		}
 
-		const lineIndex = index + 1;
+		const docblockLines = docblockString.split(/\r?\n/u);
 
-		const position = {
-			start: {
-				line: commentLoc.start.line + lineIndex,
-				column: linePosition,
-				offset: getOffsetFromLineAndColumn(
-					sourceLines,
-					commentLoc.start.line + lineIndex,
-					0
-				),
-			},
-			end: {
-				line: commentLoc.start.line + lineIndex,
-				column: linePosition + 1,
-				offset: getOffsetFromLineAndColumn(
-					sourceLines,
-					commentLoc.start.line + lineIndex,
-					linePosition
-				),
-			},
-		};
+		// Get whitespace from first line to apply to other lines
+		const firstLineWhitespace = sourceLines[commentLoc.start.line].match(/^\s*/u);
 
-		report({
-			message: 'Docblock asterisk is not aligned',
-			position,
-			fix: (fixer: Fixer) => {
-				const space = firstLineWhitespace?.[0] ?? '';
-				return fixer.replaceRange(position, `${space} `);
-			},
+		if (!firstLineWhitespace) {
+			return;
+		}
+
+		const firstLineWhitespaceType = getWhitespaceType(firstLineWhitespace);
+
+		let indent = '';
+		const indentLength = firstLineWhitespace.length;
+
+		if (firstLineWhitespaceType === 'tabs') {
+			indent = `\t{${indentLength}}`;
+		} else if (firstLineWhitespaceType === 'spaces') {
+			indent = ` {${indentLength}}`;
+		}
+
+		// Remove first line
+		docblockLines.shift();
+
+		// Loop through each line and compare position to first line
+		docblockLines.forEach((line: string, index: number) => {
+			const linePosition = line.indexOf('*');
+
+			const regex = new RegExp(`^${indent} \\*`, 'u');
+			const lineIndent = line.match(regex);
+			if (lineIndent) {
+				return;
+			}
+
+			const lineIndex = index + 1;
+
+			const position = {
+				start: {
+					line: commentLoc.start.line + lineIndex,
+					column: linePosition,
+					offset: getOffsetFromLineAndColumn(
+						sourceLines,
+						commentLoc.start.line + lineIndex,
+						0
+					),
+				},
+				end: {
+					line: commentLoc.start.line + lineIndex,
+					column: linePosition + 1,
+					offset: getOffsetFromLineAndColumn(
+						sourceLines,
+						commentLoc.start.line + lineIndex,
+						linePosition
+					),
+				},
+			};
+
+			report({
+				message: 'Docblock asterisk is not aligned',
+				position,
+				fix: (fixer: Fixer) => {
+					const space = firstLineWhitespace?.[0] ?? '';
+					return fixer.replaceRange(position, `${space} `);
+				},
+			});
 		});
 	});
 };
