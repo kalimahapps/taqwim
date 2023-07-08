@@ -292,7 +292,11 @@ class BraceStyle {
 	 */
 	ifCallback() {
 		const { node } = this;
-		const { body, alternate } = node as AstIf;
+		const { body, alternate, shortForm } = node as AstIf;
+
+		if (shortForm === true) {
+			return;
+		}
 
 		// Only if (without elseif/else statements)
 		if (alternate === undefined || alternate === null) {

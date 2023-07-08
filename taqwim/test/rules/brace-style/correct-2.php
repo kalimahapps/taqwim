@@ -21,3 +21,7 @@ if (true){
 } else {
 	echo "one level data";
 }
+
+if ($event === true):
+	echo "even is {$event})";
+endif;
