@@ -302,19 +302,21 @@ class ParenSpacing {
 
 		const regex = ['\\((?<space>\\s+)\\)'];
 		if (this.canBeNested.includes(kind)) {
-			regex.push('(?!.*\\).*$)');
+			// Match the end of the line
+			// the semicolon is for call nodes because in AST it is 
+			// added to the source
+			regex.push('(;*)$');
 		}
 
 		const findParens = findAheadRegex(
 			sourceLines,
 			searchRange,
-			new RegExp(regex.join(''), 'um')
+			new RegExp(regex.join(''), 'ums')
 		);
 
 		if (findParens === false || findParens.groups === undefined) {
 			return false;
 		}
-
 		const { space } = findParens.groups;
 
 		/* space can not be undefined because it is
