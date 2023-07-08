@@ -49,3 +49,7 @@ if ((   1 + 2 ) *   3 ) {
 if (  isset(  $var  )  ){
     echo 'The result is 1';
 }
+
+if ( call_function( $id ) || ! in_array( call_another( $id ), array( 'first', 'second' ))) {
+	return false;
+}

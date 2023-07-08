@@ -336,27 +336,31 @@ class ParenSpacing {
 	 * Handle array nodes
 	 */
 	arrayCallback() {
-		const { loc, shortForm } = this.node as AstArray;
+		const { loc, shortForm, items } = this.node as AstArray;
 
 		// Short arrays don't have parentheses
 		if (shortForm === true) {
 			return;
 		}
+
+		// Get last item
+		const lastItem = items.at(-1);
+		if (lastItem === undefined) {
+			return;
+		}
+
 		const { end } = loc;
 		const {
 			line: endLine,
 			column: endColumn,
 			offset: endOffset,
-		} = end;
+		} = lastItem.loc.end;
 
 		const nodeLoc = {
-			// Search only the last line of the node
-			// This is to avoid unintended results when 
-			// there is a nested node.
 			start: {
 				line: endLine,
-				column: 0,
-				offset: endOffset - endColumn,
+				column: endColumn - 1,
+				offset: endOffset - 1,
 			},
 			end,
 		};

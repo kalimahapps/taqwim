@@ -19,6 +19,10 @@ if (
     // elseif body
 }
 
+if (call_function($id) || ! in_array(call_another($id), array('first', 'second'))) {
+	return false;
+}
+
 while ($expr) {
     // structure body
 }
