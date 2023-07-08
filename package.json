@@ -3,7 +3,7 @@
   "name": "taqwim",
   "displayName": "PHPTaqwim",
   "description": "PHP linter and formatter",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "homepage": "https://taqwim.kalimah-apps.com/",
   "repository": {
     "type": "git",
@@ -39,6 +39,12 @@
     "test": "node ./dist/src/test/run-tests.js",
     "vscode:prepublish": "npm run compile"
   },
+  "dependencies": {
+    "@vitest/coverage-v8": "^0.32.4",
+    "chalk": "^5.3.0",
+    "globby": "^13.2.2",
+    "vitest": "^0.32.4"
+  },
   "devDependencies": {
     "@kalimahapps/eslint-config": "^1.1.5",
     "@types/glob": "^8.1.0",
@@ -72,11 +78,5 @@
   "engines": {
     "vscode": "^1.79.1",
     "node": ">=18.0.0"
-  },
-  "dependencies": {
-    "@vitest/coverage-v8": "^0.32.4",
-    "chalk": "^5.3.0",
-    "globby": "^13.2.2",
-    "vitest": "^0.32.4"
   }
 }
