@@ -5,3 +5,4 @@ cache
 .vscode-test
 *.vsix
 docs/rules
+docs/cli-options.md

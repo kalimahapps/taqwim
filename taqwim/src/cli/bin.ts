@@ -190,6 +190,8 @@ class Main {
 			} else {
 				console.log(chalk.red('\n\n--------- An error has occurred ---------'));
 				console.log((error as Error).message);
+				console.log(chalk.red('\n--- Error Stack ---'));
+				console.log((error as Error).stack);
 			}
 		}
 	}
