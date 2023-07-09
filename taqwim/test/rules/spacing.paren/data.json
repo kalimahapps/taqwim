@@ -20,9 +20,13 @@
 			"description": "Multidimensional array with correct parentheses spacing",
 			"expected": 0
 		},
+		"correct-6": {
+			"description": "Arithmetic operations with correct parentheses spacing",
+			"expected": 0
+		},
 		"incorrect-1": {
 			"description": "If and switch statements with incorrect parentheses spacing",
-			"expected": 37
+			"expected": 40
 		},
 		"incorrect-2": {
 			"description": "Loop statements with incorrect parentheses spacing",
@@ -39,6 +43,10 @@
 		"incorrect-5": {
 			"description": "Multidimensional array with incorrect parentheses spacing",
 			"expected": 12
+		},
+		"incorrect-6": {
+			"description": "Arithmetic operations with incorrect parentheses spacing",
+			"expected": 17
 		}
 	}
 }

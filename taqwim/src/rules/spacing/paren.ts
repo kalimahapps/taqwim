@@ -54,10 +54,13 @@ class ParenSpacing {
 	};
 
 	/**
-	 * These characters should not have spaces before them
-	 * when they are preceded by a closing parenthesis
+	 * These characters should not have spaces before them when they
+	 * are preceded by a closing parenthesis.
+	 * `-` is a reference to the first char of the accessor operator `->`,
+	 * it is not to be confused with the subtraction operator which is
+	 * handled by the spacing.operator rule
 	 */
-	noSpaceChars = [';', ',', ':', ')'];
+	noSpaceChars = [';', ',', ':', ')', '-'];
 
 	/**
 	 * Keywords that should not have spaces after them
@@ -501,6 +504,7 @@ class ParenSpacing {
 
 		// Get parent to set the search range
 		const parent = traverse.parent();
+
 		if (parent === false) {
 			return false;
 		}
