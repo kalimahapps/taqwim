@@ -408,7 +408,7 @@ class Traverse {
 			if (direction === 'previous') {
 				// Find the first previous node that has loc property
 				// and is not a custom node
-				const previousNodeIndex = parentKeys.slice(0, currentNodeIndex).reverse()
+				const previousNodeKey = parentKeys.slice(0, currentNodeIndex).reverse()
 					.find((key) => {
 						if (customNodes.includes(key)) {
 							return false;
@@ -417,16 +417,16 @@ class Traverse {
 						return parent[key].loc !== undefined;
 					});
 
-				if (previousNodeIndex === undefined) {
+				if (previousNodeKey === undefined) {
 					return false;
 				}
 
-				return parent[previousNodeIndex];
+				return parent[previousNodeKey];
 			}
 
 			// Find the first next node that has loc property
 			// and is not a custom node
-			const nextNodeIndex = parentKeys.slice(currentNodeIndex)
+			const nextNodeKey = parentKeys.slice(currentNodeIndex + 1)
 				.find((key) => {
 					if (customNodes.includes(key)) {
 						return false;
@@ -435,11 +435,11 @@ class Traverse {
 					return parent[key].loc !== undefined;
 				});
 
-			if (nextNodeIndex === undefined) {
+			if (nextNodeKey === undefined) {
 				return false;
 			}
 
-			return parent[nextNodeIndex];
+			return parent[nextNodeKey];
 		}
 
 		// If is a child of a children array (e.g. children-0)
