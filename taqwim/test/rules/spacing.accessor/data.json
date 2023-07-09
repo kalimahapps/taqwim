@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Correct accessor spacing",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Incorrect accessor spacing",
+			"expected": 23
+		}
+	}
+}

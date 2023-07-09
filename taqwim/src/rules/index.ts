@@ -29,6 +29,7 @@ export { default as methodDefaultLast } from '@taqwim/rules/method/default-last.
 export { default as methodMaxDepth } from '@taqwim/rules/method/max-depth.js';
 export { default as methodMaxParameters } from '@taqwim/rules/method/max-parameters.js';
 export { default as methodVisibility } from '@taqwim/rules/method/visibility.js';
+export { default as spacingAccessor } from '@taqwim/rules/spacing/accessor.js';
 export { default as spacingAssignment } from '@taqwim/rules/spacing/assignment.js';
 export { default as spacingBrace } from '@taqwim/rules/spacing/brace.js';
 export { default as spacingOperators } from '@taqwim/rules/spacing/operators.js';

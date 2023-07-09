@@ -673,6 +673,23 @@
 						}
 					]
 				},
+				"psr/spacing.accessor": {
+					"description": "Ensure consistent accessor `->` spacing.",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
 				"psr/spacing.assignment": {
 					"description": "Ensure that assignment operator has consistent spacing",
 					"oneOf": [
