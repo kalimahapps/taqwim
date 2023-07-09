@@ -171,7 +171,7 @@ class TestFolder {
 					'\n\n\n',
 				].join('\n');
 
-				return expect(data.expected, message).toBe(reports.length);
+				return expect(reports.length, message).toBe(data.expected);
 			});
 		});
 
