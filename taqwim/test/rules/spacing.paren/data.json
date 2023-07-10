@@ -38,7 +38,7 @@
 		},
 		"incorrect-4": {
 			"description": "Classes, methods, functions and function calls with incorrect parentheses spacing",
-			"expected": 30
+			"expected": 39
 		},
 		"incorrect-5": {
 			"description": "Multidimensional array with incorrect parentheses spacing",

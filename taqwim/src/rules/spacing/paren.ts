@@ -385,6 +385,7 @@ class ParenSpacing {
 	 */
 	closureCallback(): boolean {
 		const { uses, loc: closureLoc } = this.node as AstClosure;
+
 		this.processOpenParen();
 		this.processClosingParen();
 
@@ -448,19 +449,29 @@ class ParenSpacing {
 	 * Handle call nodes
 	 */
 	callCallback() {
-		const { arguments: parameters, loc } = this.node as AstCall;
+		const { arguments: parameters, loc, what } = this.node as AstCall;
 
-		let openParenSearchRange: Loc = loc;
+		const { end: whatEnd } = what.loc;
+		const openParenSearchRange: Loc = {
+			start: {
+				line: whatEnd.line,
+				column: whatEnd.column - 1,
+				offset: whatEnd.offset - 1,
+			},
+			end: {
+				line: loc.start.line,
+				column: loc.start.column + 1,
+				offset: loc.start.offset + 1,
+			},
+		};
+
 		let closeParenSearchRange: Loc = loc;
 		if (parameters.length > 0) {
 			const { start } = parameters[0].loc;
-			openParenSearchRange = {
-				start: loc.start,
-				end: {
-					line: start.line,
-					column: start.column + 1,
-					offset: start.offset + 1,
-				},
+			openParenSearchRange.end = {
+				line: start.line,
+				column: start.column + 1,
+				offset: start.offset + 1,
 			};
 
 			const lastElement = parameters.at(-1);

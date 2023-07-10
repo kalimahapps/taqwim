@@ -43,3 +43,15 @@ callFunction  ( "HI", "HELLO"  );
 $this->goAhead  ("one", "two");
 
 callFunction(  );
+
+
+uses( )->beforeAll( function () {
+    // ...
+} )->beforeEach( function () {
+    // ...
+} )->afterEach(function  () {
+    // ...
+}) ->afterAll(
+    function () {
+    // ...
+});

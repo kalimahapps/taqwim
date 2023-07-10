@@ -48,3 +48,14 @@ $closureWithArgsVarsAndReturn = function($arg1, $arg2) use
 callFunction("HI", "HELLO");
 $this->goAhead("one", "two");
 $this->callFirst("one", "two")->callSecond("three", "four") ->callThird("five", "six");
+
+uses()->beforeAll(function() {
+    // ...
+})->beforeEach(function() {
+    // ...
+})->afterEach(function() {
+    // ...
+})->afterAll(
+    function() {
+    // ...
+});
