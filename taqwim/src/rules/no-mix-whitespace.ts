@@ -30,7 +30,7 @@ const process = (context: RuleContext): boolean => {
 		}
 
 		// Line is not a document block, check for mixed spaces and tabs
-		const hasMixSpace = line.match(/(?<tabsSpaces>\t+ +)|(?<spacesTabs> +\t+)/u);
+		const hasMixSpace = line.match(/^(?<tabsSpaces>\t+ +)|^(?<spacesTabs> +\t+)/u);
 		if (isDocumentBlock) {
 			return;
 		}
