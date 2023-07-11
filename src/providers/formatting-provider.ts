@@ -18,13 +18,13 @@ export class FormattingProvider implements
 		token: CancellationToken
 	): Promise<TextEdit[]> {
 		const edits: TextEdit[] = [];
+		const { cwd, filePath } = diagnosticProvider;
 
 		try {
 			await window.withProgress({
 				title: 'Formatting document ...',
 				location: ProgressLocation.Notification,
 			}, async (progress) => {
-				const { cwd, filePath } = diagnosticProvider;
 				const lintOptions: LintOptions = {
 					cwd,
 					fix: true,

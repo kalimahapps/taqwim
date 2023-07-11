@@ -121,13 +121,13 @@ export class DiagnosticProvider {
 			return;
 		}
 
-		const filePath = posixPath(document.uri.fsPath).replace(this.cwd, '');
+		this.filePath = posixPath(document.uri.fsPath).replace(this.cwd, '');
 
 		const lintOptions: LintOptions = {
 			cwd: this.cwd,
 			source: [
 				{
-					path: filePath,
+					path: this.filePath,
 					content: document.getText(),
 				},
 			],
@@ -245,11 +245,11 @@ export class DiagnosticProvider {
 	refreshDiagnostics = (): void => {
 		const { uri } = this.document;
 
-		// Clear diagnostics and actions
 		if (!this.diagnosticCollection) {
 			return;
 		}
 
+		// Clear diagnostics and actions
 		this.diagnosticCollection.clear();
 		this.documentCodeActions = [];
 
