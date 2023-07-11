@@ -58,7 +58,6 @@ class AccessorSpacing {
 			message,
 			position,
 			fix: (fixer: Fixer) => {
-				console.log('position', position);
 				return fixer.replaceRange(position, '');
 			},
 		});

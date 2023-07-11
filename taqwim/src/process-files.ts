@@ -540,9 +540,9 @@ class ProcessFiles {
 
 		source.forEach((sourceData) => {
 			const { path, content } = sourceData;
-			if (content) {
+
+			if (content && !path) {
 				this.parseFile({
-					path,
 					content,
 				});
 				return;

@@ -29,9 +29,6 @@ const config: TaqwimConfig = {
 	/**
 	 * List of files/directories to ignore.
 	 */
-	ignore: [
-		'**/node_modules/**',
-		'**/vendor/**',
-	],
+	ignore: ['**/vendor/**'],
 };
 export default config;

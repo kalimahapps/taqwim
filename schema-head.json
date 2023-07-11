@@ -28,7 +28,16 @@
 		"rules": {},
 		"presets": {
 			"type": "array",
-			"description": "A list of presets to be applied"
+			"description": "A list of presets to be applied",
+			"default": [
+				"taqwim",
+				"psr",
+				"docblock"
+			]
+		},
+		"plugins": {
+			"type": "array",
+			"description": "A list of plugins to be loaded"
 		},
 		"debug": {
 			"type": "boolean",
@@ -37,6 +46,13 @@
 		"runs": {
 			"type": "number",
 			"description": "The number of times to run PHPTaqwim"
+		},
+		"ignore": {
+			"type": "array",
+			"description": "A list of paths to ignore",
+			"default": [
+				"**/vendor/**"
+			]
 		}
 	}
 }
