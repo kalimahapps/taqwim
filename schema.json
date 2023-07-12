@@ -1148,9 +1148,7 @@
 											}
 										]
 									},
-									"default": [
-										""
-									]
+									"default": []
 								},
 								"include": {
 									"description": "Include extra function names to be checked",
@@ -1169,9 +1167,7 @@
 											}
 										}
 									},
-									"default": [
-										""
-									]
+									"default": []
 								}
 							}
 						}
@@ -1268,6 +1264,23 @@
 				},
 				"taqwim/no-mixed-spaces-and-tabs": {
 					"description": "Disallow mixing spaces and tabs for indentation",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/no-nested-ternary": {
+					"description": "Ensure that ternary statements are not nested",
 					"oneOf": [
 						{
 							"$ref": "#/definitions/severity"

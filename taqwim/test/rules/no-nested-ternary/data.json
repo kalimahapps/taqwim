@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Single level ternary statements",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Multi level ternary statements",
+			"expected": 6
+		}
+	}
+}

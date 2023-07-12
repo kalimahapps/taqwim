@@ -15,6 +15,7 @@ export { default as nameCase } from '@taqwim/rules/name-case.js';
 export { default as newClassParentheses } from '@taqwim/rules/new-class-parentheses.js';
 export { default as noContentAfterBrace } from '@taqwim/rules/no-content-after-brace.js';
 export { default as noMixWhitespace } from '@taqwim/rules/no-mix-whitespace.js';
+export { default as noNestedTernary } from '@taqwim/rules/no-nested-ternary.js';
 export { default as objectMembersLimit } from '@taqwim/rules/object-members-limit.js';
 export { default as oneDeclarationPerFile } from '@taqwim/rules/one-declaration-per-file.js';
 export { default as prefixUnderscore } from '@taqwim/rules/prefix-underscore.js';
