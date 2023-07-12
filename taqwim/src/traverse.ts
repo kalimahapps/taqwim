@@ -593,24 +593,28 @@ class Traverse {
 	 * Find the closest node of the given kind.
 	 * It will return the first node found traversing up the tree.
 	 *
-	 * @param  {AstNode}         node        The node to start from
-	 * @param  {string}          closestKind The kind of node to find
-	 * @return {AstNode|boolean}             The closest node or undefined
+	 * @param  {AstNode}       node        The node to start from
+	 * @param  {string}        closestKind The kind of node to find
+	 * @return {AstNode|false}             The closest node or false
 	 */
-	closest(node: AstNode, closestKind: string): AstNode | boolean {
+	closest(node: AstNode, closestKind: string): AstNode | false {
 		const { path } = node;
 
+		// remove the last path step, because it is the current node
+		// and we want to start from the parent
+		let newPath = path.slice(0, -1);
+
 		// Do initial check on path
-		const checkKind = findLastIndex(path, (pathStep: string) => {
+		const checkKind = findLastIndex(newPath, (pathStep: string) => {
 			return pathStep.endsWith(closestKind);
 		});
 
-		// If no match, return undefined
+		// If no match, return false
 		if (checkKind === -1) {
 			return false;
 		}
 
-		const newPath = path.slice(0, checkKind + 1);
+		newPath = newPath.slice(0, checkKind + 1);
 		return this.getNodeFromPath(newPath);
 	}
 
