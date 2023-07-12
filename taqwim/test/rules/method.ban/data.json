@@ -1,0 +1,24 @@
+{
+	"default": {
+		"incorrect-1": {
+			"description": "Debugging functions",
+			"expected": 21
+		},
+		"incorrect-2": {
+			"description": "Functions with potential security issues",
+			"expected": 6
+		}
+	},
+	"exclude": {
+		"exclude-correct-1": {
+			"description": "Excluded certain debugging functions",
+			"expected": 12
+		}
+	},
+	"include": {
+		"include-correct-1": {
+			"description": "Included custom functions",
+			"expected": 3
+		}
+	}
+}

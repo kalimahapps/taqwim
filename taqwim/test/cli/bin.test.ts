@@ -148,7 +148,7 @@ test('Show summary is working correctly', async () => {
 	await runCommand('-p', path, '--summary');
 
 	expect(consoleSpy).toHaveBeenCalledWith(
-		expect.stringContaining('Found 0 errors and 49 warnings')
+		expect.stringContaining('Found 0 errors and 50 warnings')
 	);
 });
 

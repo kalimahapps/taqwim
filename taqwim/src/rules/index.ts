@@ -23,6 +23,7 @@ export { default as propertyNoVar } from '@taqwim/rules/property-no-var.js';
 export { default as typeCheck } from '@taqwim/rules/type-check.js';
 export { default as arrayCommaDangle } from '@taqwim/rules/array/comma-dangle.js';
 export { default as arraySyntax } from '@taqwim/rules/array/syntax.js';
+export { default as methodBan } from '@taqwim/rules/method/ban.js';
 export { default as methodBreakParameters } from '@taqwim/rules/method/break-parameters.js';
 export { default as methodComplexity } from '@taqwim/rules/method/complexity.js';
 export { default as methodDefaultLast } from '@taqwim/rules/method/default-last.js';

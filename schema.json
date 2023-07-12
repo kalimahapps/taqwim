@@ -1076,6 +1076,107 @@
 						}
 					]
 				},
+				"taqwim/method.ban": {
+					"description": "Ensure that certain function are not called in the code",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"exclude": {
+									"description": "Exclude certain function names from being checked",
+									"type": "array",
+									"items": {
+										"uniqueItems": true,
+										"type": "string",
+										"oneOf": [
+											{
+												"type": "string",
+												"const": "error_log",
+												"description": "Exclude error_log"
+											},
+											{
+												"type": "string",
+												"const": "var_dump",
+												"description": "Exclude var_dump"
+											},
+											{
+												"type": "string",
+												"const": "var_export",
+												"description": "Exclude var_export"
+											},
+											{
+												"type": "string",
+												"const": "print_r",
+												"description": "Exclude print_r"
+											},
+											{
+												"type": "string",
+												"const": "trigger_error",
+												"description": "Exclude trigger_error"
+											},
+											{
+												"type": "string",
+												"const": "set_error_handler",
+												"description": "Exclude set_error_handler"
+											},
+											{
+												"type": "string",
+												"const": "debug_backtrace",
+												"description": "Exclude debug_backtrace"
+											},
+											{
+												"type": "string",
+												"const": "debug_print_backtrace",
+												"description": "Exclude debug_print_backtrace"
+											},
+											{
+												"type": "string",
+												"const": "error_reporting",
+												"description": "Exclude error_reporting"
+											},
+											{
+												"type": "string",
+												"const": "phpinfo",
+												"description": "Exclude phpinfo"
+											}
+										]
+									},
+									"default": [
+										""
+									]
+								},
+								"include": {
+									"description": "Include extra function names to be checked",
+									"type": "array",
+									"items": {
+										"uniqueItems": true,
+										"type": "object",
+										"properties": {
+											"name": {
+												"type": "string",
+												"description": "Function name"
+											},
+											"message": {
+												"type": "string",
+												"description": "Message to display when the function is called"
+											}
+										}
+									},
+									"default": [
+										""
+									]
+								}
+							}
+						}
+					]
+				},
 				"taqwim/method.break-parameters": {
 					"description": "Break parameters into multiple lines if the line exceeds the maximum length",
 					"oneOf": [

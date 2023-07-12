@@ -135,6 +135,7 @@ type RuleDefaultOptions = {
 		type: string;
 		enum?: string[];
 		oneOf?: RuleOneOfSchema[];
+		properties?: Record<string, RuleDefaultOptions>;
 	}
 };
 

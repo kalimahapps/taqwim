@@ -321,7 +321,7 @@ export class UpdateRulesDocumentation {
 		let ruleMarkdown = '';
 		ruleMarkdown += '## Options\n\n';
 
-		/* eslint complexity: ["warn", 8] */
+		/* eslint complexity: ["warn", 10] */
 		Object.keys(defaultOptions).forEach((optionName) => {
 			const option: RuleDefaultOptions = defaultOptions[optionName];
 
@@ -352,11 +352,13 @@ export class UpdateRulesDocumentation {
 				throw new Error(`Use oneOf instead of enum in \`items\` key inside \`${optionName}\` option in \`${ruleName}\` rule`);
 			}
 
-			if (option.items.oneOf === undefined) {
-				throw new Error(`Missing \`oneOf\` key inside \`items\` key inside \`${optionName}\` option in \`${ruleName}\` rule`);
+			if (option.items.oneOf === undefined && option.items.properties === undefined) {
+				throw new Error(`Add either \`oneOf\` or \`properties\` key inside \`items\` key inside \`${optionName}\` option in \`${ruleName}\` rule`);
 			}
 
-			ruleMarkdown += this.getOneOfMarkdown(option.items.oneOf);
+			if (option.items.oneOf !== undefined) {
+				ruleMarkdown += this.getOneOfMarkdown(option.items.oneOf);
+			}
 		});
 
 		ruleMarkdown += '\n';
