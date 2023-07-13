@@ -4,7 +4,7 @@
 import type Fixer from '@taqwim/fixer';
 import type { RuleContext, RuleDataOptional } from '@taqwim/types';
 
-import Parser from '@taqwim/docblock-parser';
+import Parser from '@kalimahapps/docblock-parser';
 
 const process = (context: RuleContext) => {
 	const { report, node } = context;

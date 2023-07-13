@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Function with docblock",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Docblocks with various errors",
+			"expected": 10
+		}
+	}
+}
