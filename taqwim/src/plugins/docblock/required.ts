@@ -245,20 +245,6 @@ class DocblockRequired {
 			return false;
 		}
 
-		// Find which callback to use
-		// const callback = Object.keys(this.callbacksMap).find((key) => {
-		// 	return this.callbacksMap[key].includes(kind);
-		// });
-
-		// if (callback === undefined) {
-		// 	throw new Error(`No callback found for ${kind}`);
-		// }
-
-		// const callbackFunction = this[callback as keyof this];
-		// if (typeof callbackFunction !== 'function') {
-		// 	throw new TypeError(`DocblockRequired class does not have a ${callback} method`);
-		// }
-
 		this.identifierName = name?.name;
 		this.kindName = kind;
 

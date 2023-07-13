@@ -1,0 +1,16 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Class and methods with short summary",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Functions with short summary",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Functions missing short summary",
+			"expected": 2
+		}
+	}
+}
