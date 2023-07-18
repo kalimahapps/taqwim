@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Bracket brackets with correct spacing",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Bracket brackets with incorrect spacing",
+			"expected": 58
+		}
+	}
+}

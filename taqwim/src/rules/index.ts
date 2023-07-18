@@ -34,6 +34,7 @@ export { default as methodVisibility } from '@taqwim/rules/method/visibility.js'
 export { default as spacingAccessor } from '@taqwim/rules/spacing/accessor.js';
 export { default as spacingAssignment } from '@taqwim/rules/spacing/assignment.js';
 export { default as spacingBrace } from '@taqwim/rules/spacing/brace.js';
+export { default as spacingBracket } from '@taqwim/rules/spacing/bracket.js';
 export { default as spacingOperators } from '@taqwim/rules/spacing/operators.js';
 export { default as spacingPair } from '@taqwim/rules/spacing/pair.js';
 export { default as spacingParen } from '@taqwim/rules/spacing/paren.js';

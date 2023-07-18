@@ -729,6 +729,23 @@
 						}
 					]
 				},
+				"psr/spacing.bracket": {
+					"description": "Ensure that `[` and `]` have consistent spacing",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
 				"psr/spacing.operators": {
 					"description": "Ensure consistent operators spacing",
 					"oneOf": [
