@@ -158,6 +158,14 @@ export default {
 		footer: {
 			message: 'Released under the MIT License.',
 		},
+		search: {
+			provider: 'algolia',
+			options: {
+				appId: 'AW5IGMKN2Y',
+				apiKey: '508ba02994bccd7de89c7c36eae9e154',
+				indexName: 'taqwim-kalimah-apps'
+			}
+		}
 	},
 	markdown: {
 		// Configure the Markdown-it instance.
@@ -167,5 +175,5 @@ export default {
 				.use(...createRuleContainer('rule', 'Rule', md))
 				.use(markdownItAttrs);
 		},
-	},
+	}
 };
