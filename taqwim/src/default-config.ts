@@ -24,7 +24,7 @@ const config: TaqwimConfig = {
 	/**
 	 * Number of times to run the linter
 	 */
-	runs: 1,
+	runs: 2,
 
 	/**
 	 * List of files/directories to ignore.
