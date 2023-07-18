@@ -167,6 +167,20 @@ export default {
 			}
 		}
 	},
+	head: [
+		[
+			'script',
+			{
+				async: true,
+				src: 'https://www.googletagmanager.com/gtag/js?id=G-46RF8EW4VV',
+			},
+		],
+		[
+			'script',
+			{},
+			"window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-46RF8EW4VV');",
+		],
+	],
 	markdown: {
 		// Configure the Markdown-it instance.
 		config: (md) => {
