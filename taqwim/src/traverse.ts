@@ -387,7 +387,7 @@ class Traverse {
 			return false;
 		}
 
-		const isChildrenPath = currentPath.startsWith('children');
+		const isChildrenPath = currentPath.startsWith('children') || currentPath.startsWith('items');
 
 		if (isChildrenPath === false) {
 			const parentPath = path.slice(0, -1);
@@ -414,7 +414,7 @@ class Traverse {
 							return false;
 						}
 
-						return parent[key].loc !== undefined;
+						return parent[key]?.loc !== undefined;
 					});
 
 				if (previousNodeKey === undefined) {
@@ -432,7 +432,7 @@ class Traverse {
 						return false;
 					}
 
-					return parent[key].loc !== undefined;
+					return parent[key]?.loc !== undefined;
 				});
 
 			if (nextNodeKey === undefined) {
