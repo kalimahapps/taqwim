@@ -8,6 +8,9 @@ $tips = array(
     "Shift click on an AST node to expand the whole subtree",
 );
 
+/**
+ *
+ */
 function print_tips()
 {
     global $tips;

@@ -119,8 +119,7 @@ describe('Extension Test Suite', function () {
 		const path = posixPath(document.uri.fsPath);
 
 		const documentActions = codeActionCollection[path];
-
-		assert.strictEqual(documentActions.length, 8);
+		assert.strictEqual(documentActions.length, 10);
 
 		// Close the document
 		await vscode.commands.executeCommand('workbench.action.closeActiveEditor', document);
