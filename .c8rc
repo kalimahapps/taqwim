@@ -1,0 +1,17 @@
+{
+	"all": true,
+	"include": [
+		"dist/**/*.js"
+	],
+	"exclude": [
+		"**/node_modules/**",
+		"**/test/**",
+		"dist/taqwim/**",
+		"dist/_virtual/**"
+	],
+	"reporter": [
+		"html",
+		"text",
+		"lcov"
+	]
+}
