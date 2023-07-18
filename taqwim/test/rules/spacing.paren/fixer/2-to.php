@@ -18,7 +18,7 @@ class ReturnTypeVariations
     {
     }
     
-    public function test(){
+    public function test() {
         echo "empty";
     }
 }
