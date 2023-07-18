@@ -26,7 +26,6 @@ const process = (context: RuleContext) => {
 
 		// Get whitespace from first line to apply to other lines
 		const firstLineWhitespace = sourceLines[commentLoc.start.line].match(/^\s*/u);
-
 		if (!firstLineWhitespace) {
 			return;
 		}
@@ -34,7 +33,7 @@ const process = (context: RuleContext) => {
 		const firstLineWhitespaceType = getWhitespaceType(firstLineWhitespace);
 
 		let indent = '';
-		const indentLength = firstLineWhitespace.length;
+		const indentLength = firstLineWhitespace[0].length;
 
 		if (firstLineWhitespaceType === 'tabs') {
 			indent = `\t{${indentLength}}`;
