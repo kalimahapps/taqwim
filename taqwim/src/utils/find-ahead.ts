@@ -1,5 +1,21 @@
-import type { Loc, MatchGroupType, MatchType, RangeMatchType } from '@taqwim/types';
+import type {
+	End,
+	Loc,
+	MatchGroupType,
+	MatchType,
+	RangeMatchType,
+	Start
+} from '@taqwim/types';
 import { getOffsetFromLineAndColumn } from '.';
+
+type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
+// This will be the same as Loc but with the offset
+// property optional for the start and end
+type LocNoOffset = {
+	start: Optional<Start, 'offset'>;
+	end: Optional<End, 'offset'>;
+};
 
 /* eslint complexity: ["warn", 9] */
 
@@ -7,13 +23,13 @@ import { getOffsetFromLineAndColumn } from '.';
  * Search for a string ahead of a given line and column
  *
  * @param  {string[]}             lines  Lines to search
- * @param  {Loc}                  loc    Start and end of the search
+ * @param  {LocNoOffset}          loc    Start and end of the search
  * @param  {string}               needle String to search for
  * @return {RangeMatchType|false}        Match object or false if not found
  */
 const findAhead = (
 	lines: string[],
-	loc: Loc,
+	loc: LocNoOffset,
 	needle: string
 ): MatchType | false => {
 	const {
@@ -123,13 +139,13 @@ const groupsWithLoc = (
  * Same as findAheadRegex but searches backwards (lastline to firstline)
  *
  * @param  {string[]}            lines Lines to search
- * @param  {Loc}                 loc   Line to start searching from
+ * @param  {LocNoOffset}         loc   Line to start searching from
  * @param  {RegExp}              regex String to search for
  * @return {MatchType|undefined}       Match object or undefined if not found
  */
 const findAheadRegexReverse = (
 	lines: string[],
-	loc: Loc,
+	loc: LocNoOffset,
 	regex: RegExp
 ): RangeMatchType | false => {
 	const {
@@ -199,13 +215,13 @@ const findAheadRegexReverse = (
  * Same as findAhead, but uses a regex instead of a string
  *
  * @param  {string[]}            lines Lines to search
- * @param  {Loc}                 loc   Line to start searching from
+ * @param  {LocNoOffset}         loc   Line to start searching from
  * @param  {RegExp}              regex String to search for
  * @return {MatchType|undefined}       Match object or undefined if not found
  */
 const findAheadRegex = (
 	lines: string[],
-	loc: Loc,
+	loc: LocNoOffset,
 	regex: RegExp
 ): RangeMatchType | false => {
 	const {
