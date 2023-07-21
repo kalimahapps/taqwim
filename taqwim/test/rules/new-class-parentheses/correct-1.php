@@ -2,3 +2,4 @@
 $logger = new Logger();
 $test = new Test();
 $database = new Database();
+$database = new Database(  );

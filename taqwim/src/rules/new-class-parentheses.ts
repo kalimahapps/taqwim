@@ -18,8 +18,8 @@ const process = (context: RuleContext) => {
 	}
 
 	// Check if the next token is a parenthesis
-	const hasParentheses = source.includes('()');
-	if (hasParentheses === true) {
+	const hasParentheses = source.match(/\(\s*\)/u);
+	if (hasParentheses) {
 		return;
 	}
 
