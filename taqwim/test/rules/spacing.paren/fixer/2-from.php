@@ -64,3 +64,8 @@ uses( )->beforeAll(  function  ()  {
     function   () {
     // ...
 });
+
+$test = new TestClass( );
+$foo = new Foo( $test );
+$nested = new Foo( new Bar( $test ) );
+$new_class = new NewClass( $test, $foo, $this->foo( ) );

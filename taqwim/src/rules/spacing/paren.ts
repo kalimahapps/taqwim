@@ -48,7 +48,7 @@ class ParenSpacing {
 		arrayCallback: ['array'],
 		doCallback: ['do'],
 		closureCallback: ['closure'],
-		callCallback: ['call'],
+		callCallback: ['new', 'call'],
 		binCallback: ['bin'],
 		generalCallback: ['function', 'method', 'if', 'isset', 'for', 'foreach', 'while', 'do', 'switch', 'catch'],
 	};
@@ -66,17 +66,17 @@ class ParenSpacing {
 	 * Keywords that should not have spaces after them
 	 * when they are followed by an opening parenthesis
 	 */
-	noSpaceKeywords = ['function', 'method', 'closure', 'call', 'array', 'isset'];
+	noSpaceKeywords = ['new', 'function', 'method', 'closure', 'call', 'array', 'isset'];
 
 	/**
 	 * Keywords that can be nested
 	 *
 	 * @example
 	 * if ( isset (condition) ) {
-	 * $this->callMethod( $param, array ("this", "methid") );
+	 * $this->callMethod( $param, array ("this", "method") );
 	 * public function getFoo(#[FooClassAttrib(28  ) ] $a ): string
 	 */
-	canBeNested = ['array', 'if', 'call', 'function', 'method'];
+	canBeNested = ['array', 'if', 'new', 'call', 'function', 'method'];
 
 	/**
 	 * Helper method to report and fix paren spacing
@@ -216,7 +216,9 @@ class ParenSpacing {
 			'(?<stringAfter>\\S{0,1})',
 		];
 
-		if (kind === 'call') {
+		if (['call', 'new'].includes(kind)) {
+			// Make sure that opening parenethesis is not
+			// followed by a another opening parenthesis
 			regex.push('(?!.*\\(.*$)');
 		}
 
@@ -446,7 +448,11 @@ class ParenSpacing {
 	}
 
 	/**
-	 * Handle call nodes
+	 * Handle call nodes. This includes new and call nodes
+	 *
+	 * @example
+	 * new Foo( );
+	 * $this->callMethod( $param, array ("this", "method") );
 	 */
 	callCallback() {
 		const { arguments: parameters, loc, what } = this.node as AstCall;
@@ -607,6 +613,7 @@ export default (): RuleDataOptional => {
 			'closure',
 			'call',
 			'array',
+			'new',
 		],
 		bindClass: ParenSpacing,
 	};
