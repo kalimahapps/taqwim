@@ -53,3 +53,8 @@ if (  isset(  $var  )  ){
 if ( call_function( $id ) || ! in_array( call_another( $id ), array( 'first', 'second' ))) {
 	return false;
 }
+
+$value = ( array )   new Test();
+$count = ( int)$string_data;
+$sum =( float  )$string_data;
+$sum =(  double  )$string_data;

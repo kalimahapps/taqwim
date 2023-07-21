@@ -50,7 +50,19 @@ class ParenSpacing {
 		closureCallback: ['closure'],
 		callCallback: ['new', 'call'],
 		binCallback: ['bin'],
-		generalCallback: ['function', 'method', 'if', 'isset', 'for', 'foreach', 'while', 'do', 'switch', 'catch'],
+		generalCallback: [
+			'function',
+			'method',
+			'if',
+			'isset',
+			'for',
+			'foreach',
+			'while',
+			'do',
+			'switch',
+			'catch',
+			'cast',
+		],
 	};
 
 	/**
@@ -293,9 +305,16 @@ class ParenSpacing {
 	 */
 	processEmptyParens(): boolean {
 		const { node, sourceLines, report } = this.context;
-		const { loc, kind } = node;
+		const { loc, kind, traverse } = node;
 
 		let searchRange: Loc = loc;
+
+		const parent = traverse.parent();
+
+		// cast type will handle the empty parenthesis
+		if (parent !== false && parent.kind === 'cast') {
+			return true;
+		}
 
 		if (['function', 'method'].includes(kind)) {
 			const { body } = node;
@@ -322,6 +341,7 @@ class ParenSpacing {
 		if (findParens === false || findParens.groups === undefined) {
 			return false;
 		}
+
 		const { space } = findParens.groups;
 
 		/* space can not be undefined because it is
@@ -614,6 +634,7 @@ export default (): RuleDataOptional => {
 			'call',
 			'array',
 			'new',
+			'cast',
 		],
 		bindClass: ParenSpacing,
 	};
