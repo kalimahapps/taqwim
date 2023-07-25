@@ -45,7 +45,7 @@ class ValidateParameter {
 		}
 
 		const { report } = this.context;
-		console.log('position', position);
+
 		report({
 			message: `Type mismatch. @param tag has type \`${parameterType.value}\` but argument is of type \`${argumentType}\``,
 			position,

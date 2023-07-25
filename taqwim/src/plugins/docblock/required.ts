@@ -88,7 +88,7 @@ class DocblockRequired {
 
 			const parameterType = type?.name === undefined ? '' : `${type.name} `;
 
-			const parameterInfo = `@param ${parameterType}${name.name} `;
+			const parameterInfo = `@param ${parameterType}$${name.name} `;
 			results.push(parameterInfo);
 		}
 

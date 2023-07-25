@@ -23,10 +23,10 @@ class DatabaseConnect {
 /**
  * 
  * 
- * @param host 
- * @param username 
- * @param password 
- * @param database 
+ * @param $host 
+ * @param $username 
+ * @param $password 
+ * @param $database 
  * @return 
  */
 	public function connect($host, $username, $password, $database) {
@@ -38,5 +38,17 @@ class DatabaseConnect {
 			return false;
 		}
 		return true;
+	}
+
+/**
+ * 
+ * 
+ * @param string $message 
+ * @param int $level 
+ * @param $echo 
+ * @return bool 
+ */
+	private function log(string $message, int $level = 0, $echo = false): bool {
+		echo $message;
 	}
 }

@@ -15,4 +15,8 @@ class DatabaseConnect {
 		}
 		return true;
 	}
+
+	private function log(string $message, int $level = 0, $echo = false): bool {
+		echo $message;
+	}
 }
