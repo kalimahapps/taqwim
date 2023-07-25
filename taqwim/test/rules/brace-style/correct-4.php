@@ -18,3 +18,10 @@ function connect(
 ) {
 	// Connect
 }
+
+function login(
+	$username,
+	$password,
+) :boolean {
+	// Connect
+}

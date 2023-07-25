@@ -1,7 +1,7 @@
 /**
  * Ensure consistent brace style for blocks
  */
-/* eslint complexity: ["warn", 11],max-lines-per-function: ["warn", 120] */
+/* eslint complexity: ["warn", 12], max-lines-per-function: ["warn", 120] */
 import { getOffsetFromLineAndColumn, findAhead, findAheadRegexReverse } from '@taqwim/utils/index';
 import type {
 	AllAstTypes,
@@ -131,12 +131,6 @@ class BraceStyle {
 			return false;
 		}
 
-		const {
-			start: {
-				line: nodeStartLine,
-			},
-		} = loc;
-
 		/* Object (classes, traits and interfaces) do not have a body,
 		* so we need to find the opening brace position manually
 		* We can include functions and methods as well, to lower this method
@@ -147,6 +141,21 @@ class BraceStyle {
 			return false;
 		}
 
+		let {
+			start: {
+				line: nodeStartLine,
+			},
+		} = loc;
+
+		// For methods and functions find the closing parenthesis
+		// to use it for comparison with the opening brace
+		if (['method', 'function'].includes(node.kind)) {
+			const findParenthesis = findAhead(sourceLines, loc, ')');
+			if (findParenthesis !== false) {
+				nodeStartLine = findParenthesis.line;
+			}
+		}
+
 		const {
 			line: braceStartLine,
 			column: braceColumnIndex,
@@ -154,6 +163,18 @@ class BraceStyle {
 		} = data;
 
 		const sameLine = nodeStartLine === braceStartLine;
+
+		// If the line starts with a closing parenthesis, and it
+		// ends with an opening brace, then no need to report for 
+		// both 1tbs and psr
+		if (sameLine) {
+			const lineContent = sourceLines[nodeStartLine].trim();
+			const match = lineContent.match(/^\).*\{$/u);
+			if (match !== null) {
+				return false;
+			}
+		}
+
 		const shouldTrueBrace = braceStyle === '1tbs' && !sameLine;
 		const shouldPsrBrace = braceStyle === 'psr' && sameLine;
 

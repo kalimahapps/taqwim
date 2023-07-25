@@ -26,11 +26,21 @@
 		},
 		"incorrect-1": {
 			"description": "Control structure with incorrect brace style",
-			"expected": 9
+			"expected": 10
 		},
 		"incorrect-2": {
 			"description": "Switch statement and match expressions with incorrect brace style",
 			"expected": 11
+		}
+	},
+	"style": {
+		"style-incorrect-1": {
+			"description": "Class and methods with incorrect brace style",
+			"expected": 5
+		},
+		"style-correct-1": {
+			"description": "Class and methods with correct brace style",
+			"expected": 0
 		}
 	}
 }
