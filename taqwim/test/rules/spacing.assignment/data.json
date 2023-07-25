@@ -16,7 +16,7 @@
 		},
 		"align-incorrect-1": {
 			"description": "Aligned assignment statements",
-			"expected": 108
+			"expected": 111
 		}
 	}
 }

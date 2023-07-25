@@ -3,7 +3,7 @@
  * This rule also provides the ability to align assignment with adjacent statements.
  * Alignment only works with single line statements.
  */
-
+/* eslint complexity: ["warn", 7] */
 import type Fixer from '@taqwim/fixer';
 import type {
 	RuleDataOptional,
@@ -136,19 +136,40 @@ class AssignmentAlign {
 	 * @return {boolean}      false if there was no report
 	 */
 	reportAndFixTraillingSpace(node: AstNode): boolean {
-		const { report } = this.context;
+		const { report, sourceLines } = this.context;
 
 		const assingNode = node.expression as AstAssign ?? node;
 		const { right, loc } = assingNode as AstAssign;
-		const { loc: rightLoc } = right;
 		const operatorPosition = this.getOperatorPosition(loc);
 
 		if (operatorPosition === false) {
 			return false;
 		}
 
+		/**
+		 * we can not use right.loc because it provides the wrong start
+		 * position (column and offset) when using nullsafe operator
+		 * e.g. $foo = $bar?->baz;
+		 *
+		 * @see https://github.com/glayzzle/php-parser/issues/1128
+		 */
+		const rightPosition = findAheadRegex(
+			sourceLines,
+			{
+				start: operatorPosition.end,
+				end: right.loc.end,
+			},
+			/(?<rightLoc>\S+)/u
+		);
+
+		if (rightPosition === false || rightPosition?.groups?.rightLoc === undefined) {
+			return false;
+		}
+
+		const { rightLoc } = rightPosition.groups;
 		const foundSpace = rightLoc.start.column - operatorPosition.end.column;
 		const isCorrectSpacing = foundSpace === 1;
+
 		if (rightLoc.start.line !== operatorPosition.end.line || isCorrectSpacing === true) {
 			return false;
 		}
@@ -344,6 +365,7 @@ class AssignmentAlign {
 			const { left, loc: assignmentLoc, operator } = expression as AstAssign;
 
 			const operatorPosition = this.getOperatorPosition(assignmentLoc);
+
 			if (operatorPosition === false) {
 				return;
 			}

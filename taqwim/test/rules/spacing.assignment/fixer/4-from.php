@@ -85,3 +85,8 @@ $loggerResult= $util->setLogger(new class {
         $bar= $msg;
     }
 });
+
+$with_parenthesis = ($object?->property);
+$test = $object?->property;
+$without_nullsafe = $object->property;
+$with_multiple_nullsafe = $object?->call()?->property2;

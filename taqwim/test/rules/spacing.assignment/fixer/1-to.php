@@ -10,7 +10,7 @@ $var7899 = $a . $b . $c;
 $var12121 = $a / $b * $c + $d;
 $var = $a + $b / $c * $d;
 
-$var =($a + $b) % $c * $d - $e;
+$var = ($a + $b) % $c * $d - $e;
 
 $var = $a + 
     $b % $c * $d - $e;
