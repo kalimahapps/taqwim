@@ -13,7 +13,7 @@
 			"expected": 0
 		},
 		"correct-4": {
-			"description": "declare, namespace, yield, globals, traits, properties, exit and unset statements with correct separation spacing",
+			"description": "declare, namespace, yield, globals, traits, properties, exit, new and unset statements with correct separation spacing",
 			"expected": 0
 		},
 		"correct-5": {
@@ -41,8 +41,8 @@
 			"expected": 31
 		},
 		"incorrect-4": {
-			"description": "declare, namespace, globals, traits, properties, yield, exit and unset statements with incorrect separation spacing",
-			"expected": 31
+			"description": "declare, namespace, globals, traits, properties, yield, exit, new and unset statements with incorrect separation spacing",
+			"expected": 36
 		},
 		"incorrect-5": {
 			"description": "include and assign statements with incorrect separation spacing",

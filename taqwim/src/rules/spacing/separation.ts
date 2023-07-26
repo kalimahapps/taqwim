@@ -52,7 +52,7 @@ class SeparationSpacing {
 
 	callbacksMap = {
 		arrayCallback: ['array', 'list'],
-		functionCallback: ['function', 'method', 'closure'],
+		functionCallback: ['function', 'method', 'closure', 'new'],
 		parametersCallback: ['call', 'unset', 'global'],
 		echoCallback: ['echo'],
 		forCallback: ['for'],
@@ -486,8 +486,13 @@ class SeparationSpacing {
 	}
 
 	/**
-	 * Handle function, method and closure statements
-	 * e.g. function name($a, $b) {} 
+	 * Handle function, method, closure and new statements
+	 *
+	 * @example
+	 * function myFunction($a, $b) {}
+	 * function myFunction($a, $b): void {}
+	 * function myFunction($a, $b) use ($c) {}
+	 * new MyClass($a, $b)
 	 */
 	functionCallback() {
 		const {
@@ -845,6 +850,7 @@ export default (): RuleDataOptional => {
 			'yield',
 			'match',
 			'matcharm',
+			'new',
 		],
 		bindClass: SeparationSpacing,
 	};

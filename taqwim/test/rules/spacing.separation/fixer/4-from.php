@@ -49,3 +49,6 @@ class User {
         $this->name = $name ;
     }
 }
+
+new User(1,'John Doe');
+new User($id ,new User(1  ,'John Doe'));
