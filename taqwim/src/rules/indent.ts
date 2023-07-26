@@ -41,7 +41,8 @@ import type {
 	AstPropertyStatement,
 	AstClassConstant,
 	AstAttribute,
-	AstAttributeGroup
+	AstAttributeGroup,
+	AstUseGroup
 } from '@taqwim/types';
 import { WithCallMapping } from '@taqwim/decorators';
 
@@ -83,6 +84,7 @@ class Indent {
 		enumCallback: ['enum'],
 		attributeCallback: ['attribute'],
 		attrGroupCallback: ['attrgroup'],
+		usegroupCallback: ['usegroup'],
 	};
 
 	/**
@@ -328,6 +330,30 @@ class Indent {
 				ignore,
 			};
 		}
+	}
+
+	/**
+	 * Handle use group statement
+	 *
+	 * @example
+	 * use Foo\Bar\{
+	 *    Baz,
+	 *    Qux
+	 * };
+	 * @return boolean False if not processed, true otherwise
+	 */
+	usegroupCallback(): boolean {
+		const { name, items } = this.node as AstUseGroup;
+
+		// if name is not it means there are no nested use groups
+		// e.g. use Root\Exceptions\CustomException;
+		if (name === null) {
+			return false;
+		}
+
+		this.handleArguments(items, this.node as AstIdentifier, 'useGroup');
+
+		return true;
 	}
 
 	/**
@@ -1039,6 +1065,7 @@ export default (): RuleDataOptional => {
 			'enum',
 			'attribute',
 			'attrgroup',
+			'usegroup',
 		],
 		bindClass: Indent,
 	};

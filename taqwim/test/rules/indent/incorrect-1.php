@@ -1,4 +1,13 @@
 <?php
+use Root\{Common, Util, Extra};
+use Root\Exceptions\CustomException;
+use Symfony\Component\Console\{
+Command\Command,
+Input\InputInterface,
+Input\InputOption,
+Output\OutputInterface,
+Logger\ConsoleLogger
+};
 
 class Test {
     public function close()

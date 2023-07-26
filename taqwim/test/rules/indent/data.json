@@ -1,7 +1,7 @@
 {
 	"default": {
 		"correct-1": {
-			"description": "Classes, methods, switch, if, arrays and comments ",
+			"description": "Usegroup, classes, methods, switch, if, arrays and comments ",
 			"expected": 0
 		},
 		"correct-2": {
@@ -29,8 +29,8 @@
 			"expected": 0
 		},
 		"incorrect-1": {
-			"description": "Class, methods, switch and if statements",
-			"expected": 30
+			"description": "Usegroup, classes, methods, switch and if statements",
+			"expected": 35
 		},
 		"incorrect-2": {
 			"description": "Control structures, functions, binary expressions, inline comment, multi-line strings, heredoc",
@@ -52,7 +52,7 @@
 		},
 		"type-incorrect-1": {
 			"description": "A PHP file indented with tabs",
-			"expected": 35
+			"expected": 40
 		}
 	}
 }

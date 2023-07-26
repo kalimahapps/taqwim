@@ -1,5 +1,13 @@
 <?php
 /* taqwim "psr/indent" :{ type: "tab", length: 1 } */
+use Symfony\Component\Console\{
+	Command\Command,
+	Input\InputInterface,
+	Input\InputOption,
+	Output\OutputInterface,
+	Logger\ConsoleLogger
+};
+
 class Test {
 	public function close()
 	{
