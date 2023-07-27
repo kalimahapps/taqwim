@@ -116,7 +116,7 @@ class OperatorSpacing {
 			return;
 		}
 
-		this.handleTypeOperator(type);
+		this.handleTypeOperator(type as AstIdentifier);
 	}
 
 	/**

@@ -38,7 +38,7 @@
 		},
 		"incorrect-5": {
 			"description": "Reference (&), variadic (...), type (:), arrow function (=>) operators with incorrect spacing",
-			"expected": 21
+			"expected": 24
 		}
 	}
 }

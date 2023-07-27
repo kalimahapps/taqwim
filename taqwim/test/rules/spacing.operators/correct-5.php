@@ -11,6 +11,8 @@ function
 int{};
 
 function($param, $param1): void{};
+function($param, $param1): string|int {};
+function($param, $param1): ReturnType&AnotherType {};
 
 function(&$first, ? number $nullable, ...$rest): number{}
 fn(&$first, ? number $nullable, ...$rest): number 
