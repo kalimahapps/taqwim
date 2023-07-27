@@ -151,7 +151,7 @@ class Compatibility {
 			return;
 		}
 
-		this.processTypeCompatibility(type);
+		this.processTypeCompatibility(type as AstIdentifier);
 	}
 
 	/**
