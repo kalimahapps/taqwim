@@ -18,6 +18,7 @@ import type {
 	AstMethod,
 	AstSwitch,
 	AstTry,
+	AstUnionType,
 	AstVariable,
 	CallbacksMap,
 	Loc,
@@ -340,10 +341,18 @@ class BraceSpacing {
 			return false;
 		}
 
+		// uniontype has a bug with loc
+		// @see https://github.com/glayzzle/php-parser/issues/1129
+		let typeLoc = type?.loc.start;
+		if (type?.kind === 'uniontype') {
+			typeLoc = (type as AstUnionType).types[0].loc.start;
+		}
+
 		const searchRange = {
-			start: type?.loc.start ?? name.loc.start,
+			start: typeLoc ?? name.loc.start,
 			end: loc.end,
 		};
+
 		this.processOpenBrace(searchRange);
 
 		return true;

@@ -1,7 +1,7 @@
 {
 	"default": {
 		"correct-1": {
-			"description": "Classes, interfaces, traits and enums",
+			"description": "Classes, interfaces, traits, enums and methods",
 			"expected": 0
 		},
 		"correct-2": {
@@ -21,8 +21,8 @@
 			"expected": 0
 		},
 		"incorrect-1": {
-			"description": "Classes, interfaces, traits and enums",
-			"expected": 11
+			"description": "Classes, interfaces, traits, enums and methods",
+			"expected": 12
 		},
 		"incorrect-2": {
 			"description": "Loop and if statements",

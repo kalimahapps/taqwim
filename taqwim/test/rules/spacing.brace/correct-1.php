@@ -10,6 +10,10 @@ class ReturnTypeVariations {
 	public function secondFunction() {
         return 'foo';
     }
+    
+    function functionWithMultipleTypes(int $arg1, $arg2): int {
+        return 'foo';
+    }
 
     public function anotherFunction(
         string $foo,

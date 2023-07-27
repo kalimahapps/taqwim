@@ -331,7 +331,7 @@ interface AstUseGroup extends AstNodeBase {
  */
 interface AstFunction extends AstDeclaration {
 	arguments: AstParameter[];
-	type: AstIdentifier | null;
+	type?: AstIntersectionType | AstUnionType | AstIdentifier;
 	byref: boolean;
 	nullable: boolean;
 	body: AstBlock | null;
@@ -799,6 +799,27 @@ interface AstInclude extends AstExpression {
 	require: boolean;
 }
 
+/**
+ * Defines a class reference node
+ */
+interface AstTypeReference extends AstReference {
+	name: string;
+}
+
+/**
+ * A union of types
+ */
+interface AstIntersectionType extends AstDeclaration {
+	types: AstTypeReference[];
+}
+
+/**
+ * A union of types
+ */
+interface AstUnionType extends AstDeclaration {
+	types: AstTypeReference[];
+}
+
 type AllAstTypes =
 	AstNode |
 	AstIf |
@@ -852,6 +873,8 @@ type AllAstTypes =
 	AstExpressionStatement |
 	AstAttribute |
 	AstAttributeGroup |
+	AstUnionType |
+	AstIntersectionType |
 	AstBlock;
 
 export type {
@@ -918,5 +941,7 @@ export type {
 	AstProperty,
 	AstAttribute,
 	AstAttributeGroup,
+	AstUnionType,
+	AstIntersectionType,
 	AllAstTypes
 };
