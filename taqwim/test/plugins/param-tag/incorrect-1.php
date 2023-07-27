@@ -48,6 +48,30 @@ function calc4(string $first, int $second, $third) {
     return $first + $second + $third;
 }
 
-function hi(){
+/**
+ * Calculate sum
+ *
+ * @param string $first First number
+ * @param string $second Second number
+ *
+ * @return int Sum of numbers
+ */
+function calc5(string $first, int|string $second) {
+    return $first + $second + $third;
+}
+
+/**
+ * Multiply numbers
+ *
+ * @param string $first First number
+ * @param string $second Second number
+ *
+ * @return int Result
+ */
+function calc6(string $first, ReturnValue&AnotherValue $second) {
+    return $first * $second;
+}
+
+function functionWithNoParamsOrBody(){
     
 }

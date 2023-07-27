@@ -1,16 +1,23 @@
 /**
- * Validate and format @param tag
+ * Validate and format `@param` tag
  */
-
-import type { AstComment, AstNode, RuleContext, RuleDataOptional } from '@taqwim/types';
+import type {
+	AstComment,
+	AstIdentifier,
+	AstNode,
+	RuleContext,
+	RuleDataOptional
+} from '@taqwim/types';
 import type { DocblockTag } from '@kalimahapps/docblock-parser';
 import Parser from '@kalimahapps/docblock-parser';
+import type { DocblockParserOptions } from '@kalimahapps/docblock-parser/dist/types';
 
 type ParameterLoc = {
 	line: number,
 	column: number
 };
 
+/* eslint complexity: ["warn", 8] */
 class ValidateParameter {
 	docblock: AstComment = {} as AstComment;
 	context: RuleContext = {} as RuleContext;
@@ -25,12 +32,12 @@ class ValidateParameter {
 	checkMismatchedType(tag: DocblockTag) {
 		const {
 			type: parameterType,
-			variable,
+			descriptor,
 			position,
 		} = tag;
 
 		const matchingArgument = this.methodArguments.find((argument: AstNode) => {
-			return `$${argument.name.name}` === variable.value;
+			return `$${argument.name.name}` === descriptor.value;
 		});
 
 		// If there is no matching argument, then the param is extraneous
@@ -38,7 +45,18 @@ class ValidateParameter {
 			return;
 		}
 
-		const { name: argumentType } = matchingArgument.type;
+		// Initialize argument type with name
+		let { name: argumentType, types: argumentTypes } = matchingArgument.type;
+
+		// If the argument type is an intersection or union
+		// type, then we need to get the names of the types
+		const { kind: argumentKind } = matchingArgument.type;
+		if (['intersectiontype', 'uniontype'].includes(argumentKind)) {
+			const joinChar = argumentKind === 'intersectiontype' ? '&' : '|';
+			argumentType = argumentTypes.map((type: AstIdentifier) => {
+				return type.name;
+			}).join(joinChar);
+		}
 
 		if (argumentType === undefined || argumentType === 'nullkeyword' || parameterType.value.includes(argumentType)) {
 			return;
@@ -63,7 +81,7 @@ class ValidateParameter {
 
 		const { name: argumentName } = methodArgument;
 		const parameter = this.paramTags.find((parameter: DocblockTag) => {
-			return parameter.variable.value === `$${argumentName.name}`;
+			return parameter.descriptor.value === `$${argumentName.name}`;
 		});
 
 		if (parameter !== undefined) {
@@ -71,7 +89,7 @@ class ValidateParameter {
 		}
 
 		report({
-			message: `Missing @param tag for "$${argumentName.name}" parameter`,
+			message: `Missing @param tag for \`$${argumentName.name}\` parameter`,
 			position: {
 				start: commentLoc.start,
 				end: {
@@ -94,9 +112,9 @@ class ValidateParameter {
 
 		let errorMessage = '';
 		if (type === 'type') {
-			errorMessage = 'Missing type for @param tag';
+			errorMessage = 'Missing type for `@param` tag';
 		} else if (type === 'desc') {
-			errorMessage = 'Missing description for @param tag';
+			errorMessage = 'Missing description for `@param` tag';
 		}
 
 		report({
@@ -142,7 +160,11 @@ class ValidateParameter {
 	 */
 	getParamsTags(): DocblockTag[] {
 		const { loc, value } = this.docblock;
-		const { tags } = new Parser().parse(value, loc.start.line, loc.start.offset);
+		const parserOptions: DocblockParserOptions = {
+			line: loc.start.line,
+			count: loc.start.column,
+		};
+		const { tags } = new Parser().parse(value, parserOptions);
 
 		return tags.filter((tag: DocblockTag) => {
 			return tag.name.value === '@param';
@@ -158,9 +180,9 @@ class ValidateParameter {
 		// Find and report extraneous params
 		const matchingParameters = this.paramTags
 			.reduce((accumulator: DocblockTag[], parameter: DocblockTag) => {
-				const { variable, position } = parameter;
+				const { descriptor, position } = parameter;
 				const argumentTag = this.methodArguments.find((methodArgument) => {
-					return `$${methodArgument.name.name}` === variable.value;
+					return `$${methodArgument.name.name}` === descriptor.value;
 				});
 
 				if (argumentTag !== undefined) {

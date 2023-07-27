@@ -6,7 +6,7 @@
 		},
 		"incorrect-1": {
 			"description": "Docblocks with various errors",
-			"expected": 10
+			"expected": 12
 		}
 	}
 }
