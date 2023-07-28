@@ -2,7 +2,7 @@
   "name": "@kalimahapps/taqwim",
   "description": "PHP linter and formatter",
   "author": "khr2003",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "homepage": "https://taqwim.kalimah-apps.com/docs/",
   "repository": {
     "type": "git",

@@ -820,6 +820,15 @@ interface AstUnionType extends AstDeclaration {
 	types: AstTypeReference[];
 }
 
+/**
+ * Defines a string (simple or double quoted) - chars are already escaped
+ */
+interface AstString extends AstLiteral {
+	unicode: boolean;
+	isDoubleQuote: boolean;
+	value: string;
+}
+
 type AllAstTypes =
 	AstNode |
 	AstIf |
@@ -843,6 +852,7 @@ type AllAstTypes =
 	AstUseGroup |
 	AstUseItem |
 	AstNamespace |
+	AstName |
 	AstProperty |
 	AstPropertyStatement |
 	AstTraitUse |
@@ -875,6 +885,7 @@ type AllAstTypes =
 	AstAttributeGroup |
 	AstUnionType |
 	AstIntersectionType |
+	AstString |
 	AstBlock;
 
 export type {
@@ -919,6 +930,7 @@ export type {
 	AstUnset,
 	AstGlobal,
 	AstNamespace,
+	AstName,
 	AstParameter,
 	AstTraitUse,
 	AstPropertyStatement,
@@ -943,5 +955,6 @@ export type {
 	AstAttributeGroup,
 	AstUnionType,
 	AstIntersectionType,
+	AstString,
 	AllAstTypes
 };

@@ -730,7 +730,7 @@
 					]
 				},
 				"psr/spacing.bracket": {
-					"description": "Ensure that `[` and `]` have consistent spacing",
+					"description": "Ensure that square brackets `[]` have consistent spacing",
 					"oneOf": [
 						{
 							"$ref": "#/definitions/severity"
@@ -1331,6 +1331,23 @@
 									"minimum": 1,
 									"default": 50,
 									"description": "Maximum number of members. Default is `50`"
+								}
+							}
+						}
+					]
+				},
+				"taqwim/prefer-interpolation": {
+					"description": "Ensure interpolation is used instead of concatenation",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
 								}
 							}
 						}

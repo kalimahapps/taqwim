@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "String interpolation",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "String concatenation",
+			"expected": 6
+		}
+	}
+}
