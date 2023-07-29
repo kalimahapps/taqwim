@@ -69,6 +69,7 @@ interface AstNodeBase {
 		prevSibling: () => AstNode | false;
 	};
 	path: string[];
+	nodeName: string;
 }
 
 interface AstComment extends AstNodeBase {
@@ -398,14 +399,14 @@ interface AstEnumCase extends AstNodeBase {
  */
 interface AstLookup extends AstExpression {
 	what: AstExpression | AstLookup;
-	offset: AstExpression;
+	offset: AstExpression | false;
 }
 
 /**
  * Assigns a value to the specified target
  */
 interface AstAssign extends AstExpression {
-	left: AstVariable;
+	left: AstVariable | AstLookup;
 	right: AstLookup | AstExpression;
 	operator: string;
 }

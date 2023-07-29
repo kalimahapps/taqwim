@@ -101,6 +101,10 @@ class AccessorSpacing {
 
 		const { what, offset } = this.node as AstLookup;
 
+		if (offset === false) {
+			return;
+		}
+
 		const { loc: whatLoc } = what;
 		const { loc: offsetLoc } = offset;
 

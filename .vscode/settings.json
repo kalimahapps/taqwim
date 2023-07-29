@@ -63,6 +63,8 @@
     "git.showPushSuccessNotification": true,
     "editor.snippetSuggestions": "bottom",
     "workbench.editor.enablePreview": true,
+    "git.inputValidationLength": 100,
+    "git.inputValidationSubjectLength": 70,
     "workbench.editor.enablePreviewFromQuickOpen": true,
     "workbench.tree.indent": 20,
     "files.trimTrailingWhitespace": false,
