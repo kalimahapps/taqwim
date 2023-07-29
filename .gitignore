@@ -4,5 +4,6 @@ coverage
 cache
 .vscode-test
 *.vsix
+.vscode/settings.json
 docs/rules
 docs/cli-options.md
