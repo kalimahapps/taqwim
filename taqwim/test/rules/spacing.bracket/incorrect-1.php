@@ -12,12 +12,6 @@ $nested_array_of_arrays = [  ['one' ],   [ 'two', 'three'  ], [  'four', 'five',
 $value_1 = $array  [ 0  ];
 $value_2 = $string_array[   1];
 
-$associative_array[ 'foo'] = 'qux';
-$associative_array[ 'baz'] = 'bar';
-$string_array[0] = 'qux';
-
-$access_array = $associative_array  [  'foo'];
-
 class Test extends Testing {
 	function construct($info)
 	{

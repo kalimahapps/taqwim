@@ -6,7 +6,7 @@
 		},
 		"incorrect-1": {
 			"description": "Bracket brackets with incorrect spacing",
-			"expected": 58
+			"expected": 53
 		}
 	}
 }

@@ -4,9 +4,17 @@
 			"description": "Assignment statements",
 			"expected": 0
 		},
+		"correct-2": {
+			"description": "Assignment statements for arrays, objects and nested",
+			"expected": 0
+		},
 		"incorrect-1": {
 			"description": "Assignment statements",
 			"expected": 33
+		},
+		"incorrect-2": {
+			"description": "Assignment statements for arrays, objects and nested",
+			"expected": 26
 		}
 	},
 	"align": {
@@ -14,9 +22,17 @@
 			"description": "Aligned assignment statements",
 			"expected": 0
 		},
+		"align-correct-2": {
+			"description": "Aligned assignment statements  for arrays, objects and nested",
+			"expected": 0
+		},
 		"align-incorrect-1": {
 			"description": "Aligned assignment statements",
-			"expected": 111
+			"expected": 50
+		},
+		"align-incorrect-2": {
+			"description": "Aligned assignment statements  for arrays, objects and nested",
+			"expected": 61
 		}
 	}
 }

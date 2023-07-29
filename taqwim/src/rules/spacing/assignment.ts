@@ -13,7 +13,8 @@ import type {
 	Loc,
 	AstNode,
 	AstFor,
-	AllAstTypes
+	AllAstTypes,
+	AstLookup
 } from '@taqwim/types';
 import { findAheadRegex, skipRegex } from '@taqwim/utils';
 
@@ -246,7 +247,8 @@ class AssignmentAlign {
 		const { left, operator } = node.expression as AstAssign;
 		const operatorPosition = this.getOperatorPosition(node.loc, operator);
 
-		const { end: leftEnd, start: leftStart } = left.loc;
+		const { end: leftEnd, start: leftStart } = this.getLeftLoc(left as AstLookup);
+
 		const leftLength = leftEnd.column - leftStart.column;
 
 		if (operatorPosition === false || leftLength === expectedLength) {
@@ -316,6 +318,35 @@ class AssignmentAlign {
 	}
 
 	/**
+	 * Get the left side of the node.
+	 * This should handle offsetlookup and propertylookup. 
+	 * e.g. 
+	 * $foo->bar = 1;
+	 * $foo[0] = 1;
+	 *
+	 * It will loop through each nested `what` property to get the
+	 * start position of the left side.
+	 *
+	 * @param  {AstNode} node Node to get the left side
+	 * @return {Loc}          Loc of the left side
+	 */
+	getLeftLoc(node: AstLookup): Loc {
+		if (node.kind !== 'offsetlookup' && node.kind !== 'propertylookup') {
+			return node.loc;
+		}
+
+		const nodeLoc = node.loc;
+		let nodeWhat = node.what as AstLookup;
+
+		while (nodeWhat.what !== undefined) {
+			nodeWhat = nodeWhat.what as AstLookup;
+		}
+		nodeLoc.start = nodeWhat.loc.start;
+
+		return nodeLoc;
+	}
+
+	/**
 	 * Process the rule
 	 *
 	 * @param  {RuleContext} context Rule context
@@ -372,7 +403,7 @@ class AssignmentAlign {
 
 			const { start } = operatorPosition;
 
-			const { start: startLeft, end: endLeft } = left.loc;
+			const { start: startLeft, end: endLeft } = this.getLeftLoc(left as AstLookup);
 
 			// Add length for assignment operators with preceding marks (e.g. **, +,-,., etc)
 			const operatorLength = operator.replace('=', '').length;

@@ -1,7 +1,7 @@
 /**
  * Ensure that `[` and `]` have consistent spacing
  */
-/* eslint complexity: ["warn", 9] */
+/* eslint complexity: ["warn", 13] */
 import type Fixer from '@taqwim/fixer';
 import type {
 	RuleDataOptional,
@@ -96,6 +96,10 @@ class BracketSpacing {
 		const { sourceLines } = this.context;
 		const { offset, what } = this.node as AstLookup;
 
+		if (offset === false) {
+			return;
+		}
+
 		if (['string', 'number'].includes(offset.kind) === false) {
 			return;
 		}
@@ -128,7 +132,11 @@ class BracketSpacing {
 	 */
 	handleOffsetLookupClosing() {
 		const { sourceLines } = this.context;
-		const { offset } = this.node as AstLookup;
+		const { offset, traverse, nodeName } = this.node as AstLookup;
+
+		if (offset === false) {
+			return;
+		}
 
 		if (['string', 'number'].includes(offset.kind) === false) {
 			return;
@@ -170,6 +178,16 @@ class BracketSpacing {
 		const expectedSpaceCount = this.singleSpaceChars.includes(stringAfter.value) ? 1 : 0;
 
 		// Fix trailing space
+		const parent = traverse.parent();
+		if (parent === false) {
+			return;
+		}
+
+		// Assignment will be handled by `spacing.assignment` rule
+		// e.g. $bar['baz']['qux']   = 'quux';
+		if (nodeName === 'left' && parent.kind === 'assign') {
+			return;
+		}
 		this.reportAndFix(bracket, stringAfter, 'closing', 'trailing', expectedSpaceCount);
 	}
 
