@@ -1,12 +1,20 @@
 {
 	"default": {
 		"correct-1": {
-			"description": "Bracket brackets with correct spacing",
+			"description": "Arrays and offset lookup",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Operators",
 			"expected": 0
 		},
 		"incorrect-1": {
-			"description": "Bracket brackets with incorrect spacing",
+			"description": "Arrays and offset lookup",
 			"expected": 53
+		},
+		"incorrect-2": {
+			"description": "Operators",
+			"expected": 24
 		}
 	}
 }

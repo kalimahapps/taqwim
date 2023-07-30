@@ -20,7 +20,7 @@ class Test extends Testing {
 		$this->data['baz']['nested'] = $test;
 		$this->data['baz']['nested']= $info['baz']['nested'];
 		$this->data['baz']['nested'][] = $info['baz']['nested']['foo'];
-		
+
 		parent::__construct(['a' => 1, 'b' => 2]);
 	}
 }

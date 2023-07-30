@@ -33,7 +33,7 @@ class BracketSpacing {
 	 * Closing bracket should have a single space after it
 	 * if it is followed by one of these characters
 	 */
-	singleSpaceChars = ['='];
+	singleSpaceChars = ['=', '?', ':', '.', '!', '|', '&', '+', '-', '*', '/', '%', '^', '>', '<'];
 
 	/**
 	 * Opening bracket should have no leading space
@@ -168,7 +168,7 @@ class BracketSpacing {
 			return;
 		}
 
-		// Ignore if the string after is an opening bracket because 
+		// Ignore if the string after is an opening bracket because
 		// it will be handled by the opening bracket
 		// e.g. $foo['bar'] ['baz']
 		if (stringAfter.value === '[') {
