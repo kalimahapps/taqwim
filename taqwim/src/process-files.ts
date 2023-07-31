@@ -138,10 +138,10 @@ class ProcessFiles {
 		this.sourceCode = this.file.content;
 		this.fixes = [];
 
+		// Update values before running the rules
+		this.sourceLines = this.sourceCode.split(/\r?\n/u);
 		this.traverse.setSourceCode(this.sourceCode);
 		this.traverse.setAst(this.file.ast);
-
-		this.sourceLines = this.sourceCode.split(/\r?\n/u);
 		this.traverse.setSourceLines(this.sourceLines);
 		this.traverse.updateAst(this.file.ast);
 
@@ -440,21 +440,10 @@ class ProcessFiles {
 		// Clear fixes array for each rule
 		this.fixes = [];
 
-		/*
-		 * Update AST before running the rule.
-		 * This is needed where the same rule is nested inside
-		 * itself. If AST is not updated the report location
-		 * will be wrong.
-		 */
-		if (fix) {
-			this.file.ast = parseString(this.sourceCode);
-			this.traverse.updateAst(this.file.ast);
-		}
-
 		// Call pre function if it exists
 		if (ruleData.pre) {
 			ruleData.pre({
-				ast: this.traverse.getAst(),
+				ast: freshAst,
 				report: this.report.bind(this),
 				options: ruleData.options,
 				payload: this.payload,
@@ -469,14 +458,14 @@ class ProcessFiles {
 
 		// Loop through all nodes in the AST
 		walk(
-			this.traverse.getAst(),
+			freshAst,
 			this.walkAstCallback.bind(this)
 		);
 
 		// Call post function if it exists
 		if (ruleData.post) {
 			ruleData.post({
-				ast: this.traverse.getAst(),
+				ast: freshAst,
 				report: this.report.bind(this),
 				options: ruleData.options,
 				payload: this.payload,
@@ -490,7 +479,9 @@ class ProcessFiles {
 			});
 		}
 
-		if (fix !== true) {
+		// Only proceed if fixes are enabled and there are fixes
+		// This will make the process faster
+		if (fix !== true || this.fixes.length === 0) {
 			return;
 		}
 
@@ -513,6 +504,10 @@ class ProcessFiles {
 				this.sourceCode = fixData.fix(new Fixer(this.sourceCode));
 			});
 
+			// update AST for callback
+			this.file.ast = parseString(this.sourceCode);
+			this.traverse.updateAst(this.file.ast);
+
 			// Run callback again to fix inner fixes
 			this.rulesCallback(ruleEntry);
 			return;
@@ -524,6 +519,10 @@ class ProcessFiles {
 		this.fixes.forEach((fixData) => {
 			this.sourceCode = fixData.fix(new Fixer(this.sourceCode));
 		});
+
+		// update AST for next run (if any)
+		this.file.ast = parseString(this.sourceCode);
+		this.traverse.updateAst(this.file.ast);
 	}
 
 	/**
