@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+/* eslint complexity: ["warn", 8] */
 import { writeFileSync, readFileSync } from 'node:fs';
 import { join as joinPath } from 'node:path';
 import chalk from 'chalk';
@@ -71,7 +71,6 @@ class Main {
 	/**
 	 * Show custom help
 	 */
-	/* eslint complexity: ["warn", 7] */
 	showHelp() {
 		const lines = ['\n', chalk.green.bold('======== Taqwim Cli Options ========')];
 
@@ -165,6 +164,7 @@ class Main {
 		this.rules.registerRules();
 
 		try {
+			console.time(chalk.green.bold('Processing Time'));
 			const process = new ProcessFiles(this.rules.getSortedRules(), lintOption, taqwimConfig);
 			this.fullReport = process.start();
 
@@ -174,6 +174,10 @@ class Main {
 			}
 
 			new OutputReport(this.fullReport);
+			if (argv.reportStyle === 'default') {
+				console.log('\n\n');
+				console.timeEnd(chalk.green.bold('Processing Time'));
+			}
 		} catch (error: unknown) {
 			if (error instanceof RuleOptionError) {
 				console.log(
