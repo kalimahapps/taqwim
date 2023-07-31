@@ -1,7 +1,7 @@
 /**
  * Ensure consistent brace style for blocks
  */
-/* eslint complexity: ["warn", 12], max-lines-per-function: ["warn", 120] */
+/* eslint complexity: ["warn", 13], max-lines-per-function: ["warn", 130] */
 import { getOffsetFromLineAndColumn, findAhead, findAheadRegexReverse } from '@taqwim/utils/index';
 import type {
 	AllAstTypes,
@@ -21,7 +21,8 @@ import type {
 	Loc,
 	RuleContext,
 	CallbacksMap,
-	RuleDataOptional
+	RuleDataOptional,
+	AstMethod
 } from '@taqwim/types';
 import type Fixer from '@taqwim/fixer';
 import { WithCallMapping } from '@taqwim/decorators';
@@ -145,12 +146,24 @@ class BraceStyle {
 			start: {
 				line: nodeStartLine,
 			},
+			end: nodeEnd,
 		} = loc;
 
 		// For methods and functions find the closing parenthesis
 		// to use it for comparison with the opening brace
 		if (['method', 'function'].includes(node.kind)) {
-			const findParenthesis = findAhead(sourceLines, loc, ')');
+			const { arguments: parameters } = node as AstMethod;
+			const lastParameter = parameters.at(-1);
+			let searchRange: Loc = loc;
+
+			if (lastParameter !== undefined) {
+				searchRange = {
+					start: lastParameter.loc.end,
+					end: nodeEnd,
+				};
+			}
+
+			const findParenthesis = findAhead(sourceLines, searchRange, ')');
 			if (findParenthesis !== false) {
 				nodeStartLine = findParenthesis.line;
 			}
@@ -165,7 +178,7 @@ class BraceStyle {
 		const sameLine = nodeStartLine === braceStartLine;
 
 		// If the line starts with a closing parenthesis, and it
-		// ends with an opening brace, then no need to report for 
+		// ends with an opening brace, then no need to report for
 		// both 1tbs and psr
 		if (sameLine) {
 			const lineContent = sourceLines[nodeStartLine].trim();
@@ -253,7 +266,7 @@ class BraceStyle {
 	 * @example
 	 * match ($food)
 	 * { 'apple' => 'This food is an apple' };
-	 * 
+	 *
 	 * @return {boolean} True if the callback was processed, false otherwise
 	 */
 	matchCallback(): boolean {
@@ -446,10 +459,15 @@ class BraceStyle {
 	 * a line by itself. Closing braces is always on a
 	 * separate line, regardless of the brace style.
 	 *
-	 * @param {AllAstTypes}         node      The node to check
-	 * @param {false | AllAstTypes} alternate The alternate node to check
+	 * @param  {AllAstTypes}                   node      The node to check
+	 * @param  {false|AstIf|AstCatch|AstBlock} alternate The alternate node to check
+	 * @return {boolean}                                 True if the brace was reported,
+	 *                                                   false otherwise
 	 */
-	reportAndFixClosingBrace(node: AllAstTypes, alternate: false | AstIf | AstCatch | AstBlock): boolean {
+	reportAndFixClosingBrace(
+		node: AllAstTypes,
+		alternate: false | AstIf | AstCatch | AstBlock
+	): boolean {
 		const { sourceLines, report, sourceCode } = this.context;
 		const {
 			end: {
@@ -472,7 +490,7 @@ class BraceStyle {
 		const { brace, semiColon } = closingBracePosition.groups;
 
 		/* brace is always defined since it is not optional in the regex
-		* but we need to check for it since the `groups` are 
+		* but we need to check for it since the `groups` are
 		* optional in the type definition */
 		/* c8 ignore next 3 */
 		if (brace === undefined) {

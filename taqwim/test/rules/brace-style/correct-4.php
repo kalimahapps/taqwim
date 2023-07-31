@@ -1,6 +1,6 @@
 <?php
 
-function inverse($x) 
+function inverse($x)
 {
 	if (!$x) {
 		throw new Exception('Division by zero.');
@@ -14,7 +14,7 @@ function connect(
 	$password,
 	$port,
 	$database,
-	$socket
+	$socket = array()
 ) {
 	// Connect
 }
