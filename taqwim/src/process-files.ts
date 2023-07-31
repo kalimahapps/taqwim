@@ -1,4 +1,4 @@
-/*eslint max-lines-per-function: ["warn", 120], complexity: ["warn", 8]*/
+/*eslint max-lines-per-function: ["warn", 120], complexity: ["warn", 9]*/
 import fs from 'node:fs';
 import InlineConfig from '@taqwim/inline-config.js';
 import { parseFile, parseString, parseFileContent } from '@taqwim/parser.js';
@@ -141,7 +141,11 @@ class ProcessFiles {
 		this.traverse.setSourceCode(this.sourceCode);
 		this.traverse.setAst(this.file.ast);
 
-		const maxRuns = this.taqwimConfig.runs;
+		this.sourceLines = this.sourceCode.split(/\r?\n/u);
+		this.traverse.setSourceLines(this.sourceLines);
+		this.traverse.updateAst(this.file.ast);
+
+		const maxRuns = this.options.fix ? this.taqwimConfig.runs : 1;
 
 		// Loop through all rules and run the process function
 		for (let index = 0; index < maxRuns; index++) {
@@ -331,7 +335,7 @@ class ProcessFiles {
 
 		const currentRuleData = this.rules[this.currentRuleName];
 
-		/* 
+		/*
 		* Check if inline config has is provided for this rule.
 		* It applies to all rules, but only partially to 'program'.
 		* If 'program' is the current rule, then only top level comments
@@ -340,7 +344,7 @@ class ProcessFiles {
 		 */
 		if (this.inlineConfig) {
 			/*
-			 * Typically 'program' loc will start from line 0, and 
+			 * Typically 'program' loc will start from line 0, and
 			 * end at the last line of the file. Inline config can not
 			 * be applied to it because it starts after the first line
 			 * This is why we need to change loc start if it is 'program'
@@ -423,11 +427,6 @@ class ProcessFiles {
 		this.currentRuleName = ruleName;
 
 		this.sourceLines = this.sourceCode.split(/\r?\n/u);
-		this.traverse.setSourceLines(this.sourceLines);
-		this.traverse.setSourceCode(this.sourceCode);
-
-		// Update traverse class with the new AST
-		this.traverse.updateAst(this.file.ast);
 
 		// Get fresh AST and update source lines
 		const freshAst = this.traverse.getAst();
@@ -447,8 +446,10 @@ class ProcessFiles {
 		 * itself. If AST is not updated the report location
 		 * will be wrong.
 		 */
-		this.file.ast = parseString(this.sourceCode);
-		this.traverse.updateAst(this.file.ast);
+		if (fix) {
+			this.file.ast = parseString(this.sourceCode);
+			this.traverse.updateAst(this.file.ast);
+		}
 
 		// Call pre function if it exists
 		if (ruleData.pre) {
