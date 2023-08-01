@@ -104,7 +104,7 @@ test("Report style to 'json' is working correctly", async () => {
 	const report = JSON.parse(readFileSync(reportFile, 'utf8'));
 
 	// Check if the report is correct
-	expect(report[0].reports.length).toBe(16);
+	expect(report[0].reports.length).toBe(18);
 
 	// Remove the file
 	unlinkSync(reportFile);

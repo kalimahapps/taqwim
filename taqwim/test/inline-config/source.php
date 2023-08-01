@@ -30,8 +30,8 @@ trait Message1
 		echo "OOP is fun! ";
 	}
 }
-/* taqwim-enable */
 
+/* taqwim-enable */
 /* taqwim "taqwim/id-length": {min: 1} */
 for ($i; $i < 10; $i++) {
 	/* taqwim-disable-next-line */

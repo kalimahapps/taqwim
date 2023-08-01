@@ -938,6 +938,23 @@
 						}
 					]
 				},
+				"taqwim/blank-lines": {
+					"description": "Enforce consistent linebreak spaces",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
 				"taqwim/compatibility": {
 					"description": "Ensure that implemented features are compatible with the set version of PHP",
 					"oneOf": [

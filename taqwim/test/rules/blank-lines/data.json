@@ -1,0 +1,20 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Classes, interfaces, traits, enums, methods, properties, constants",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Control structures, functions",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Classes, interfaces, traits, enums, methods, properties, constants",
+			"expected": 13
+		},
+		"incorrect-2": {
+			"description": "Control structures, functions",
+			"expected": 13
+		}
+	}
+}
