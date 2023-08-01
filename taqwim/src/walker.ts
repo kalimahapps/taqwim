@@ -2,7 +2,7 @@
  * This is not provided as a class for:
  * 1. Simplicity. Because it included in various part of
  * the codebase so it would be a pain to pass the instance around
- * 2. Using `this`. `walk` function will be bound to the context of the 
+ * 2. Using `this`. `walk` function will be bound to the context of the
  * caller. So no reference can be made to the instance of this class
  */
 import type { AstComment, AstNode } from '@taqwim/types';
@@ -81,6 +81,7 @@ const walk = (
 		items,
 		catches,
 		leadingComments,
+		trailingComments,
 		arms,
 		conds,
 		value,
@@ -202,6 +203,7 @@ const walk = (
 		attrs,
 		args,
 		leadingComments: leadingComments as AstComment[],
+		trailingComments: trailingComments as AstComment[],
 	};
 
 	Object.entries(potentialArrays).forEach(potentialArraysCallback);

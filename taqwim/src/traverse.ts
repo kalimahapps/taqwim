@@ -83,7 +83,7 @@ class Traverse {
 	updateAttrGroup(node: AstNode): boolean {
 		const { attrs } = node as AstAttributeGroup;
 
-		// Attrs are always defined but due to 
+		// Attrs are always defined but due to
 		// typing inaccuracy, we need to check
 		if (!attrs || attrs.length === 0) {
 			// return false for testing purposes
@@ -387,7 +387,9 @@ class Traverse {
 			return false;
 		}
 
-		const isChildrenPath = currentPath.startsWith('children') || currentPath.startsWith('items');
+		const isChildrenPath = ['children', 'items', 'leadingComments'].some((word) => {
+			return currentPath.startsWith(word);
+		});
 
 		if (isChildrenPath === false) {
 			const parentPath = path.slice(0, -1);
@@ -597,24 +599,39 @@ class Traverse {
 	 * @param  {string}        closestKind The kind of node to find
 	 * @return {AstNode|false}             The closest node or false
 	 */
-	closest(node: AstNode, closestKind: string): AstNode | false {
+	closest(node: AstNode, closestKind: string | string[]): AstNode | false {
 		const { path } = node;
 
 		// remove the last path step, because it is the current node
 		// and we want to start from the parent
 		let newPath = path.slice(0, -1);
 
-		// Do initial check on path
-		const checkKind = findLastIndex(newPath, (pathStep: string) => {
-			return pathStep.endsWith(closestKind);
+		let closestKinds = typeof closestKind === 'string' ? [closestKind] : closestKind;
+		closestKinds = closestKinds.map((kind) => {
+			return kind.toLowerCase();
 		});
 
-		// If no match, return false
-		if (checkKind === -1) {
+		// Loop through closest kinds and find all matches
+		const foundKinds = [];
+		for (const kind of closestKinds) {
+			const findKind = findLastIndex(newPath, (pathStep: string) => {
+				return pathStep.endsWith(kind);
+			});
+
+			if (findKind !== -1) {
+				foundKinds.push(findKind);
+			}
+		}
+
+		if (foundKinds.length === 0) {
 			return false;
 		}
 
-		newPath = newPath.slice(0, checkKind + 1);
+		// If there are multiple matches, get the one
+		// with the highest index (closest to the current node)
+		const maxKindIndex = Math.max(...foundKinds);
+
+		newPath = newPath.slice(0, maxKindIndex + 1);
 		return this.getNodeFromPath(newPath);
 	}
 
