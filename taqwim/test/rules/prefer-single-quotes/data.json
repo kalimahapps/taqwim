@@ -1,0 +1,12 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Echo, variables, function calls, arrays and list",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Echo, variables, function calls, arrays and list",
+			"expected": 40
+		}
+	}
+}

@@ -20,6 +20,7 @@ export { default as noNestedTernary } from '@taqwim/rules/no-nested-ternary.js';
 export { default as objectMembersLimit } from '@taqwim/rules/object-members-limit.js';
 export { default as oneDeclarationPerFile } from '@taqwim/rules/one-declaration-per-file.js';
 export { default as preferInterpolation } from '@taqwim/rules/prefer-interpolation.js';
+export { default as preferSingleQuotes } from '@taqwim/rules/prefer-single-quotes.js';
 export { default as prefixUnderscore } from '@taqwim/rules/prefix-underscore.js';
 export { default as propertyLimit } from '@taqwim/rules/property-limit.js';
 export { default as propertyNoVar } from '@taqwim/rules/property-no-var.js';

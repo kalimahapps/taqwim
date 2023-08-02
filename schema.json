@@ -1370,6 +1370,23 @@
 						}
 					]
 				},
+				"taqwim/prefer-single-quotes": {
+					"description": "Ensure that double quotes are converted to single quotes where possible",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
 				"taqwim/type-check": {
 					"description": "Check that type checks use three equal signs",
 					"oneOf": [

@@ -1,5 +1,5 @@
 <?php
-/* taqwim-disable docblock/required */
+/* taqwim-disable docblock/required,taqwim/prefer-single-quotes */
 /* taqwim "psr/indent" :{type: "tabs", length: 1 } */
 class Base
 {

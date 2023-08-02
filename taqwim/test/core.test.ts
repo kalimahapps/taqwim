@@ -92,7 +92,7 @@ test('Should process plainText successfully', async () => {
 	const taqwim = new Taqwim();
 	await taqwim.loadConfig();
 	const lintOptions = {
-		source: [{ content: '<?php IF(true){echo "Hello!!"; }?>' }],
+		source: [{ content: "<?php IF(true){echo 'Hello!!'; }?>" }],
 	};
 
 	const lintResult = taqwim.lint(lintOptions);
