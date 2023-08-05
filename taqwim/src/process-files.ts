@@ -5,6 +5,8 @@ import { parseFile, parseString, parseFileContent } from '@taqwim/parser.js';
 import Fixer from '@taqwim/fixer.js';
 import Traverse from '@taqwim/traverse.js';
 import { walk } from '@taqwim/walker.js';
+import { minimatch } from 'minimatch';
+
 import type {
 	Report,
 	ReportData,
@@ -559,11 +561,21 @@ class ProcessFiles {
 				normalizedPath += '/**/*.php';
 			}
 
+			// globSync has an issue with ignore patterns
+			// minimatch is used here to check if the path should be ignored
+			const isIgnored = this.taqwimConfig.ignore.some((ignorePath) => {
+				return minimatch(normalizedPath, ignorePath);
+			});
+
+			if (isIgnored) {
+				return;
+			}
+
 			// Get the list of files to be processed
 			const paths = globSync(normalizedPath, {
-				ignore: this.taqwimConfig.ignore,
 				absolute: true,
 				cwd: cwd ?? process.cwd(),
+
 			});
 
 			if (paths.length === 1 && path.endsWith('.php')) {
