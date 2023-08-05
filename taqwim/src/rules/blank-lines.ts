@@ -7,13 +7,13 @@
  * -- It is the first line of the file, method, function, class, interface, enum, etc.
  * - There is no blank line after a comment
  * - There is no block padding (blank lines at the beginning or end of a block)
+ * =- if/elseif/else shortform is excluded from block padding rule
  */
 /* eslint complexity: ["warn", 10] */
 
 import type {
 	RuleDataOptional,
 	RuleContext,
-	CallbacksMap,
 	AllAstTypes,
 	Loc,
 	RulePostContext,
@@ -26,7 +26,6 @@ import {
 	findAheadRegexReverse,
 	getOffsetFromLineAndColumn
 } from '@taqwim/utils';
-import { WithCallMapping } from '@taqwim/decorators';
 
 class BlankLines {
 	/**
@@ -49,21 +48,12 @@ class BlankLines {
 	/**
 	 * The alternative closing braces for control structures
 	 */
-	altClosingBrace = ['endif', 'endfor', 'endforeach', 'endwhile', 'endswitch'];
+	altClosingBrace = ['endif', 'else', 'elseif', 'endfor', 'endforeach', 'endwhile', 'endswitch'];
 
 	/**
-	 * The callbacks map to map the callback to the node type
+	 * Handle block (class, interface, method, function, if, for, etc.)
 	 */
-	callbacksMap: CallbacksMap = {
-		commentCallback: ['commentline', 'commentblock'],
-		objectMethodCallback: ['class', 'interface', 'trait', 'enum', 'method', 'function'],
-		controlStructureCallback: ['for', 'foreach', 'while', 'do', 'if', 'switch'],
-	};
-
-	/**
-	 * Handle control structures (for, foreach, while, do, if, switch)
-	 */
-	controlStructureCallback() {
+	handleBlocks() {
 		const { report } = this.context;
 		const leadingPaddingPosition = this.getBlockLeadingPadding();
 		if (leadingPaddingPosition !== false) {
@@ -217,34 +207,6 @@ class BlankLines {
 	}
 
 	/**
-	 * Handle objects (class, interface, enum, etc.) and methods
-	 */
-	objectMethodCallback() {
-		const { report } = this.context;
-		const leadingPaddingPosition = this.getBlockLeadingPadding();
-		if (leadingPaddingPosition !== false) {
-			report({
-				message: 'Block should not be padded by blank lines',
-				position: leadingPaddingPosition,
-				fix: (fixer: Fixer) => {
-					return fixer.removeRange(leadingPaddingPosition);
-				},
-			});
-		}
-
-		const trailingPaddingPosition = this.getBlockTrailingPadding();
-		if (trailingPaddingPosition !== false) {
-			report({
-				message: 'Block should not be padded by blank lines',
-				position: trailingPaddingPosition,
-				fix: (fixer: Fixer) => {
-					return fixer.removeRange(trailingPaddingPosition);
-				},
-			});
-		}
-	}
-
-	/**
 	 * Check if the comment is nested inside a control structure
 	 *
 	 * @return {boolean} True if the comment is nested inside a control structure
@@ -259,7 +221,24 @@ class BlankLines {
 			return false;
 		}
 
-		const lookFor = ['class', 'interface', 'trait', 'enum', 'method', 'function', 'for', 'foreach', 'while', 'do', 'if', 'switch', 'case'];
+		const lookFor = [
+			'class',
+			'interface',
+			'trait',
+			'enum',
+			'method',
+			'function',
+			'for',
+			'foreach',
+			'while',
+			'do',
+			'if',
+			'switch',
+			'case',
+			'try',
+			'catch',
+			'block',
+		];
 		const closest = parent.traverse.closest(lookFor);
 		if (closest === false) {
 			return false;
@@ -423,15 +402,6 @@ class BlankLines {
 	}
 
 	/**
-	 * Handle comments (commentline, commentblock)
-	 */
-	commentCallback() {
-		this.checkBlankLineBeforeComment();
-
-		this.checkBlankLineAfterComment();
-	}
-
-	/**
 	 * Loop through the source lines and find the next non blank line
 	 *
 	 * @param  {number}   startFrom The line number to start from
@@ -465,11 +435,57 @@ class BlankLines {
 		return direction === 'next' ? totalBlankLines : totalBlankLines.reverse();
 	}
 
-	@WithCallMapping
+	/**
+	 * Process the rule
+	 *
+	 * @param {RuleContext} context The rule context
+	 */
 	process(context: RuleContext) {
 		this.context = context;
 		const { node } = this.context;
 		this.node = node;
+
+		const { kind, always, alternate, shortForm, body: nodeBody } = node;
+
+		if (['commentline', 'commentblock'].includes(kind)) {
+			this.checkBlankLineBeforeComment();
+			this.checkBlankLineAfterComment();
+			return;
+		}
+
+		/**
+		 * If node with full form includes all the conditions (else, elseif)
+		 * which causes parsing error. The workaround is to use body of the node
+		 * instead of the node itself.
+		 */
+		if (kind === 'if' && shortForm === false) {
+			this.node = nodeBody;
+		}
+
+		/**
+		 * Same as above, but for try/catch
+		 */
+		if (kind === 'try') {
+			this.node = nodeBody;
+		}
+
+		this.handleBlocks();
+
+		/**
+		 * Handle `finally` clause of try statement
+		 */
+		if (kind === 'try' && always) {
+			this.node = always;
+			this.handleBlocks();
+		}
+
+		/**
+		 * Handle `else` clause of if statement
+		 */
+		if (kind === 'if' && alternate?.ifType === 'else') {
+			this.node = alternate;
+			this.handleBlocks();
+		}
 	}
 
 	/**
@@ -545,8 +561,9 @@ export default (): RuleDataOptional => {
 			'do',
 			'if',
 			'switch',
+			'try',
+			'catch',
 		],
-		severity: 'warning',
 		bindClass: BlankLines,
 	};
 };

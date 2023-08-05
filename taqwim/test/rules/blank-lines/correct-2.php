@@ -22,10 +22,10 @@ switch ($i) {
         echo "1";
 
         // Another foreach
-        foreach($items as $item) {
+        foreach($items as $item) :
             // inner comment
             echo $item;
-        }
+        endforeach;
         break;
 
     // Case 2
