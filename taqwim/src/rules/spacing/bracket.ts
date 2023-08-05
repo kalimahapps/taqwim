@@ -1,7 +1,7 @@
 /**
- * Ensure that `[` and `]` have consistent spacing
+ * Ensure that square brackets `[]` have consistent spacing
  */
-/* eslint complexity: ["warn", 13] */
+/* eslint complexity: ["warn", 14] */
 import type Fixer from '@taqwim/fixer';
 import type {
 	RuleDataOptional,
@@ -153,7 +153,7 @@ class BracketSpacing {
 					offset: -1,
 				},
 			},
-			/(?<bracket>\])\s*(?<stringAfter>.{1})/u
+			/(?<bracket>\])\s*(?<charAfter>.{1})(?<secondCharAfter>.{0,1})/u
 		);
 
 		if (closeBracketPosition === false || closeBracketPosition?.groups === undefined) {
@@ -163,19 +163,25 @@ class BracketSpacing {
 		// Fix leading space
 		this.reportAndFix(offsetLoc, closeBracketPosition, 'closing');
 
-		const { stringAfter, bracket } = closeBracketPosition.groups;
-		if (!stringAfter || !bracket) {
+		const { charAfter, secondCharAfter, bracket } = closeBracketPosition.groups;
+		if (!charAfter || !bracket) {
 			return;
 		}
 
 		// Ignore if the string after is an opening bracket because
 		// it will be handled by the opening bracket
 		// e.g. $foo['bar'] ['baz']
-		if (stringAfter.value === '[') {
+		if (charAfter.value === '[') {
 			return;
 		}
 
-		const expectedSpaceCount = this.singleSpaceChars.includes(stringAfter.value) ? 1 : 0;
+		// Ignore if the string after is a `->` because
+		// it will be handled by the `spacing.accessor` rule
+		if (`${charAfter.value}${secondCharAfter?.value}` === '->') {
+			return;
+		}
+
+		const expectedSpaceCount = this.singleSpaceChars.includes(charAfter.value) ? 1 : 0;
 
 		// Fix trailing space
 		const parent = traverse.parent();
@@ -188,7 +194,7 @@ class BracketSpacing {
 		if (nodeName === 'left' && parent.kind === 'assign') {
 			return;
 		}
-		this.reportAndFix(bracket, stringAfter, 'closing', 'trailing', expectedSpaceCount);
+		this.reportAndFix(bracket, charAfter, 'closing', 'trailing', expectedSpaceCount);
 	}
 
 	/**

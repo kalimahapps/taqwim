@@ -28,3 +28,6 @@ class Test extends Testing {
 // Correct because it is handled by `spacing.assignment` rule.
 $foo['bar']= 'baz';
 $foo['bar']  ='baz';
+
+// Correct because it is handled by `spacing.accessor` rule.
+$foo['bar'] ->baz();
