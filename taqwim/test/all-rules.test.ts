@@ -18,7 +18,7 @@ await taqwim.loadConfig();
 
 const currentDirectory = fileURLToPath(new URL('.', import.meta.url)).replaceAll('\\', '/');
 
-// Test each rule with empty string
+// Test all files with all rules
 const foreachRuleEmptyString = test.each(rulesFiles);
 foreachRuleEmptyString('Testing `%s` file with all rules', (fileName) => {
 	const filePath = path.posix.join(currentDirectory, 'rules', fileName);
@@ -34,9 +34,7 @@ foreachRuleEmptyString('Testing `%s` file with all rules', (fileName) => {
 		],
 	};
 
-	// Test is very slow, so we skip it for now
-
-	// return expect(() => {
-	// 	taqwim.lint(lintOptions);
-	// }).not.toThrow(SyntaxError);
+	return expect(() => {
+		taqwim.lint(lintOptions);
+	}).not.toThrow(SyntaxError);
 });
