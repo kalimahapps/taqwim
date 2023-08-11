@@ -114,28 +114,6 @@ describe('Test edge cases and branching', () => {
 		).toEqual(false);
 	});
 
-	test('Test expressionStatementCallback', () => {
-		classInit.node = {
-			traverse: {
-				findByNodeName() {
-					return [
-						{
-							traverse: {
-								siblings() {
-									return [];
-								},
-							},
-						},
-					];
-				},
-
-			},
-		};
-		expect(
-			classInit.expressionStatementCallback()
-		).toEqual(false);
-	});
-
 	test('Test post process', () => {
 		const context = {
 			config: {},

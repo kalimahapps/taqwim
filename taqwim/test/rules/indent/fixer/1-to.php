@@ -9,24 +9,24 @@ array_map(
 );
 
 $someObject->someFunction("some", "parameter")
-    ->someOtherFunc(23, 42)->
-    someOtherFunc2($one, $two)
+->someOtherFunc(23, 42)->
+someOtherFunc2($one, $two)
 
-    ->someOtherFunc3(23, 42)
-    ->andAThirdFunction();
+->someOtherFunc3(23, 42)
+->andAThirdFunction();
 
 $someObject->someFunction("some", "parameter")
-    ->someOtherFunc(23, 42);
+->someOtherFunc(23, 42);
 
 $someObject->someFunction("some", "parameter")->someOtherFunc(23, 42);
 
 $someObject->someFunction("some", "parameter")
-    ->someOtherFunc(23, 42);
+->someOtherFunc(23, 42);
 
 func(
     $bar->foo()
-    )
-    ->bar();
+)
+->bar();
 
 func(
     $bar->foo()
@@ -38,30 +38,30 @@ func(
 );
 
 $object
-    ->setBar($foo)
-    ->setFoo($bar);
+->setBar($foo)
+->setFoo($bar);
 
 if ($bar) {
     $object->setBarInsideIf($foo)
-        ->setFooInsideIf($bar);
+    ->setFooInsideIf($bar);
 }
 
 $response -> CompletedTrackDetails -> TrackDetails -> Events;
 $response
-    -> CompletedTrackDetails
-    -> TrackDetails
-    -> Events;
+-> CompletedTrackDetails
+-> TrackDetails
+-> Events;
 
 $response
-    -> CompletedTrackDetails
-    -> TrackDetails
-    -> Events;
+-> CompletedTrackDetails
+-> TrackDetails
+-> Events;
 
 $var = get_object(
         $foo->something()
-            ->query()
-        )->two()
-        ->three();
+        ->query()
+    )->two()
+    ->three();
 
 $foo->one(
     $foo
@@ -69,31 +69,31 @@ $foo->one(
 );
 
 get_object()->one()
-    ->two()
-    ->three();
+->two()
+->three();
 
 someclass::one()
-    ->two()
-    ->three();
+->two()
+->three();
 
 (new someclass())->one()
-    ->two()
-    ->three();
+->two()
+->three();
 
 $someObject
-    ->startSomething()
-    ->someOtherFunc(
-        23,
-        42
-    )
-    ->endSomething()
-    ->doSomething(23,
-        42)
-    ->endEverything();
+->startSomething()
+->someOtherFunc(
+    23,
+    42
+)
+->endSomething()
+->doSomething(23,
+    42)
+->endEverything();
 
 $rootNode
-    ->one()
-    ->two()
-    ->three()
-    ->four()
-    ->five();
+->one()
+->two()
+->three()
+->four()
+->five();

@@ -42,7 +42,8 @@ import type {
 	AstClassConstant,
 	AstAttribute,
 	AstAttributeGroup,
-	AstUseGroup
+	AstUseGroup,
+	AstClosure
 } from '@taqwim/types';
 import { WithCallMapping } from '@taqwim/decorators';
 
@@ -72,9 +73,9 @@ class Indent {
 		retifCallback: ['retif'],
 		ifCallback: ['if'],
 		methodCallback: ['method', 'function'],
-		bodyChildrenCallback: ['foreach', 'for', 'try', 'catch', 'do', 'while', 'switch', 'case', 'closure'],
+		bodyChildrenCallback: ['foreach', 'for', 'try', 'catch', 'do', 'while', 'switch', 'case'],
+		closureCallback: ['closure'],
 		callChildrenCallback: ['call'],
-		expressionStatementCallback: ['expressionstatement'],
 		itemsCallback: ['array', 'list'],
 		assignCallback: ['assign'],
 		binCallback: ['bin'],
@@ -340,7 +341,7 @@ class Indent {
 	 *    Baz,
 	 *    Qux
 	 * };
-	 * @return boolean False if not processed, true otherwise
+	 * @return {boolean} False if not processed, true otherwise
 	 */
 	usegroupCallback(): boolean {
 		const { name, items } = this.node as AstUseGroup;
@@ -364,7 +365,7 @@ class Indent {
 	 * Route('/foo', name: 'foo'),
 	 * Route('/bar', name: 'bar'),
 	 * ]
-	 * 
+	 *
 	 * @return {boolean} False if not processed, true otherwise
 	 */
 	attrGroupCallback(): boolean {
@@ -412,7 +413,7 @@ class Indent {
 		}
 
 		// Create a node like object to pass to handleArguments
-		// start and end lines are the same because the name of 
+		// start and end lines are the same because the name of
 		// the attribute is most likely does not span multiple lines
 		const nodeLike = {
 			loc: {
@@ -479,7 +480,7 @@ class Indent {
 
 		let list = body as AstNodeBase[];
 
-		// If the first child is a property or a method, 
+		// If the first child is a property or a method,
 		// Then add attrGroups to the top of list
 		const { kind } = firstChild;
 
@@ -654,6 +655,34 @@ class Indent {
 	}
 
 	/**
+	 * Handle closures
+	 */
+	closureCallback() {
+		const { body } = this.node as AstClosure;
+
+		if (!body) {
+			return;
+		}
+
+		const list = body.children.length === 0 ? [body] : body.children;
+		let { startLine, endLine } = this.getBlockLines(list, this.node);
+
+		const { commentStartLine, commentEndLine } = this.getCommentLines(body);
+
+		// Apply comment start line if it exists
+		if (commentStartLine !== -1) {
+			startLine = commentStartLine;
+		}
+
+		// Apply comment end line if it exists
+		if (commentEndLine !== -1) {
+			endLine = commentEndLine;
+		}
+
+		this.addLineIndent(startLine, endLine);
+	}
+
+	/**
 	 * Handle node with body children. e.g. foreach, try, catch, .. etc
 	 */
 	bodyChildrenCallback() {
@@ -688,42 +717,6 @@ class Indent {
 		} = this.getBlockLines(children, always);
 
 		this.addLineIndent(alwaysStartLine, alwaysEndLine);
-	}
-
-	/**
-	 * Handle property lookup, nullsafe property lookup, method call
-	 * e.g. $this->property, $this?->property, $this->method()
-	 *
-	 * @return {boolean} False if no indent was added, true otherwise
-	 */
-	expressionStatementCallback(): boolean {
-		const { traverse } = this.node;
-
-		// Look for offset nodes that are part of a nullsafe property lookup
-		// or a property lookup
-		const offsetNodes = traverse.findByNodeName(['offset']);
-		if (offsetNodes.length === 0) {
-			return false;
-		}
-
-		// Assert at since we already checked for length above
-		const firstOffsetNode = offsetNodes.at(-1) as AstLookup;
-		const lastOffsetNode = offsetNodes.at(0) as AstLookup;
-
-		const objectReference = firstOffsetNode.traverse.siblings('what');
-		if (objectReference.length === 0) {
-			return false;
-		}
-
-		// Check if the object reference is on the same line as the first offset node
-		let firstLine = firstOffsetNode.loc.start.line;
-		if (objectReference[0].loc.start.line === firstOffsetNode.loc.start.line) {
-			firstLine = firstLine + 1;
-		}
-
-		this.addLineIndent(firstLine, lastOffsetNode.loc.end.line);
-
-		return true;
 	}
 
 	/**
@@ -926,7 +919,7 @@ class Indent {
 
 			/*
 			* Some lines should be ignored. For example, multiline strings
-			* or docblcoks (except for the first line).
+			* or docblocks (except for the first line).
 			*/
 			if (ignore) {
 				return;
@@ -1055,7 +1048,6 @@ export default (): RuleDataOptional => {
 			'switch',
 			'case',
 			'call',
-			'expressionstatement',
 			'list',
 			'assign',
 			'bin',
