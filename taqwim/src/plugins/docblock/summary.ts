@@ -77,7 +77,7 @@ export default (): RuleDataOptional => {
 		meta: {
 			description: 'Ensure that docblocks have a short summary and that is properly formatted',
 			preset: 'docblock',
-			fixable: false,
+			fixable: true,
 		},
 		name: 'summary',
 		register: ['function', 'method', 'class', 'interface', 'trait'],
