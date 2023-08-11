@@ -159,7 +159,7 @@ type MODIFIER_PRIVATE = 4;
  */
 interface AstParameter extends AstDeclaration {
 	type: AstIdentifier | null;
-	value: Node | null;
+	value: AstNode | null;
 	byref: boolean;
 	variadic: boolean;
 	readonly: boolean;
@@ -232,7 +232,7 @@ interface AstReturnIf extends AstExpression {
  */
 interface AstConstant extends AstNodeBase {
 	name: AstIdentifier;
-	value: Node | string | number | boolean | null;
+	value: AstNode | string | number | boolean | null;
 }
 
 /**
@@ -265,7 +265,7 @@ interface AstNamespace extends AstBlock {
  */
 interface AstProperty extends AstStatement {
 	name: AstIdentifier;
-	value: Node | null;
+	value: AstNode | null;
 	readonly: boolean;
 	nullable: boolean;
 	type: AstIdentifier | AstIdentifier[] | null;
@@ -795,7 +795,7 @@ interface AstDo extends AstStatement {
  * Defines system include call
  */
 interface AstInclude extends AstExpression {
-	target: Node;
+	target: AstNode;
 	once: boolean;
 	require: boolean;
 }

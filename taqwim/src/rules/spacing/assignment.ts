@@ -3,7 +3,7 @@
  * This rule also provides the ability to align assignment with adjacent statements.
  * Alignment only works with single line statements.
  */
-/* eslint complexity: ["warn", 7] */
+/* eslint complexity: ["warn", 8] */
 import type Fixer from '@taqwim/fixer';
 import type {
 	RuleDataOptional,
@@ -14,7 +14,9 @@ import type {
 	AstNode,
 	AstFor,
 	AllAstTypes,
-	AstLookup
+	AstLookup,
+	AstParameter,
+	AstProperty
 } from '@taqwim/types';
 import { findAheadRegex, skipRegex } from '@taqwim/utils';
 
@@ -319,8 +321,8 @@ class AssignmentAlign {
 
 	/**
 	 * Get the left side of the node.
-	 * This should handle offsetlookup and propertylookup. 
-	 * e.g. 
+	 * This should handle offsetlookup and propertylookup.
+	 * e.g.
 	 * $foo->bar = 1;
 	 * $foo[0] = 1;
 	 *
@@ -347,6 +349,29 @@ class AssignmentAlign {
 	}
 
 	/**
+	 * Report and fix assignment of default values.
+	 *
+	 * @example
+	 * function foo($bar = 1) {}
+	 * private $foo = 1;
+	 *
+	 * @return {boolean} True if the rule was applied
+	 */
+	reportAndFixDefault(): boolean {
+		const { name, value } = this.node as AstParameter | AstProperty;
+		if (value === null || typeof name === 'string') {
+			return false;
+		}
+
+		const cloneNode = JSON.parse(JSON.stringify(this.node));
+		cloneNode.left = name;
+		cloneNode.right = value;
+		this.reportAndFixLeadingSpace(cloneNode);
+		this.reportAndFixTraillingSpace(cloneNode);
+		return true;
+	}
+
+	/**
 	 * Process the rule
 	 *
 	 * @param  {RuleContext} context Rule context
@@ -361,6 +386,10 @@ class AssignmentAlign {
 		// if for loop then handle init assign
 		if (node.kind === 'for') {
 			return this.reportAndFixForLoop();
+		}
+
+		if (node.kind === 'parameter' || node.kind === 'property') {
+			return this.reportAndFixDefault();
 		}
 
 		if (expression.kind !== 'assign') {
@@ -453,7 +482,7 @@ export default (): RuleDataOptional => {
 				default: false,
 			},
 		},
-		register: ['expressionstatement', 'for'],
+		register: ['expressionstatement', 'for', 'parameter', 'property'],
 		bindClass: AssignmentAlign,
 	};
 };

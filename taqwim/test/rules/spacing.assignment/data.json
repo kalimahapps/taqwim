@@ -5,7 +5,11 @@
 			"expected": 0
 		},
 		"correct-2": {
-			"description": "Assignment statements for arrays, objects and nested",
+			"description": "Assignment statements for arrays and objects",
+			"expected": 0
+		},
+		"correct-3": {
+			"description": "function parameters, class properties and method parameters",
 			"expected": 0
 		},
 		"incorrect-1": {
@@ -13,8 +17,12 @@
 			"expected": 33
 		},
 		"incorrect-2": {
-			"description": "Assignment statements for arrays, objects and nested",
+			"description": "Assignment statements for arrays and objects",
 			"expected": 26
+		},
+		"incorrect-3": {
+			"description": "function parameters, class properties and method parameters",
+			"expected": 16
 		}
 	},
 	"align": {
@@ -23,7 +31,7 @@
 			"expected": 0
 		},
 		"align-correct-2": {
-			"description": "Aligned assignment statements  for arrays, objects and nested",
+			"description": "Aligned assignment statements  for arrays and objects",
 			"expected": 0
 		},
 		"align-incorrect-1": {
@@ -31,7 +39,7 @@
 			"expected": 50
 		},
 		"align-incorrect-2": {
-			"description": "Aligned assignment statements  for arrays, objects and nested",
+			"description": "Aligned assignment statements for arrays and objects",
 			"expected": 61
 		}
 	}
