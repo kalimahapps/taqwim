@@ -21,7 +21,7 @@ class PreferSingleQuotes {
 				const start = loc.start.offset;
 				const end = loc.end.offset;
 				const text = sourceCode.slice(start, end);
-				const fixed = text.replace(/^"(?<content>.*)"$/u, "'$<content>'");
+				const fixed = text.replace(/^"(?<content>.*)"$/usm, "'$<content>'");
 				return fixer.replaceRange(loc, fixed);
 			},
 		});

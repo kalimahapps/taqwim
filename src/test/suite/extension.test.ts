@@ -60,7 +60,7 @@ describe('Extension Test Suite', function () {
 		// Wait for diagnostics to be ready (otherwise the test will fail)
 		await wait(1500);
 
-		assert.strictEqual(diagnostics.length, 2);
+		assert.strictEqual(diagnostics.length, 3);
 	});
 
 	it('Should save the document with the correct formatting', async () => {
@@ -119,7 +119,7 @@ describe('Extension Test Suite', function () {
 		const path = posixPath(document.uri.fsPath);
 
 		const documentActions = codeActionCollection[path];
-		assert.strictEqual(documentActions.length, 10);
+		assert.strictEqual(documentActions.length, 14);
 
 		// Close the document
 		await vscode.commands.executeCommand('workbench.action.closeActiveEditor', document);

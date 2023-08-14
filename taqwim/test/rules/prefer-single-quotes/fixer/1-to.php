@@ -13,9 +13,11 @@ echo 'First character of this string is: ' . $string[0];
 echo 'Multiple strings' . ' concatenated' . ' together';
 echo 'Multiple echo statements', ' concatenated', ' together';
 
-echo "A string
+echo 'A string
 that spans
-multiple lines";
+multiple lines';
+
+echo "A string with a single quote ' inside";
 
 $array = array(
 	'key' => 'value',

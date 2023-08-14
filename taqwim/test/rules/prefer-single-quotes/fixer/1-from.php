@@ -17,6 +17,8 @@ echo "A string
 that spans
 multiple lines";
 
+echo "A string with a single quote ' inside";
+
 $array = array(
 	"key" => "value",
 	"key2" => "value2",
