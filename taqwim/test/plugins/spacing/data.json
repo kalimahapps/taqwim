@@ -1,0 +1,22 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Correct spacing of docblock tags tokens",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Incorrect spacing of docblock tags tokens",
+			"expected": 27
+		}
+	},
+	"align": {
+		"align-correct-1": {
+			"description": "Correct spacing of docblock tags tokens",
+			"expected": 0
+		},
+		"align-incorrect-1": {
+			"description": "Incorrect spacing of docblock tags tokens",
+			"expected": 30
+		}
+	}
+}
