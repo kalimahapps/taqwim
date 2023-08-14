@@ -256,6 +256,18 @@ class TagSpacing {
 
 		const firstLine = description[0] ?? {
 			value: '',
+			position: {
+				start: {
+					line: 0,
+					column: 0,
+					offset: 0,
+				},
+				end: {
+					line: 0,
+					column: 0,
+					offset: 0,
+				},
+			},
 		};
 
 		const { position: descriptionPosition, value: descriptionValue } = firstLine;
