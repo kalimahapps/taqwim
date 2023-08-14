@@ -1,7 +1,7 @@
 /**
  * Ensure that docblock tags tokens are spaced correctly
  */
-/* eslint complexity: ["warn", 11] */
+/* eslint complexity: ["warn", 12] */
 
 import type Fixer from '@taqwim/fixer';
 import type { RuleContext, RuleDataOptional } from '@taqwim/types';
@@ -254,7 +254,10 @@ class TagSpacing {
 		const { position: typePosition, value: typeValue } = type;
 		const { position: descriptorPosition, value: descriptorValue } = descriptor;
 
-		const [firstLine] = description;
+		const firstLine = description[0] ?? {
+			value: '',
+		};
+
 		const { position: descriptionPosition, value: descriptionValue } = firstLine;
 
 		const hasType = typeValue.trim() !== '';
