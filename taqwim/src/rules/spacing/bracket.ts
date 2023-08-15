@@ -142,16 +142,18 @@ class BracketSpacing {
 			return;
 		}
 
+		const parent = traverse.parent();
+		if (parent === false) {
+			return;
+		}
+
 		const { loc: offsetLoc } = offset;
+
 		const closeBracketPosition = findAheadRegex(
 			sourceLines,
 			{
 				start: offsetLoc.end,
-				end: {
-					line: sourceLines.length,
-					column: sourceLines.at(-1)?.length ?? 0,
-					offset: -1,
-				},
+				end: parent.loc.end,
 			},
 			/(?<bracket>\])\s*(?<charAfter>.{1})(?<secondCharAfter>.{0,1})/u
 		);
@@ -183,17 +185,13 @@ class BracketSpacing {
 
 		const expectedSpaceCount = this.singleSpaceChars.includes(charAfter.value) ? 1 : 0;
 
-		// Fix trailing space
-		const parent = traverse.parent();
-		if (parent === false) {
-			return;
-		}
-
 		// Assignment will be handled by `spacing.assignment` rule
 		// e.g. $bar['baz']['qux']   = 'quux';
 		if (nodeName === 'left' && parent.kind === 'assign') {
 			return;
 		}
+
+		// Fix trailing space
 		this.reportAndFix(bracket, charAfter, 'closing', 'trailing', expectedSpaceCount);
 	}
 
