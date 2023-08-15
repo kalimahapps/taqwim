@@ -4,9 +4,9 @@ class ReturnTypeVariations
     public function functionName(int $arg1, $arg2): string
     {
         return 'foo';
-    } 
-	
-	
+    }
+
+
 	public function secondFunction()
     {
         return 'foo';
@@ -19,12 +19,15 @@ class ReturnTypeVariations
     ): string {
         return 'foo';
     }
-    
+
     public function getFoo(#[FooClassAttrib(20  ) ] $a): string
     {
     }
 }
 
+interface FooInterface {
+    public function functionName(int $arg1, $arg2);
+}
 
 function testingSpace($Hello) {
 	echo "HELLO";
@@ -34,7 +37,7 @@ $closureWithArgs = function($arg1, $arg2) {
     // body
 };
 
-$closureWithArgsAndVars = function($arg1, $arg2) 
+$closureWithArgsAndVars = function($arg1, $arg2)
 use ($var1, $var2) {
     // body
 };

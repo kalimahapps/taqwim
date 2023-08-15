@@ -299,9 +299,9 @@ class ParenSpacing {
 	}
 
 	/**
-	 * Report and fix empty parentheses 
+	 * Report and fix empty parentheses
 	 *
-	 * @return {boolean} Whether parentheses have been found 
+	 * @return {boolean} Whether parentheses have been found
 	 */
 	processEmptyParens(): boolean {
 		const { node, sourceLines, report } = this.context;
@@ -318,6 +318,12 @@ class ParenSpacing {
 
 		if (['function', 'method'].includes(kind)) {
 			const { body } = node;
+
+			// Interface methods don't have a body
+			if (!body) {
+				return false;
+			}
+
 			searchRange = {
 				start: loc.start,
 				end: body.loc.start,
@@ -327,7 +333,7 @@ class ParenSpacing {
 		const regex = ['\\((?<space>\\s+)\\)'];
 		if (this.canBeNested.includes(kind)) {
 			// Match the end of the line
-			// the semicolon is for call nodes because in AST it is 
+			// the semicolon is for call nodes because in AST it is
 			// added to the source
 			regex.push('(;*)$');
 		}
@@ -345,8 +351,8 @@ class ParenSpacing {
 		const { space } = findParens.groups;
 
 		/* space can not be undefined because it is
-		* matched by the regex. However, we need to add 
-		* this check since `groups` properties can be undefined 
+		* matched by the regex. However, we need to add
+		* this check since `groups` properties can be undefined
 		*/
 		/* c8 ignore next 3 */
 		if (space === undefined) {
@@ -527,7 +533,7 @@ class ParenSpacing {
 	 *
 	 * @example
 	 * if ( $a + $b ) {}
-	 * 
+	 *
 	 * @return {boolean} Whether the parenthesis have been processed
 	 */
 	binCallback(): boolean {
@@ -563,7 +569,7 @@ class ParenSpacing {
 			},
 		};
 
-		// Set the close paren search range to end at the 
+		// Set the close paren search range to end at the
 		// sibling start or parent end
 		const closeParenSearchRange = {
 			start: {
