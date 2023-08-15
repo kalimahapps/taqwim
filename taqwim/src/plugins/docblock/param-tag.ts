@@ -17,7 +17,7 @@ type ParameterLoc = {
 	column: number
 };
 
-/* eslint complexity: ["warn", 8] */
+/* eslint complexity: ["warn", 10] */
 class ValidateParameter {
 	docblock: AstComment = {} as AstComment;
 	context: RuleContext = {} as RuleContext;
@@ -36,6 +36,7 @@ class ValidateParameter {
 			position,
 		} = tag;
 
+		// Match the argument with the @param variable
 		const matchingArgument = this.methodArguments.find((argument: AstNode) => {
 			return `$${argument.name.name}` === descriptor.value;
 		});
@@ -47,6 +48,13 @@ class ValidateParameter {
 
 		// Initialize argument type with name
 		let { name: argumentType, types: argumentTypes } = matchingArgument.type;
+
+		// If argument type is an array, then check if the parameter type
+		// ends with `[]`. Since PHP does not have a native array type,
+		// this is the best we can do
+		if (argumentType === 'array' && parameterType.value.endsWith('[]')) {
+			return;
+		}
 
 		// If the argument type is an intersection or union
 		// type, then we need to get the names of the types
