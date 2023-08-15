@@ -84,3 +84,16 @@ trait TestTrait {
 function test($first, $second) {
     echo '';
 }
+
+/**
+ * Process object constants.
+ *
+ * Extract properties data such as visibility and docblock.
+ *
+ * @param ClassConst[] $nodes Array of nodes
+ * @param string $type Type of node
+ * @return array Array of properties
+ */
+function functionWithArrayTypes(array $data, string $second) {
+    echo '';
+}

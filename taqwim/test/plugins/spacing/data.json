@@ -6,7 +6,7 @@
 		},
 		"incorrect-1": {
 			"description": "Incorrect spacing of docblock tags tokens",
-			"expected": 27
+			"expected": 33
 		}
 	},
 	"align": {
@@ -16,7 +16,7 @@
 		},
 		"align-incorrect-1": {
 			"description": "Incorrect spacing of docblock tags tokens",
-			"expected": 30
+			"expected": 33
 		}
 	}
 }

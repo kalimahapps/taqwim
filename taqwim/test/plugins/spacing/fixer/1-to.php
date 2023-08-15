@@ -83,3 +83,16 @@ trait TestTrait {
 function test($first, $second) {
     echo '';
 }
+
+/**
+ * Description of the function.
+ *
+ * Extra description of the function.
+ *
+ * @param Nodes[] $nodes Array of nodes
+ * @param string $type Type of node
+ * @return array Array of nodes
+ */
+function functionWithArrayTypes(array $data, string $second) {
+    echo '';
+}
