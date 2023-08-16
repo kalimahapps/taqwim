@@ -1,7 +1,7 @@
 /**
  * Ensure that docblock tags tokens are spaced correctly
  */
-/* eslint complexity: ["warn", 12] */
+/* eslint complexity: ["warn", 14] */
 
 import type Fixer from '@taqwim/fixer';
 import type { RuleContext, RuleDataOptional } from '@taqwim/types';
@@ -307,7 +307,7 @@ class TagSpacing {
 		}
 
 		// Check space between type and descriptor/description
-		if (hasType) {
+		if (hasType && (hasDescriptor || hasDescription)) {
 			const rightPosition = hasDescriptor ? descriptorPosition : descriptionPosition;
 			this.reportAndFixSpace(typePosition, rightPosition, 'type');
 		}
