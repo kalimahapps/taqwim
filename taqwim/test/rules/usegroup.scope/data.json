@@ -1,0 +1,22 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Use groups with collapsed scope",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Use groups with expanded scope",
+			"expected": 1
+		}
+	},
+	"state": {
+		"state-correct-1": {
+			"description": "Use groups with expanded scope",
+			"expected": 0
+		},
+		"state-incorrect-1": {
+			"description": "Use groups with collapsed scope",
+			"expected": 1
+		}
+	}
+}

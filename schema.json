@@ -1403,6 +1403,40 @@
 							}
 						}
 					]
+				},
+				"taqwim/usegroup.scope": {
+					"description": "Ensure consistent state of use group",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								},
+								"state": {
+									"type": "string",
+									"oneOf": [
+										{
+											"const": "expand",
+											"type": "string",
+											"description": "Expand use group to individual use statements"
+										},
+										{
+											"const": "collapse",
+											"type": "string",
+											"description": "Merge use statements with the same namespace into the same scope"
+										}
+									],
+									"default": "collapse",
+									"description": "The state of the use group"
+								}
+							}
+						}
+					]
 				}
 			}
 		},
