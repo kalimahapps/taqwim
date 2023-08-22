@@ -5,6 +5,7 @@
   --vp-button-brand-hover-bg: #4f5494 !important;
   --vp-button-brand-active-border: #4f5494 !important;
   --vp-button-brand-active-bg: #3f4484 !important;
+  --vp-button-brand-bg: #787CB5 !important;
 }
 
 .custom-block.correct {
@@ -40,32 +41,32 @@
 /*
 Preset rules in preset page
 */
-.preset-rules ~ p {
+.preset-rules~p {
   margin: 0 0 2em 0 !important;
 }
 
-.option-title ~ .option-title {
+.option-title~.option-title {
   margin-top: 2em;
 }
 
-.option-title ~ .option-type,
-.option-title ~ .option-default,
-.option-title ~ .option-possible-values {
+.option-title~.option-type,
+.option-title~.option-default,
+.option-title~.option-possible-values {
   --vp-code-font-size: 1em;
   font-size: 13px;
   margin: 0.5em 0;
 }
 
-.option-title ~ .option-description {
+.option-title~.option-description {
   margin: 6px 0;
 }
 
-.option-title ~ .option-possible-values [data-desc] {
+.option-title~.option-possible-values [data-desc] {
   position: relative;
   cursor: help;
 }
 
-.option-title ~ .option-possible-values [data-desc]::after {
+.option-title~.option-possible-values [data-desc]::after {
   content: attr(data-desc);
   font-size: 13px;
   background-color: #e7e7e7;
@@ -82,7 +83,7 @@ Preset rules in preset page
   white-space: nowrap;
 }
 
-.option-title ~ .option-possible-values [data-desc]:hover::after {
+.option-title~.option-possible-values [data-desc]:hover::after {
   opacity: 1;
   transform: translate(-50%, -20%);
 }
