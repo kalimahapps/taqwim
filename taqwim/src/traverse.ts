@@ -289,6 +289,8 @@ class Traverse {
 		// Clear node list found in previous find
 		this.nodesList = [];
 
+		this.setAst(ast);
+
 		// Update ast
 		this.ast = walk(ast, this.updateNodes.bind(this));
 

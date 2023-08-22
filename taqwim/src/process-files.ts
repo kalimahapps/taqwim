@@ -143,7 +143,6 @@ class ProcessFiles {
 		// Update values before running the rules
 		this.sourceLines = this.sourceCode.split(/\r?\n/u);
 		this.traverse.setSourceCode(this.sourceCode);
-		this.traverse.setAst(this.file.ast);
 		this.traverse.setSourceLines(this.sourceLines);
 		this.traverse.updateAst(this.file.ast);
 
@@ -420,6 +419,7 @@ class ProcessFiles {
 		const { fix } = this.options;
 
 		const [ruleName, ruleData] = ruleEntry;
+
 		this.matchKind = ruleData.register as string[];
 		if (typeof ruleData.register === 'function') {
 			this.matchKind = ruleData.register();
@@ -575,7 +575,6 @@ class ProcessFiles {
 			const paths = globSync(normalizedPath, {
 				absolute: true,
 				cwd: cwd ?? process.cwd(),
-
 			});
 
 			if (paths.length === 1 && path.endsWith('.php')) {
