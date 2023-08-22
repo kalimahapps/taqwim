@@ -30,7 +30,7 @@ const handleError = async (error: Error) => {
 
 	// Log the rest types
 	console.log(error);
-	logger.logError(error.message, error);
+	logger.logError(error.message, error.stack);
 };
 
 export { handleError };
