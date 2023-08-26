@@ -395,7 +395,7 @@ class UsegroupScope {
 	 * @return {string}        The string without whitespace
 	 */
 	removeWhitespace(string: string): string {
-		return string.replaceAll(/\n\s*/gmu, '');
+		return string.replaceAll(/\s/gmu, '');
 	}
 
 	pre() {
@@ -507,14 +507,15 @@ class UsegroupScope {
 		// so it can be compared with the new tree string
 		const { start, end } = this.position;
 
-		let currentTreeString = sourceCode.slice(start.offset, end.offset);
-		currentTreeString = currentTreeString.replaceAll(/\n\s*/gmu, '');
+		const currentTreeString = sourceCode.slice(start.offset, end.offset);
+
+		// currentTreeString = currentTreeString.replaceAll(/\n\s*/gmu, '');
 		const finalString = finalStringArray.join('\n');
 
-		// Compare current tree string with new tree string
-		// with all new lines and leading spaces removed. If they are the same,
-		// it means that the tree is already fixed.
-		if (this.removeWhitespace(finalString) === currentTreeString) {
+		// Compare current tree string with new tree string with whitespace removed.
+		// If they are the same, it means that the tree is already fixed or it
+		// does not need to be fixed
+		if (this.removeWhitespace(finalString) === this.removeWhitespace(currentTreeString)) {
 			return;
 		}
 
