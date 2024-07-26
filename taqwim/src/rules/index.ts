@@ -44,3 +44,4 @@ export { default as spacingParen } from '@taqwim/rules/spacing/paren.js';
 export { default as spacingSeparation } from '@taqwim/rules/spacing/separation.js';
 export { default as spacingTypes } from '@taqwim/rules/spacing/types.js';
 export { default as usegroupScope } from '@taqwim/rules/usegroup/scope.js';
+export { default as usegroupSort } from '@taqwim/rules/usegroup/sort.js';

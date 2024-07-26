@@ -1437,6 +1437,23 @@
 							}
 						}
 					]
+				},
+				"taqwim/usegroup.sort": {
+					"description": "Ensure usegroups are sorted",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
 				}
 			}
 		},

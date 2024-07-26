@@ -1,0 +1,16 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Sorted use groups",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Sorted use groups",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Unsorted use groups",
+			"expected": 4
+		}
+	}
+}
