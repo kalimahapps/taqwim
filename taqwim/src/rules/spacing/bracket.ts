@@ -276,9 +276,15 @@ class BracketSpacing {
 		const expectedSpaceCount = this.noSpaceChars.includes(stringBefore.value) ? 0 : 1;
 
 		// Fix leading space
-		// Ignore if the string before is an opening bracket because
-		// it will be handled by trailing space report
-		if (stringBefore.value !== '[') {
+		// Ignore:
+		// - if the string before is an opening bracket because
+		// it will be handled by trailing space report of that bracket
+		// - if it is the first character of the line, since it will be
+		// handled by the `indent` rule
+		const bracketLine = sourceLines[openBracketPosition.start.line];
+		const hasIndent = bracketLine.slice(0, bracket.start.column).trim().length === 0;
+
+		if (stringBefore.value !== '[' && hasIndent === false) {
 			this.reportAndFix(stringBefore, bracket, 'opening', 'leading', expectedSpaceCount);
 		}
 

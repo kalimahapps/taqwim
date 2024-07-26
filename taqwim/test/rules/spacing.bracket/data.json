@@ -8,6 +8,10 @@
 			"description": "Operators",
 			"expected": 0
 		},
+		"correct-3": {
+			"description": "Route parameters",
+			"expected": 0
+		},
 		"incorrect-1": {
 			"description": "Arrays and offset lookup",
 			"expected": 53
@@ -15,6 +19,10 @@
 		"incorrect-2": {
 			"description": "Operators",
 			"expected": 24
+		},
+		"incorrect-3": {
+			"description": "Route parameters",
+			"expected": 3
 		}
 	}
 }
