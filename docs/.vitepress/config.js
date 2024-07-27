@@ -140,10 +140,7 @@ export default {
 		outline: [2, 4],
 		lastUpdated: true,
 		cleanUrls: 'without-subfolders',
-		editLink: {
-			pattern: 'https://github.com/kalimah-apps/taqwim/edit/master/docs/:path',
-			text: 'Edit this page on GitHub',
-		},
+
 		socialLinks: [
 			{
 				icon: 'github',
