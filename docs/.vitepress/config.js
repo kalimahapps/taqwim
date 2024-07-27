@@ -150,6 +150,10 @@ export default {
 				link: 'https://github.com/kalimahapps/taqwim',
 			},
 			{
+				icon: 'npm',
+				link: 'https://www.npmjs.com/package/@kalimahapps/vue-icons',
+			},
+			{
 				icon: 'twitter',
 				link: 'https://twitter.com/KalimahApps',
 			},
