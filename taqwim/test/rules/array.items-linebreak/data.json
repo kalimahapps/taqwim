@@ -1,0 +1,16 @@
+{
+	"default": {
+		"correct-1": {
+			"description": "Array items are on separate lines",
+			"expected": 0
+		},
+		"correct-2": {
+			"description": "Arrays items are on the same line",
+			"expected": 0
+		},
+		"incorrect-1": {
+			"description": "Array items do not have consistent line breaks",
+			"expected": 16
+		}
+	}
+}

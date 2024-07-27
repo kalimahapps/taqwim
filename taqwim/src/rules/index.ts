@@ -26,6 +26,7 @@ export { default as propertyLimit } from '@taqwim/rules/property-limit.js';
 export { default as propertyNoVar } from '@taqwim/rules/property-no-var.js';
 export { default as typeCheck } from '@taqwim/rules/type-check.js';
 export { default as arrayCommaDangle } from '@taqwim/rules/array/comma-dangle.js';
+export { default as arrayItemsLinebreak } from '@taqwim/rules/array/items-linebreak.js';
 export { default as arraySyntax } from '@taqwim/rules/array/syntax.js';
 export { default as methodBan } from '@taqwim/rules/method/ban.js';
 export { default as methodBreakParameters } from '@taqwim/rules/method/break-parameters.js';

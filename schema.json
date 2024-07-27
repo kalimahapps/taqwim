@@ -904,6 +904,23 @@
 						}
 					]
 				},
+				"taqwim/array.items-linebreak": {
+					"description": "Break array into multiple lines or group them into a single line based on the position of the first item",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
+								}
+							}
+						}
+					]
+				},
 				"taqwim/array.syntax": {
 					"description": "Ensure that array syntax is consistent",
 					"oneOf": [

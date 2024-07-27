@@ -83,7 +83,7 @@ const findAhead = (
  *
  * @param  {RegExpMatchArray} match        The match to get the groups from
  * @param  {Loc}              position     The position of the entire match
- * @param  {number}           columnAdjust How much to adjust the column with based on 
+ * @param  {number}           columnAdjust How much to adjust the column with based on
  *                                         the start of the match.
  * @return {MatchGroupType}                The groups with location
  */
