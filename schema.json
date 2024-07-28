@@ -905,7 +905,7 @@
 					]
 				},
 				"taqwim/array.items-linebreak": {
-					"description": "Break array into multiple lines or group them into a single line based on the position of the first item",
+					"description": "Break array items into multiple lines or group them into a single line based on the position of the first item",
 					"oneOf": [
 						{
 							"$ref": "#/definitions/severity"
@@ -1308,6 +1308,23 @@
 									"description": "The maximum number of parameters a method or function can have",
 									"type": "number",
 									"default": 5
+								}
+							}
+						}
+					]
+				},
+				"taqwim/method.parameters-linebreak": {
+					"description": "Break parameters into multiple lines or group them into a single line based on the position of the first parameter.",
+					"oneOf": [
+						{
+							"$ref": "#/definitions/severity"
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"severity": {
+									"$ref": "#/definitions/severity"
 								}
 							}
 						}

@@ -34,6 +34,7 @@ export { default as methodComplexity } from '@taqwim/rules/method/complexity.js'
 export { default as methodDefaultLast } from '@taqwim/rules/method/default-last.js';
 export { default as methodMaxDepth } from '@taqwim/rules/method/max-depth.js';
 export { default as methodMaxParameters } from '@taqwim/rules/method/max-parameters.js';
+export { default as methodParametersLinebreak } from '@taqwim/rules/method/parameters-linebreak.js';
 export { default as methodVisibility } from '@taqwim/rules/method/visibility.js';
 export { default as spacingAccessor } from '@taqwim/rules/spacing/accessor.js';
 export { default as spacingAssignment } from '@taqwim/rules/spacing/assignment.js';
