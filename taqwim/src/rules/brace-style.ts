@@ -126,11 +126,7 @@ class BraceStyle {
 	objectMethodCallback(): boolean {
 		const { node, braceStyle, context } = this;
 		const { sourceLines, report } = context;
-		const { loc, isAnonymous } = node as AstClass & AstInterface & AstTrait;
-
-		if (isAnonymous) {
-			return false;
-		}
+		const { loc } = node as AstClass & AstInterface & AstTrait;
 
 		/* Object (classes, traits and interfaces) do not have a body,
 		* so we need to find the opening brace position manually
@@ -315,10 +311,10 @@ class BraceStyle {
 
 		// Loop through all nodes and check the closing brace
 		// of each node with the next node
-		nodes.forEach((currentNode, index) => {
+		for (const [index, currentNode] of nodes.entries()) {
 			const nextNode = nodes[index + 1] ?? false;
 			this.reportAndFixClosingBrace(currentNode, nextNode);
-		});
+		}
 	}
 
 	/**
