@@ -18,6 +18,7 @@ import { findAhead } from '@taqwim/utils';
 class PrefixUnderscore {
 	magicMethods: string[] = [
 		'__construct',
+		'__invoke',
 		'__destruct',
 		'__call',
 		'__callStatic',
