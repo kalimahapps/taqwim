@@ -54,6 +54,7 @@ class NameCase {
 	magicMethods: string[] = [
 		'__construct',
 		'__destruct',
+		'__invoke',
 		'__call',
 		'__callStatic',
 		'__get',
@@ -227,7 +228,7 @@ class NameCase {
 	 * Check that accessed properties are also converted
 	 * to the correct case. This is for both properties and methods.
 	 *
-	 * For example, if a property is called `fooBar` is converted 
+	 * For example, if a property is called `fooBar` is converted
 	 * and it is accessed as "$this->fooBar", then the property
 	 * should also be converted to match the case of the property.
 	 */
