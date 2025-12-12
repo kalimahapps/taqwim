@@ -19,5 +19,4 @@ To run the CLI locally, use the following command:
 ```bash
 node ./dist/cli/index.js
 ```
-
 This is basically the same as running `taqwim` command after installing the package globally. You can use the same options as described in the [CLI](../cli.md) page.
