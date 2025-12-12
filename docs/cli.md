@@ -2,8 +2,6 @@
 
 PHPTaqwim can be used as an npm package (CLI). This has the advantage of integrating it with your build process. For example, you can use it as a pre-commit hook to make sure that the committed code is linted and formatted.
 
-
-
 ## Installation
 ```bash
 pnpm add @kalimahapps/taqwim -D

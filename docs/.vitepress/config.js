@@ -6,13 +6,13 @@ import markdownItAttrs from 'markdown-it-attrs';
 const getChildrenRules = (directoryName) => {
 	const rules = fs.readdirSync(path.resolve(__dirname, `../rules/${directoryName}`));
 	const items = [];
-	rules.forEach((rule) => {
+	for (const rule of rules) {
 		const ruleName = rule.replace('.md', '');
 		items.push({
 			text: ruleName,
 			link: `/rules/${directoryName}/${ruleName}`,
 		});
-	});
+	}
 	return items;
 };
 
@@ -20,10 +20,10 @@ const getRules = () => {
 	const rulesFolderContent = fs.readdirSync(path.resolve(__dirname, '../rules'));
 
 	const items = [];
-	rulesFolderContent.forEach((item) => {
+	for (const item of rulesFolderContent) {
 		// Process directories only
 		if (!fs.lstatSync(path.resolve(__dirname, `../rules/${item}`)).isDirectory()) {
-			return;
+			continue;
 		}
 
 		items.push({
@@ -31,7 +31,7 @@ const getRules = () => {
 			link: `/rules/${item}`,
 			items: getChildrenRules(item),
 		});
-	});
+	}
 	return items;
 };
 
@@ -114,6 +114,10 @@ const getSidebarData = () => {
 			collapsed: true,
 			items: [
 				{
+					text: 'Developing locally',
+					link: 'developers/developing-locally',
+				},
+				{
 					text: 'Parser',
 					link: 'developers/parser',
 				},
@@ -124,7 +128,7 @@ const getSidebarData = () => {
 				{
 					text: 'Testing',
 					link: '/developers/testing',
-				}
+				},
 			],
 		},
 	];
@@ -164,9 +168,9 @@ export default {
 			options: {
 				appId: 'AW5IGMKN2Y',
 				apiKey: '508ba02994bccd7de89c7c36eae9e154',
-				indexName: 'taqwim-kalimah-apps'
-			}
-		}
+				indexName: 'taqwim-kalimah-apps',
+			},
+		},
 	},
 	head: [
 		[
@@ -190,5 +194,5 @@ export default {
 				.use(...createRuleContainer('rule', 'Rule', md))
 				.use(markdownItAttrs);
 		},
-	}
+	},
 };
