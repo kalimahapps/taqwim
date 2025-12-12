@@ -33,16 +33,16 @@
 		"glob": "^10.3.3",
 		"levn": "^0.4.1",
 		"minimatch": "^9.0.3",
-		"yargs": "^17.7.2"
+		"yargs": "^18.0.0"
 	},
 	"devDependencies": {
 		"@types/cli-progress": "^3.11.0",
 		"@types/figlet": "^1.5.6",
 		"@types/fs-extra": "^11.0.1",
 		"@types/node": "^20.5.2",
-		"@types/yargs": "^17.0.24",
-		"@vitest/coverage-v8": "^0.34.2",
-		"@vitest/ui": "^0.34.2",
+		"@types/yargs": "^17.0.35",
+		"@vitest/coverage-v8": "^4.0.15",
+		"@vitest/ui": "^4.0.15",
 		"cli-progress": "^3.12.0",
 		"fs-extra": "^11.1.1",
 		"globby": "^13.2.2",
@@ -50,7 +50,7 @@
 		"typescript": "^5.1.6",
 		"vite": "^4.4.9",
 		"vite-node": "^0.34.2",
-		"vitest": "^0.34.2"
+		"vitest": "^4.0.15"
 	},
 	"keywords": [
 		"php",

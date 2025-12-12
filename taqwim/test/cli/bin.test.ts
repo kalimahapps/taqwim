@@ -1,9 +1,8 @@
 import { readFileSync, unlinkSync, writeFileSync } from 'node:fs';
-
 import { fileURLToPath } from 'node:url';
 import { expect, test, vi, beforeEach } from 'vitest';
 
-const { spyOn, resetModules } = vi;
+const { spyOn, resetModules, clearAllMocks } = vi;
 
 const testDirectory = fileURLToPath(new URL('..', import.meta.url)).replaceAll('\\', '/');
 const sourcePath = `${testDirectory}/inline-config/source.php`;
@@ -28,6 +27,7 @@ const runCommand = async function (...processArguments: string[]) {
 
 beforeEach(() => {
 	resetModules();
+	clearAllMocks();
 });
 
 test('Version is displaying correctly', async () => {
@@ -76,7 +76,6 @@ test("Report style to 'none' is working correctly", async () => {
 });
 
 test('Throw error if report style is set but report file is not set', async () => {
-	// expect(async () => {
 	const consoleSpy = spyOn(console, 'log');
 
 	await runCommand('-p', sourcePath, '--report-style', 'json');
@@ -91,7 +90,6 @@ test('Throw error if report style is set but report file is not set', async () =
 });
 
 test("Report style to 'json' is working correctly", async () => {
-	// const consoleSpy = spyOn(console, 'log');
 	const path = `${testDirectory}/rules/array.comma-dangle/incorrect-1.php`;
 
 	const reportFile = `${testDirectory}/cli/report.json`;

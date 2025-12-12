@@ -20,6 +20,7 @@ export default [
 			// Disable it until it's fixed
 			'unicorn/expiring-todo-comments': 'off',
 			'jsonc/no-useless-escape': 'off',
+			'n/hashbang': 'off',
 		},
 	},
 ];
