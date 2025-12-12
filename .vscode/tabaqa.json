@@ -13,6 +13,19 @@
 			"retif",
 			"taqwim",
 			"Unparser"
-		]
+		],
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/vendor": true,
+			"**/bower_components": true,
+			"**/.git": true,
+			"**/tests": true,
+			"**/.vscode": true,
+			"**/out/**": true,
+			"package-lock.json": true,
+			"**/dist": true,
+			"**/build": true,
+			"**/coverage": true
+		}
 	}
 }

@@ -1,38 +1,38 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
-    "experimentalDecorators": true,
-    "isolatedModules": true,
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "noEmit": true,
-    "noImplicitReturns": true,
-    "resolveJsonModule": true,
-    "rootDir": ".",
-    "skipLibCheck": true,
-    "sourceMap": false,
-    "target": "ESNext",
-    "types": [
-      "node"
-    ],
-    "useDefineForClassFields": true,
-    "paths": {
-      "@taqwim/*": [
-        "../taqwim/src/*"
-      ],
-      "@extension/*": [
-        "../src/*"
-      ]
-    }
-  },
-  "include": [
-    "./src/**/*.ts",
-    "./taqwim/src/**/*.ts",
-    "./test/**/*.ts",
-  ],
-  "exclude": [
-    "node_modules",
-    ".vscode/**/*",
-  ]
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "./src",
+		"experimentalDecorators": true,
+		"isolatedModules": true,
+		"module": "CommonJS",
+		"moduleResolution": "Node",
+		"noEmit": true,
+		"noImplicitReturns": true,
+		"resolveJsonModule": true,
+		"rootDir": ".",
+		"skipLibCheck": true,
+		"sourceMap": false,
+		"target": "ESNext",
+		"types": ["node"],
+		"useDefineForClassFields": true,
+		"paths": {
+			"@taqwim/*": ["../taqwim/src/*"],
+			"@extension/*": ["../src/*"]
+		}
+	},
+	"include": [
+		"./src/**/*.ts",
+		"./taqwim/src/**/*.ts",
+		"./test/**/*.ts",
+		"./docs/**/*.ts",
+		"./docs/**/*.vue",
+		"./docs/**/*.md",
+	],
+	"vueCompilerOptions": {
+		"vitePressExtensions": [".md"],
+	},
+	"exclude": [
+		"node_modules",
+		".vscode/**/*",
+	]
 }

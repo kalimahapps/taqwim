@@ -1,10 +1,23 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import container from 'markdown-it-container';
 import markdownItAttrs from 'markdown-it-attrs';
+import { defineConfig } from 'vitepress';
+import type { MarkdownItAsync } from 'markdown-it-async';
+import type { RenderRule } from 'markdown-it/lib/renderer.mjs';
+type ContainerArguments = [
+	typeof container,
+	string,
+	{
+		render: RenderRule,
+		marker?: string;
+	}
+];
 
-const getChildrenRules = (directoryName) => {
-	const rules = fs.readdirSync(path.resolve(__dirname, `../rules/${directoryName}`));
+const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+const getChildrenRules = (directoryName: string) => {
+	const rules = fs.readdirSync(path.resolve(currentDirectory, `../rules/${directoryName}`));
 	const items = [];
 	for (const rule of rules) {
 		const ruleName = rule.replace('.md', '');
@@ -17,12 +30,12 @@ const getChildrenRules = (directoryName) => {
 };
 
 const getRules = () => {
-	const rulesFolderContent = fs.readdirSync(path.resolve(__dirname, '../rules'));
+	const rulesFolderContent = fs.readdirSync(path.resolve(currentDirectory, '../rules'));
 
 	const items = [];
 	for (const item of rulesFolderContent) {
 		// Process directories only
-		if (!fs.lstatSync(path.resolve(__dirname, `../rules/${item}`)).isDirectory()) {
+		if (!fs.lstatSync(path.resolve(currentDirectory, `../rules/${item}`)).isDirectory()) {
 			continue;
 		}
 
@@ -35,20 +48,24 @@ const getRules = () => {
 	return items;
 };
 
-const createRuleContainer = function (klass, defaultTitle, md) {
+const createRuleContainer = function (
+	className: string,
+	defaultTitle: string,
+	md: MarkdownItAsync
+): ContainerArguments {
 	return [
 		container,
-		klass,
+		className,
 		{
 			render(tokens, index) {
 				const token = tokens[index];
 				const info = token.info
 					.trim()
-					.slice(klass.length)
+					.slice(className.length)
 					.trim();
 				if (token.nesting === 1) {
 					const title = md.renderInline(info || defaultTitle);
-					return `<div class="${klass} rule-container custom-block"><p class="rule-block-title">${title}</p>\n`;
+					return `<div class="${className} rule-container custom-block"><p class="rule-block-title">${title}</p>\n`;
 				}
 				return '</div>\n';
 			},
@@ -57,20 +74,24 @@ const createRuleContainer = function (klass, defaultTitle, md) {
 	];
 };
 
-const createExampleContainer = function (klass, defaultTitle, md) {
+const createExampleContainer = function (
+	className: string,
+	defaultTitle: string,
+	md: MarkdownItAsync
+): ContainerArguments {
 	return [
 		container,
-		klass,
+		className,
 		{
 			render(tokens, index) {
 				const token = tokens[index];
 				const info = token.info
 					.trim()
-					.slice(klass.length)
+					.slice(className.length)
 					.trim();
 				if (token.nesting === 1) {
 					const title = md.renderInline(info || defaultTitle);
-					return `<div class="${klass} custom-block"><p class="custom-block-title">${title}</p>\n`;
+					return `<div class="${className} custom-block"><p class="custom-block-title">${title}</p>\n`;
 				}
 				return '</div>\n';
 			},
@@ -134,17 +155,18 @@ const getSidebarData = () => {
 	];
 };
 
-export default {
+const config = defineConfig({
 	title: 'Documentation',
 	description: 'Documentation for PHPTaqwim',
 	base: '/docs/',
+	cleanUrls: true,
 	themeConfig: {
 		siteTitle: 'PHPTaqwim',
 		logo: './logo.png',
 		outline: [2, 4],
-		lastUpdated: true,
-		cleanUrls: 'without-subfolders',
-
+		lastUpdated: {
+			text: 'Last Updated',
+		},
 		socialLinks: [
 			{
 				icon: 'github',
@@ -195,4 +217,6 @@ export default {
 				.use(markdownItAttrs);
 		},
 	},
-};
+});
+
+export default config;
