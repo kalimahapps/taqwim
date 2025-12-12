@@ -7,10 +7,11 @@ import type Fixer from '@taqwim/fixer';
 class PreferSingleQuotes {
 	process(context: RuleContext) {
 		const { node, report, sourceCode } = context;
-		const { value, isDoubleQuote, loc } = node as unknown as AstString;
+		const { raw, isDoubleQuote, loc } = node as unknown as AstString;
+		const ignoreRegex = /\\n|\\r|\\t|\\\\|'/u;
+		const hasIgnoredChar = ignoreRegex.test(raw);
 
-		// Ignore if not a double quote or if the string contains a single quote
-		if (!isDoubleQuote || value.includes("'")) {
+		if (!isDoubleQuote || hasIgnoredChar) {
 			return;
 		}
 

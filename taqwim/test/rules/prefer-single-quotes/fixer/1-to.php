@@ -17,6 +17,7 @@ echo 'A string
 that spans
 multiple lines';
 
+echo "A string with new lines\nand tabs\t characters inside";
 echo "A string with a single quote ' inside";
 
 $array = array(
