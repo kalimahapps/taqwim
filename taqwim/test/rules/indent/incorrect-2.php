@@ -1,8 +1,8 @@
 <?php
 
 /**
-* This is a test function 
-* 
+* This is a test function
+*
  * @param int $repeat The number of times to repeat the string
 * @return string The repeated string
  */
@@ -29,17 +29,17 @@ if ($a === true || $a === true || $a === true || $a === true ||
 
     if ($true) {
     /* First comment line
-    * 
+    *
     * Comment test here
     * Comment test here
-    * 
+    *
     */
 
     /* First comment line
-    * 
+    *
     * Comment test here
     * Comment test here
-    * 
+    *
     this si something */
 }
 
@@ -65,3 +65,21 @@ string that spans $numLines lines
 without indenting.
 ";
 }
+
+Route::get('/',	function () {
+return 'Hello World';
+});
+
+$closure = function () {
+return 'Hello World';
+};
+
+function multiplier($factor) {
+return function($number) use ($factor) {
+        return $number * $factor;
+};
+}
+
+$squared = array_map(function($n) {
+return $n * $n;
+}, $numbers);

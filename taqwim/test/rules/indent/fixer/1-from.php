@@ -8,6 +8,32 @@ function($x)
 $array
     );
 
+$squared = array_map(function($n) {
+return $n * $n;
+}, $numbers);
+
+$greet = function($name) {
+return "Hello, $name!";
+};
+
+$result = process(5, function($n) {
+return $n * $n;
+});
+
+Route::get('/',	function () {
+return 'Hello World';
+});
+
+$greet = function($name) use ($message) {
+        return "$message, $name!";
+};
+
+function multiplier($factor) {
+return function($number) use ($factor) {
+return $number * $factor;
+};
+}
+
 $someObject->someFunction("some", "parameter")
 ->someOtherFunc(23, 42)->
         someOtherFunc2($one, $two)

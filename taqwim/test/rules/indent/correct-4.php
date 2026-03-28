@@ -28,3 +28,21 @@ $someObject
 ->someOtherFunc(nameA: 23, nameB: 42)
 ->endSomething($value, name: $value)
 ->endEverything();
+
+Route::get('/',	function () {
+    return 'Hello World';
+});
+
+$closure = function () {
+    return 'Hello World';
+};
+
+function multiplier($factor) {
+    return function($number) use ($factor) {
+        return $number * $factor;
+    };
+}
+
+$squared = array_map(function($n) {
+    return $n * $n;
+}, $numbers);

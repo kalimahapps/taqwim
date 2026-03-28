@@ -346,7 +346,7 @@ class Indent {
 	usegroupCallback(): boolean {
 		const { name, items } = this.node as AstUseGroup;
 
-		// if name is not it means there are no nested use groups
+		// if name is null it means there are no nested use groups
 		// e.g. use Root\Exceptions\CustomException;
 		if (name === null) {
 			return false;
@@ -655,7 +655,12 @@ class Indent {
 	}
 
 	/**
-	 * Handle closures
+	 * Handle closures.
+	 *
+	 * @example
+	 * Route::get('/foo', function () {
+	 *     // code
+	 * });
 	 */
 	closureCallback() {
 		const { body } = this.node as AstClosure;
@@ -726,6 +731,7 @@ class Indent {
 	 */
 	callChildrenCallback(): boolean {
 		const { arguments: parameters, traverse, what } = this.node as AstCall;
+		const { sourceLines } = this.context;
 		if (what === undefined || parameters === undefined || parameters?.length === 0) {
 			return false;
 		}
@@ -739,6 +745,24 @@ class Indent {
 			startLine: parameterStartLine,
 			endLine: parameterEndLine,
 		} = processArguments;
+
+		for (const parameter of parameters) {
+			const { kind } = parameter;
+			if (kind !== 'closure') {
+				continue;
+			}
+
+			const { line: closureStartLine } = parameter.loc.start;
+
+			// Check if the keyword `function` is on the same line as the previous code.
+			// if this is the case then ignore body indent, since it will be handled by
+			// the closure callback
+			const code = sourceLines[closureStartLine].trim();
+			const hasCodeBeforeClosure = code.startsWith('function') === false;
+			if (hasCodeBeforeClosure) {
+				this.removeLineIndent(parameterStartLine, parameterEndLine);
+			}
+		}
 
 		// If the direct parent is an assign, remove the indent
 		const hasAssignParent = traverse.parent('assign');
@@ -776,6 +800,11 @@ class Indent {
 		const { right: rightAssignment, left: leftAssignment } = this.node as AstAssign;
 
 		let { startLine, endLine } = this.getBlockLines([rightAssignment], leftAssignment);
+
+		// ignore closures as they are handled in the closure callback
+		if (rightAssignment.kind === 'closure') {
+			return;
+		}
 
 		// Account for array and call closing bracket
 		if (rightAssignment.kind === 'array') {
@@ -900,7 +929,7 @@ class Indent {
 		}
 		const sourceLines = source.split(/\r?\n/u);
 
-		sourceLines.forEach((line, index) => {
+		for (const [index, line] of sourceLines.entries()) {
 			const options = getOptions(context, index);
 			const { type: indentType } = options;
 
@@ -922,7 +951,7 @@ class Indent {
 			* or docblocks (except for the first line).
 			*/
 			if (ignore) {
-				return;
+				continue;
 			}
 
 			// If the line is empty, it should have 0 indent
@@ -933,14 +962,14 @@ class Indent {
 			// Check current indent against new indent
 			const currentIndent = line.match(/^\s*/u);
 			if (currentIndent === null) {
-				return;
+				continue;
 			}
 
 			const currentIndentLength = currentIndent?.[0].length ?? 0;
 
 			// First check if the indent is zero and the expected indent is zero
 			if (currentIndentLength === newIndent && newIndent === 0) {
-				return;
+				continue;
 			}
 
 			const foundType = getWhitespaceType(currentIndent);
@@ -955,7 +984,7 @@ class Indent {
 			* In this case, the indent length is correct, but the type is not.
 			*/
 			if (currentIndentLength === newIndent && foundType === indentTypeMessage) {
-				return;
+				continue;
 			}
 
 			const range: Loc = {
@@ -989,7 +1018,7 @@ class Indent {
 					return fixer.replaceRange(range, whiteSpace.repeat(newIndent));
 				},
 			});
-		});
+		}
 
 		return true;
 	}

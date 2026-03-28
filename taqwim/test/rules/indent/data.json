@@ -13,7 +13,7 @@
 			"expected": 0
 		},
 		"correct-4": {
-			"description": "Function call argument, properties access",
+			"description": "Function call argument, properties access, closure and arrow functions",
 			"expected": 0
 		},
 		"correct-5": {
@@ -33,8 +33,8 @@
 			"expected": 35
 		},
 		"incorrect-2": {
-			"description": "Control structures, functions, binary expressions, inline comment, multi-line strings, heredoc",
-			"expected": 13
+			"description": "Control structures, functions, closures, binary expressions, inline comment, multi-line strings, heredoc",
+			"expected": 18
 		},
 		"incorrect-3": {
 			"description": "Match and enum expressions",
