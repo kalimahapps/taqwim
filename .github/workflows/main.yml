@@ -31,12 +31,12 @@ jobs:
       - run: cd taqwim && npm run test
 
       - name: Publish to VSCode marketplace
-        if: ${{ github.event.inputs.vscode_publish }}
-        uses: HaaLeo/publish-vscode-extension@v1
+        if: github.event.inputs.vscode_publish == 'true'
+        uses: HaaLeo/publish-vscode-extension@v2
         with:
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
 
       - name: Publish to NPM
-        if: ${{ github.event.inputs.npm_publish }}
+        if: github.event.inputs.npm_publish == 'true'
         run: cd taqwim && npm publish
