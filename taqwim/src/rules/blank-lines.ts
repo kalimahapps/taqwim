@@ -20,6 +20,7 @@ import type {
 	RangeMatchType
 } from '@taqwim/types';
 import type Fixer from '@taqwim/fixer';
+import type { Kind } from '@taqwim/types/kind';
 import {
 	findAhead,
 	findAheadRegex,
@@ -221,7 +222,7 @@ class BlankLines {
 			return false;
 		}
 
-		const lookFor = [
+		const lookFor: Kind[] = [
 			'class',
 			'interface',
 			'trait',

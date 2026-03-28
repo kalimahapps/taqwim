@@ -86,7 +86,7 @@ class Keywords {
 		const { node, sourceLines } = this.context;
 		const { kind, loc, shortForm, test } = node;
 
-		let keyword = kind;
+		let keyword = kind as string;
 
 		// method and function are the same keyword
 		if (kind === 'method') {
@@ -189,7 +189,7 @@ class Keywords {
 
 		/**
 		 * Typescript report that index is possibly undefined even though
-		 * `g` flag is not used in the regex. 
+		 * `g` flag is not used in the regex.
 		 *
 		 * @see https://github.com/microsoft/TypeScript/issues/35157
 		 */
