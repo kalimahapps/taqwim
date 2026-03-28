@@ -1,9 +1,21 @@
 on:
-  push:
-    branches: ["main"]
-    paths: ['package.json']
+  workflow_dispatch:
+    inputs:
+      vscode_publish:
+        description: 'Publish VSCode extension'
+        type: boolean
+        default: true
+      npm_publish:
+        description: 'Publish NPM package'
+        type: boolean
+        default: true
 
 name: Deploy Extension and Package
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,12 +31,12 @@ jobs:
       - run: cd taqwim && npm run test
 
       - name: Publish to VSCode marketplace
+        if: ${{ github.event.inputs.vscode_publish }}
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
 
       - name: Publish to NPM
+        if: ${{ github.event.inputs.npm_publish }}
         run: cd taqwim && npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
