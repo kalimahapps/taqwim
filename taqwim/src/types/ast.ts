@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define, eslint-comments/disable-enable-pair */
 import type { Loc } from './loc';
+import type { Kind } from './kind';
 
 /**
  * Define a node that contains the properties of all nodes
@@ -49,22 +50,22 @@ interface AstLocation extends Loc {
 }
 
 interface AstIdentifier {
-	kind: string;
+	kind: Kind;
 	name: string;
 	loc: AstLocation;
 }
 
 interface AstNodeBase {
-	kind: string;
+	kind: Kind;
 	leadingComments: AstComment[];
 	trailingComments: AstComment[];
 	loc: AstLocation,
 	traverse: {
-		siblings: (kind: string | string[]) => AstNode[];
-		find: (kind: string | string[]) => AstNode[];
+		siblings: (kind: Kind | Kind[]) => AstNode[];
+		find: (kind: Kind | Kind[]) => AstNode[];
 		findByNodeName: (name: string | string[]) => AstNode[];
-		closest: (kind: string | string[]) => AstNode | false;
-		parent: (kind?: string) => AstNode | false;
+		closest: (kind: Kind | Kind[]) => AstNode | false;
+		parent: (kind?: Kind) => AstNode | false;
 		nextSibling: () => AstNode | false;
 		prevSibling: () => AstNode | false;
 	};
