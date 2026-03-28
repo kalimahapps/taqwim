@@ -7,7 +7,7 @@
 	"homepage": "https://taqwim.kalimah-apps.com/",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/kalimahapps/taqwim.git"
+		"url": "git+https://github.com/kalimahapps/taqwim.git"
 	},
 	"bugs": {
 		"url": "https://github.com/kalimahapps/taqwim/issues"

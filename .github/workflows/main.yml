@@ -26,6 +26,7 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm ci
+      - run: npm install -g npm@latest
       - run: npm run build && cd taqwim && npm run build
       - run: xvfb-run -a npm test
       - run: cd taqwim && npm run test
@@ -39,4 +40,4 @@ jobs:
 
       - name: Publish to NPM
         if: github.event.inputs.npm_publish == 'true'
-        run: cd taqwim && npm publish
+        run: cd taqwim && npm publish --provenance
