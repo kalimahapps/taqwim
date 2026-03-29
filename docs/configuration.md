@@ -1,8 +1,8 @@
-# Configration
-While PHPTaqwim is a zero-configuration tool, it can be configured to fit your needs. Configration can be added using a didicated configuration file or by using inline comments throughout your code.
+# Configuration
+While PHPTaqwim is a zero-configuration tool, it can be configured to fit your needs. Configuration can be added using a dedicated configuration file or by using inline comments throughout your code.
 
 ## File configuration
-Configuration file can be either a JavaScript file, named `taqwim.config.js`, that exports an object or a json file, named `.taqwim.json`, that contains a JSON object. It needs to be placed in the root directory of the project. If both files exist, `.taqwim.json` will have prcedence.
+Configuration file can be either a JavaScript file, named `taqwim.config.js`, that exports an object or a json file, named `.taqwim.json`, that contains a JSON object. It needs to be placed in the root directory of the project. If both files exist, `.taqwim.json` will have precedence.
 
 For the VSCode extension, the configuration file should be placed in the root directory of workspace. And for the CLI, the configuration file should be placed in the current working directory (where you run the command from).
 
@@ -15,7 +15,7 @@ Only block comments /**/ is supported. Single line comments, using //, is not su
 Inline configuration can be added using comments. The comment should start with `taqwim` followed by a space and then the configuration.
 
 :::tip
-Configuration should vaid JSON. No need to add opening and closing braces.
+Configuration should be valid JSON. No need to add opening and closing braces.
 :::
 
 For example:
@@ -67,5 +67,5 @@ or disable multiple rules by separating them with a comma:
 ```
 
 :::warning
-If no rules is specified in `taqwim-enable`, all rules will be enabled.
+If no rules are specified in `taqwim-enable`, all rules will be enabled.
 :::

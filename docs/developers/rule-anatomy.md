@@ -1,7 +1,8 @@
 # Rule Anatomy
-A rule is just a Javscript files that returns a factory function. The object returned by the factory should be in accordance with this type:
-```typescript
 
+A rule is a JavaScript file that exports a factory function. The object returned by the factory function should conform to the `RuleData` interface:
+
+```typescript
 interface RuleData {
 
 	/**
@@ -52,3 +53,35 @@ interface RuleData {
 	bindClass?: { new(): any };
 }
 ```
+
+## Example Rule
+
+Here's a basic example of a rule that checks for trailing whitespace:
+
+```javascript
+export default () => {
+	return {
+		name: 'no-trailing-whitespace',
+		register: ['Program'],
+		meta: {
+			fixable: true,
+			description: 'Disallow trailing whitespace at the end of lines',
+			preset: 'taqwim'
+		},
+		process(context) {
+			// Rule logic here
+			// Use context to access node information and report issues
+		}
+	};
+};
+```
+
+## Rule Properties
+
+- **name**: Unique identifier for the rule
+- **register**: Array of AST node types that trigger the rule's `process` callback
+- **meta**: Metadata about the rule including whether it's fixable and its description
+- **process**: Main callback that runs for each registered node type
+- **pre**: Optional callback that runs once before processing
+- **post**: Optional callback that runs once after all processing is complete
+- **bindClass**: Optional class to bind to the rule for more complex logic

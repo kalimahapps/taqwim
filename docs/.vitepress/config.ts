@@ -110,6 +110,10 @@ const getSidebarData = () => {
 					link: '/introduction',
 				},
 				{
+					text: 'Quick Start',
+					link: '/quick-start',
+				},
+				{
 					text: 'Usage',
 					link: 'usage',
 				},

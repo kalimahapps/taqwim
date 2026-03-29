@@ -1,12 +1,23 @@
 # Testing
-All files must be tested with a coverage of over 95%. While this is a straightforward process in core application (taqwim folder), it has proven to be an impossible task for the extension files (the ones that use VSCode API). Using vite to transpile the code, and the lack of builtin coverage report in the official [`@vscode/test-electron`](https://www.npmjs.com/package/@vscode/test-electron) package, makes it near impossible to get a coverage report. Many tools were tried (nyc, c8, istanbul, etc), but none of them worked.
 
-Even testing frameworks are hard to integrate. The files need to be transpiled to Javascript before they are run inside an instant of VSCode application. This means that vitest is not an option. Even when files are transpiled to Javascript with vite, there were problems inside VSCode. 
+All files must be tested with a coverage of over 95%. While this is a straightforward process in the core application (taqwim folder), it has proven to be a challenging task for the extension files (the ones that use VSCode API).
 
-The other option is Mocha, which is the one used in `@vscode/test-electron` examples and initial setup. However, when transpiling the code using `vite` it does not work without setting `build.rollupOptions.output.interop` to `esModule`. This will transpile the tests and run them but the extension files will not compile correctly for production.
+### Challenges with Extension Testing
 
-Jest was also on the list of options, but the lack of node API limited the ability of integrating it into the code.
+Using Vite to transpile the code, and the lack of built-in coverage reporting in the official [`@vscode/test-electron`](https://www.npmjs.com/package/@vscode/test-electron) package, makes it difficult to get accurate coverage reports. Many tools were attempted (nyc, c8, istanbul, etc), but none worked reliably.
 
-The last viable option is `jasmine`, which is the one used in this project. It has a similar API to jest and vitest. Moreover, it transpiles correctly without setting `build.rollupOptions.output.interop` to `esModule`. 
+### Testing Framework Selection
 
-With all these options, however, there is still no coverage report for the extension.
+Even integrating testing frameworks proved challenging. The files need to be transpiled to JavaScript before running inside an instance of the VSCode application, which means Vitest is not an option. Even when files are transpiled to JavaScript with Vite, there were compatibility issues inside VSCode.
+
+#### Frameworks Evaluated
+
+**Mocha** - The framework used in `@vscode/test-electron` examples. However, when transpiling code using Vite, it doesn't work without setting `build.rollupOptions.output.interop` to `esModule`. This setting allows tests to transpile and run, but prevents extension files from compiling correctly for production.
+
+**Jest** - Evaluated but the lack of Node API support limited integration capabilities.
+
+**Jasmine** - The final choice. It has a similar API to Jest and Vitest and transpiles correctly without requiring `build.rollupOptions.output.interop` to be set to `esModule`.
+
+### Current Status
+
+The project uses Jasmine for testing. However, coverage reporting for the VSCode extension remains unavailable due to the technical limitations described above. The core application (taqwim folder) maintains over 95% test coverage.

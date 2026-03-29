@@ -30,17 +30,18 @@
 > If you find any bugs, please report them on [GitHub](https://github.com/kalimahapps/taqwim)
 
 <br>
-PHP linter and formatter for Visual Studio Code and CLI. Taqwim is arabic for correction.
+
+PHP linter and formatter for Visual Studio Code and CLI. Taqwim is Arabic for correction.
 
 <br>
 <br>
 
-## ✨ Features:
-- Zero configuration (but configurable)
-- Lint PHP files to detect syntax errors
-- Fix PHP files according to coding standard
-- No PHP runtime required
-- Two presets are included: [PSR](https://taqwim.kalimah-apps.com/docs/rules/psr.html) and [Taqwim](https://taqwim.kalimah-apps.com/docs/rules/taqwim.html)
+## ✨ Features
+- **Zero Configuration** - Works out of the box with sensible defaults (but fully configurable)
+- **Lint PHP Files** - Detect syntax errors and coding standard violations
+- **Auto-fix Issues** - Fix PHP files according to coding standards
+- **No PHP Runtime Required** - No need for PHP to be installed on your system
+- **Built-in Presets** - Two presets included: [PSR-12](https://taqwim.kalimah-apps.com/docs/rules/psr.html) and [Taqwim](https://taqwim.kalimah-apps.com/docs/rules/taqwim.html)
 
 <br>
 <br>
