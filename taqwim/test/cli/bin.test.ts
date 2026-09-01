@@ -61,7 +61,7 @@ test('Path is set correctly', async () => {
 });
 
 test('Throw error if mixing files and directories in path argument', async () => {
-	expect(async () => {
+	await expect(async () => {
 		await runCommand('-p', `${sourcePath},${testDirectory}/inline-config`);
 	}).rejects.toThrow('Mixing files and directories is not allowed in path argument');
 });

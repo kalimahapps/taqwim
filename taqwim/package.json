@@ -42,7 +42,7 @@
 		"@types/node": "^26.4.0",
 		"@types/yargs": "^17.0.35",
 		"@vitest/coverage-v8": "^4.1.11",
-		"@vitest/ui": "^5.0.0-rc.4",
+		"@vitest/ui": "^4.1.11",
 		"cli-progress": "^3.12.0",
 		"fs-extra": "^11.4.0",
 		"globby": "^13.2.2",
@@ -50,7 +50,7 @@
 		"typescript": "^6.0.3",
 		"vite": "^8.2.2",
 		"vite-node": "^6.0.0",
-		"vitest": "^5.0.0-rc.4"
+		"vitest": "^4.1.11"
 	},
 	"keywords": [
 		"php",
@@ -62,6 +62,6 @@
 	},
 	"files": ["dist"],
 	"engines": {
-		"node": ">=17.0.0"
+		"node": ">=22"
 	}
 }
