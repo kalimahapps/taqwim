@@ -7,13 +7,11 @@ import type Fixer from '@taqwim/fixer';
 import type { RuleContext, RuleDataOptional } from '@taqwim/types';
 
 import Parser from '@kalimahapps/docblock-parser';
-import type {
-	Docblock,
-	DocblockParserOptions,
-	DocblockPosition,
-	DocblockTag
-} from '@kalimahapps/docblock-parser/dist/types';
+import type { Docblock, DocblockTag } from '@kalimahapps/docblock-parser';
 import { findAheadRegex } from '@taqwim/utils';
+
+type DocblockParserOptions = NonNullable<Parameters<Parser['parse']>[1]>;
+type DocblockPosition = DocblockTag['position'];
 
 class TagSpacing {
 	/**

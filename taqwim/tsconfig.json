@@ -2,14 +2,12 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
-		"baseUrl": "./src",
-		"downlevelIteration": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
 		"module": "ESNext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"noEmit": true,
 		"noEmitHelpers": true,
 		"outDir": "dist",
@@ -17,23 +15,13 @@
 		"sourceMap": false,
 		"strict": true,
 		"target": "ESNext",
-		"types": [
-			"node"
-		],
+		"types": ["node"],
 		"useDefineForClassFields": true,
 		"paths": {
-			"@taqwim/*": [
-				"*"
-			],
-			"@taqwim-test/*": [
-				"../test/*"
-			]
+			"@taqwim/*": ["./src/*"],
+			"@taqwim-test/*": ["./test/*"]
 		}
 	},
-	"include": [
-		"**/*.ts"
-	],
-	"exclude": [
-		"**/node_modules/**/*"
-	]
+	"include": ["**/*.ts"],
+	"exclude": ["**/node_modules/**/*"]
 }

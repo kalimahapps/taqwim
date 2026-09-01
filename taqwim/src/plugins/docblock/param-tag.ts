@@ -10,7 +10,8 @@ import type {
 } from '@taqwim/types';
 import type { DocblockTag } from '@kalimahapps/docblock-parser';
 import Parser from '@kalimahapps/docblock-parser';
-import type { DocblockParserOptions } from '@kalimahapps/docblock-parser/dist/types';
+
+type DocblockParserOptions = NonNullable<Parameters<Parser['parse']>[1]>;
 
 type ParameterLoc = {
 	line: number,

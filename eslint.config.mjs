@@ -1,5 +1,14 @@
 import eslintConfig from '@kalimahapps/eslint-config';
 export default [
+	{
+		ignores: [
+			'**/.vitepress/cache/**',
+			'**/.vitepress/dist/**',
+			'**/phpparser/**',
+			'**/package-lock.json',
+			'**/coverage/**',
+		],
+	},
 	...eslintConfig,
 	{
 		rules: {
@@ -8,7 +17,9 @@ export default [
 			'eqeqeq': 'warn',
 			'no-throw-literal': 'warn',
 			'semi': 'off',
-			'unicorn/prevent-abbreviations': [
+
+			// Renamed from `unicorn/prevent-abbreviations` in eslint-plugin-unicorn v73
+			'unicorn/name-replacements': [
 				'warn',
 				{
 					checkFilenames: false,
