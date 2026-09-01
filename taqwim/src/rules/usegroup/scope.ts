@@ -101,7 +101,7 @@ class UsegroupScope {
 	createTree(groupList: GroupList[]): Tree {
 		const tree: Tree = {};
 
-		groupList.forEach((group) => {
+		for (const group of groupList) {
 			const { parts, alias = {} } = group;
 
 			let current: Tree = tree;
@@ -114,7 +114,7 @@ class UsegroupScope {
 
 				current = current[part];
 			});
-		});
+		}
 
 		return tree;
 	}
@@ -329,15 +329,33 @@ class UsegroupScope {
 	/**
 	 * Build a string from the tree
 	 *
-	 * @param  {Record<string, string[]>} tree The tree to convert
-	 * @return {string}                        The string
+	 * @param  {Record<string, string[]>} tree        The tree to convert
+	 * @param  {GroupList[]}              selfImports Imports that are kept out of the tree
+	 * @return {string}                               The string
 	 */
-	buildTreeString(tree: Record<string, string[]>): string {
+	buildTreeString(tree: Record<string, string[]>, selfImports: GroupList[] = []): string {
 		let treeString = '';
 
-		const groupKey = this.currentGroup === 'use' ? '' : `${this.currentGroup} `;
+		const groupKey = this.groupKeyword();
+		const pending = new Set(selfImports);
 
 		Object.entries(tree).forEach(([key, children]) => {
+			// Write self imports next to the statement they share a
+			// namespace with, so related imports stay together
+			pending.forEach((group) => {
+				const { namespace } = group;
+				const isRelated = namespace === key
+				  || key.startsWith(`${namespace}\\`)
+				  || namespace.startsWith(`${key}\\`);
+
+				if (!isRelated) {
+					return;
+				}
+
+				treeString += `${this.buildUseStatement(group)}\n`;
+				pending.delete(group);
+			});
+
 			if (children.length > 1) {
 				treeString += `use ${groupKey}${key}\\{\n`;
 				treeString += children.join(',\n');
@@ -349,6 +367,12 @@ class UsegroupScope {
 			const keyArray = [key, ...children];
 
 			treeString += `use ${groupKey}${keyArray.join('\\')};\n`;
+		});
+
+		// Self imports that did not match any statement still need to be
+		// written, otherwise the import would be dropped
+		pending.forEach((group) => {
+			treeString += `${this.buildUseStatement(group)}\n`;
 		});
 
 		return treeString;
@@ -380,11 +404,52 @@ class UsegroupScope {
 	 * @return {string}                The string
 	 */
 	buildExpandString(groupList: GroupList[]): string {
-		const groupKey = this.currentGroup === 'use' ? '' : `${this.currentGroup} `;
 		return groupList.map((group) => {
-			const { namespace, alias } = group;
-			return `use ${groupKey}${namespace}${alias ? ` as ${alias}` : ''};`;
+			return this.buildUseStatement(group);
 		}).join('\n');
+	}
+
+	/**
+	 * The keyword that follows `use`. It is empty for class imports
+	 *
+	 * @return {string} The keyword, with a trailing space when it is not empty
+	 */
+	groupKeyword(): string {
+		return this.currentGroup === 'use' ? '' : `${this.currentGroup} `;
+	}
+
+	/**
+	 * Build a single, non grouped, use statement
+	 *
+	 * @param  {GroupList} group The use group to build
+	 * @return {string}          The use statement
+	 */
+	buildUseStatement(group: GroupList): string {
+		const { namespace, alias } = group;
+		return `use ${this.groupKeyword()}${namespace}${alias ? ` as ${alias}` : ''};`;
+	}
+
+	/**
+	 * Find imports that are also the prefix of another import in the same
+	 * group. Adding children to such a node overwrites the import itself,
+	 * and PHP does not allow a group prefix to be listed inside its own
+	 * braces, so these are kept out of the tree and written separately
+	 *
+	 * @example
+	 * use KalimahApps\Daleel;
+	 * use KalimahApps\Daleel\CodeHighlighter;
+	 *
+	 * `KalimahApps\Daleel` is a prefix of `KalimahApps\Daleel\CodeHighlighter`
+	 *
+	 * @param  {GroupList[]} groupList The list of use groups
+	 * @return {GroupList[]}           The imports that prefix another import
+	 */
+	getSelfImports(groupList: GroupList[]): GroupList[] {
+		return groupList.filter(({ namespace }) => {
+			return groupList.some((group) => {
+				return group.namespace.startsWith(`${namespace}\\`);
+			});
+		});
 	}
 
 	/**
@@ -476,7 +541,6 @@ class UsegroupScope {
 		const finalStringArray: string[] = [];
 		Object.entries(this.groups).forEach(([group, groupList]) => {
 			this.currentGroup = group;
-			const tree = this.createTree(groupList);
 
 			if (state === 'expand') {
 				const expandString = this.buildExpandString(groupList);
@@ -489,8 +553,16 @@ class UsegroupScope {
 				return;
 			}
 
+			// Imports that prefix another import can not be part of the
+			// tree, they are written as their own statement instead
+			const selfImports = this.getSelfImports(groupList);
+			const nestedImports = groupList.filter((item) => {
+				return !selfImports.includes(item);
+			});
+
+			const tree = this.createTree(nestedImports);
 			const newTree = this.buildTree(tree);
-			const treeString = this.buildTreeString(newTree);
+			const treeString = this.buildTreeString(newTree, selfImports);
 
 			// If file does not contain any use group, then treeString will be empty
 			if (treeString !== '') {
