@@ -25,6 +25,10 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org/
+
+      # Node 22 bundles npm 10.x; trusted publishing (OIDC) needs npm >= 11.5.1
+      - run: npm install -g npm@latest
+
       - run: npm ci
       - run: npm run build && cd taqwim && npm run build
       - run: xvfb-run -a npm test
